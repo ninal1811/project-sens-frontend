@@ -89,7 +89,33 @@ export default function MapView() {
 
   return (
 
-    
+    <div style={{ width: "100%" }}>
+      {/* Info panel above the map */}
+      <div
+        style={{
+          marginBottom: "1rem",
+          padding: "0.75rem 1rem",
+          border: "1px solid #ccc",
+          borderRadius: "8px",
+          textAlign: "left",
+        }}
+      >
+        {selectedCountry ? (
+          <>
+            <div style={{ fontSize: "1.1rem", fontWeight: 700 }}>
+              {selectedCountry.name} ({selectedCountry._id})
+            </div>
+            <div><strong>capital:</strong> {selectedCountry.capital}</div>
+            <div><strong>nat_dish:</strong> {selectedCountry.nat_dish}</div>
+            <div><strong>pop_dish_1:</strong> {selectedCountry.pop_dish_1}</div>
+            <div><strong>pop_dish_2:</strong> {selectedCountry.pop_dish_2}</div>
+          </>
+        ) : (
+          <div style={{ color: "#666" }}>
+            Click a <span style={{ color: "#1e90ff", fontWeight: 700 }}>blue</span> country to see details.
+          </div>
+        )}
+      </div>
 
     <div style={{ height: "500px", width: "100%" }}>
       <MapContainer
@@ -110,6 +136,6 @@ export default function MapView() {
 
       </MapContainer>
     </div>
-
+    </div>
   );
 }
