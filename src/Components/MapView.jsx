@@ -186,6 +186,7 @@ export default function MapView() {
   const allCitiesRef = useRef({});
   const backendCountriesRef = useRef({});
   const backendStatesRef = useRef({});
+  const mapRef = useRef(null);
   const [backendStates, setBackendStates] = useState({});
   const [selectedState, setSelectedState] = useState(null);
   const [visibleStates, setVisibleStates] = useState([]);
@@ -236,13 +237,13 @@ export default function MapView() {
   const handleBackToCountries = useCallback (() => {
     setShowStates(false);
     setSelectedState(null);
-
     if (selectedCountry) {
       const cities = Object.values(allCitiesRef.current).filter(
         c => c.country_code === selectedCountry._id
       );
       setVisibleCities(cities);
     }
+    mapRef.current?.setView([20, 0], 2);
   }, [selectedCountry]);
 
   return (
@@ -250,7 +251,12 @@ export default function MapView() {
       <div style={{ marginBottom: "1rem", padding: "0.75rem 1rem", border: "1px solid #ccc", borderRadius: "8px", textAlign: "left" }}>
         {selectedCountry ? (
           <>
-            <div style={{ fontSize: "1.1rem", fontWeight: 700 }}>{selectedCountry.name} ({selectedCountry._id})</div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ fontSize: "1.1rem", fontWeight: 700 }}>{selectedCountry.name} ({selectedCountry._id})</div>
+              {showStates && (
+                <button onClick={handleBackToCountries}>← Back to World</button>
+              )}
+            </div>
             <div><strong>capital:</strong> {selectedCountry.capital}</div>
             <div><strong>nat_dish:</strong> {selectedCountry.nat_dish}</div>
             <div><strong>pop_dish_1:</strong> {selectedCountry.pop_dish_1}</div>
@@ -264,6 +270,7 @@ export default function MapView() {
       <Legend showStates={showStates} />
       <div style={{ height: "70vh", width: "100%" }}>
         <MapContainer
+          ref={mapRef}
           center={[20, 0]}
           zoom={2}
           scrollWheelZoom={true}
