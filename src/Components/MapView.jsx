@@ -1,16 +1,37 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import axios from "axios";
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
 import countriesData from "../data/countries.json";
 
 const BASE_URL = "https://projectsens.pythonanywhere.com";
 
-export default function MapView() {
+// Separate component to access the map instance
+function CountryLayer({ countriesData, styleFeature, onEachFeature }) {
+  const map = useMap();
 
+  const handleEachFeature = useCallback(
+    (feature, layer) => {
+      onEachFeature(feature, layer); // your existing popup logic
+      layer.on("click", () => {
+        map.fitBounds(layer.getBounds(), { padding: [40, 40] });
+      });
+    },
+    [map, onEachFeature]
+  );
+
+  return (
+    <GeoJSON
+      data={countriesData}
+      style={styleFeature}
+      onEachFeature={handleEachFeature}
+    />
+  );
+}
+
+export default function MapView() {
   const [backendCountries, setBackendCountries] = useState({});
   const [selectedCountry, setSelectedCountry] = useState(null);
 
-  // retrieve backend countries data
   useEffect(() => {
     axios
       .get(`${BASE_URL}/countries`)
@@ -23,26 +44,20 @@ export default function MapView() {
       });
   }, []);
 
-  // set IDs
   const backendIds = useMemo(
     () => new Set(Object.keys(backendCountries)),
     [backendCountries]
   );
 
-  // extract ISO3 code from GeoJSON
   const getIso3 = useCallback((feature) => {
     const p = feature?.properties || {};
-    return (
-      p["ISO3166-1-Alpha-3"] ||
-      null
-    );
+    return p["ISO3166-1-Alpha-3"] || null;
   }, []);
 
   const styleFeature = useCallback(
     (feature) => {
       const iso3 = getIso3(feature);
       const isInBackend = iso3 && backendIds.has(iso3);
-  
       return {
         weight: 1,
         color: "#444",
@@ -53,18 +68,16 @@ export default function MapView() {
     [backendIds, getIso3]
   );
 
-  // show country info if clicked 
   const onEachFeature = useCallback(
     (feature, layer) => {
       layer.on("click", () => {
         const iso3 = getIso3(feature);
         if (!iso3) return;
-  
+
         const backendMatch = backendCountries[iso3];
-  
+
         if (backendMatch) {
           setSelectedCountry(backendMatch);
-  
           const html = `
             <div style="min-width:220px">
               <div style="font-weight:700;margin-bottom:4px">
@@ -76,7 +89,6 @@ export default function MapView() {
               <div><b>pop_dish_2:</b> ${backendMatch.pop_dish_2}</div>
             </div>
           `;
-  
           layer.bindPopup(html).openPopup();
         } else {
           setSelectedCountry(null);
@@ -88,9 +100,7 @@ export default function MapView() {
   );
 
   return (
-
     <div style={{ width: "100%" }}>
-      {/* Info panel above the map */}
       <div
         style={{
           marginBottom: "1rem",
@@ -117,25 +127,24 @@ export default function MapView() {
         )}
       </div>
 
-    <div style={{ height: "500px", width: "100%" }}>
-      <MapContainer
-        center={[20, 0]}
-        zoom={2}
-        scrollWheelZoom={true}
-        style={{ height: "100%", width: "100%" }}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <GeoJSON
-          data={countriesData}
-          style={styleFeature}
-          onEachFeature={onEachFeature}
-        />
-
-      </MapContainer>
-    </div>
+      <div style={{ height: "500px", width: "100%" }}>
+        <MapContainer
+          center={[20, 0]}
+          zoom={2}
+          scrollWheelZoom={true}
+          style={{ height: "100%", width: "100%" }}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <CountryLayer
+            countriesData={countriesData}
+            styleFeature={styleFeature}
+            onEachFeature={onEachFeature}
+          />
+        </MapContainer>
+      </div>
     </div>
   );
 }
