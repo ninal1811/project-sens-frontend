@@ -1,13 +1,11 @@
 import './App.css'
 import { Routes, Route, Link } from 'react-router'
-import States from './Components/States/States'
 import MapView from './Components/MapView'
 
 function Home() {
   return (
     <div>
       <h1>project-sens</h1>
-      <Link to='/States'>View States</Link>
       <MapView />
     </div>
   )

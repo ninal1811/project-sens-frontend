@@ -1,0 +1,769 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "massachusetts",
+        "state_code": "MA",
+        "country_code": "USA"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates":[
+          [
+            [-70.917521,42.887974],[-70.818936,42.871543],[-70.780598,42.696281],[-70.824413,42.55388],
+            [-70.983245,42.422434],[-70.988722,42.269079],[-70.769644,42.247172],[-70.638197,42.08834],
+            [-70.660105,41.962371],[-70.550566,41.929509],[-70.539613,41.814493],[-70.260289,41.715908],
+            [-69.937149,41.809016],[-70.008349,41.672093],[-70.484843,41.5516],[-70.660105,41.546123],
+            [-70.764167,41.639231],[-70.928475,41.611847],[-70.933952,41.540646],[-71.120168,41.496831],
+            [-71.196845,41.67757],[-71.22423,41.710431],[-71.328292,41.781632],[-71.383061,42.01714],
+            [-71.530939,42.01714],[-71.799309,42.006186],[-71.799309,42.022617],[-73.053528,42.039048],
+            [-73.486206,42.050002],[-73.508114,42.08834],[-73.267129,42.745573],[-72.456542,42.729142],
+            [-71.29543,42.696281],[-71.185891,42.789389],[-70.917521,42.887974]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "new york",
+        "state_code": "NY",
+        "country_code": "USA"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-79.8, 42.0],
+            [-79.8, 45.0],
+            [-71.8, 45.0],
+            [-71.8, 42.0],
+            [-79.8, 42.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "pennsylvania",
+        "state_code": "PA",
+        "country_code": "USA"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-80.5, 39.7],
+            [-80.5, 42.3],
+            [-74.7, 42.3],
+            [-74.7, 39.7],
+            [-80.5, 39.7]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "maine",
+        "state_code": "ME",
+        "country_code": "USA"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-71.1, 43.0],
+            [-71.1, 47.5],
+            [-67.0, 47.5],
+            [-67.0, 43.0],
+            [-71.1, 43.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "georgia",
+        "state_code": "GA",
+        "country_code": "USA"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-85.6, 30.4],
+            [-85.6, 35.0],
+            [-80.8, 35.0],
+            [-80.8, 30.4],
+            [-85.6, 30.4]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "south carolina",
+        "state_code": "SC",
+        "country_code": "USA"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-83.4, 32.0],
+            [-83.4, 35.2],
+            [-78.5, 35.2],
+            [-78.5, 32.0],
+            [-83.4, 32.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barishal",
+        "state_code": "BD-A",
+        "country_code": "BGD"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [89.5, 22.0],
+            [89.5, 23.0],
+            [90.5, 23.0],
+            [90.5, 22.0],
+            [89.5, 22.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Chattogram",
+        "state_code": "BD-B",
+        "country_code": "BGD"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [91.0, 21.0],
+            [91.0, 24.0],
+            [92.5, 24.0],
+            [92.5, 21.0],
+            [91.0, 21.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dhaka",
+        "state_code": "BD-C",
+        "country_code": "BGD"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [89.5, 23.5],
+            [89.5, 24.5],
+            [90.8, 24.5],
+            [90.8, 23.5],
+            [89.5, 23.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Khulna",
+        "state_code": "BD-D",
+        "country_code": "BGD"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [88.5, 21.5],
+            [88.5, 23.5],
+            [89.8, 23.5],
+            [89.8, 21.5],
+            [88.5, 21.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mymensingh",
+        "state_code": "BD-H",
+        "country_code": "BGD"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [89.8, 24.5],
+            [89.8, 25.5],
+            [91.0, 25.5],
+            [91.0, 24.5],
+            [89.8, 24.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rajshahi",
+        "state_code": "BD-E",
+        "country_code": "BGD"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [88.0, 24.0],
+            [88.0, 25.0],
+            [89.5, 25.0],
+            [89.5, 24.0],
+            [88.0, 24.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rangpur",
+        "state_code": "BD-F",
+        "country_code": "BGD"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [88.5, 25.5],
+            [88.5, 26.5],
+            [89.8, 26.5],
+            [89.8, 25.5],
+            [88.5, 25.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sylhet",
+        "state_code": "BD-G",
+        "country_code": "BGD"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [91.0, 24.0],
+            [91.0, 25.2],
+            [92.5, 25.2],
+            [92.5, 24.0],
+            [91.0, 24.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Luzon",
+        "state_code": "LUZ",
+        "country_code": "PHL"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [119.5, 12.5],
+            [119.5, 18.5],
+            [124.0, 18.5],
+            [124.0, 12.5],
+            [119.5, 12.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Visayas",
+        "state_code": "VIS",
+        "country_code": "PHL"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [121.5, 9.0],
+            [121.5, 12.5],
+            [125.0, 12.5],
+            [125.0, 9.0],
+            [121.5, 9.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mindanao",
+        "state_code": "MIN",
+        "country_code": "PHL"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [121.5, 5.0],
+            [121.5, 9.0],
+            [126.5, 9.0],
+            [126.5, 5.0],
+            [121.5, 5.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Andhra Pradesh",
+        "state_code": "AP",
+        "country_code": "IND"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [76.7, 12.5],
+            [76.7, 19.0],
+            [84.8, 19.0],
+            [84.8, 12.5],
+            [76.7, 12.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Karnataka",
+        "state_code": "KA",
+        "country_code": "IND"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [74.0, 11.5],
+            [74.0, 18.5],
+            [78.5, 18.5],
+            [78.5, 11.5],
+            [74.0, 11.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kerala",
+        "state_code": "KL",
+        "country_code": "IND"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [74.5, 8.0],
+            [74.5, 12.5],
+            [77.5, 12.5],
+            [77.5, 8.0],
+            [74.5, 8.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tamil Nadu",
+        "state_code": "TN",
+        "country_code": "IND"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [76.2, 8.0],
+            [76.2, 13.5],
+            [80.4, 13.5],
+            [80.4, 8.0],
+            [76.2, 8.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Telangana",
+        "state_code": "TG",
+        "country_code": "IND"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [77.0, 15.5],
+            [77.0, 19.5],
+            [81.5, 19.5],
+            [81.5, 15.5],
+            [77.0, 15.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mexico",
+        "state_code": "MEX",
+        "country_code": "MEX"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-100.0, 18.5],
+            [-100.0, 20.5],
+            [-98.0, 20.5],
+            [-98.0, 18.5],
+            [-100.0, 18.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Puebla",
+        "state_code": "PUE",
+        "country_code": "MEX"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-98.5, 17.8],
+            [-98.5, 20.3],
+            [-96.5, 20.3],
+            [-96.5, 17.8],
+            [-98.5, 17.8]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Jalisco",
+        "state_code": "JAL",
+        "country_code": "MEX"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-105.5, 18.5],
+            [-105.5, 22.5],
+            [-101.5, 22.5],
+            [-101.5, 18.5],
+            [-105.5, 18.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Oaxaca",
+        "state_code": "OAX",
+        "country_code": "MEX"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-98.5, 15.5],
+            [-98.5, 18.5],
+            [-94.0, 18.5],
+            [-94.0, 15.5],
+            [-98.5, 15.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tanger-Tétouan-Al Hoceïma",
+        "state_code": "TTA",
+        "country_code": "MAR"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-6.0, 35.0],
+            [-6.0, 36.0],
+            [-5.0, 36.0],
+            [-5.0, 35.0],
+            [-6.0, 35.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "L'Oriental",
+        "state_code": "ORI",
+        "country_code": "MAR"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-3.0, 32.0],
+            [-3.0, 35.0],
+            [1.0, 35.0],
+            [1.0, 32.0],
+            [-3.0, 32.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Fès-Meknès",
+        "state_code": "FEM",
+        "country_code": "MAR"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-5.5, 33.0],
+            [-5.5, 35.0],
+            [-3.0, 35.0],
+            [-3.0, 33.0],
+            [-5.5, 33.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rabat-Salé-Kénitra",
+        "state_code": "RSK",
+        "country_code": "MAR"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-7.0, 33.5],
+            [-7.0, 35.0],
+            [-5.5, 35.0],
+            [-5.5, 33.5],
+            [-7.0, 33.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Béni Mellal-Khénifra",
+        "state_code": "BMK",
+        "country_code": "MAR"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-6.5, 31.5],
+            [-6.5, 33.5],
+            [-4.0, 33.5],
+            [-4.0, 31.5],
+            [-6.5, 31.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Casablanca-Settat",
+        "state_code": "CAS",
+        "country_code": "MAR"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-8.5, 32.0],
+            [-8.5, 34.0],
+            [-6.5, 34.0],
+            [-6.5, 32.0],
+            [-8.5, 32.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Marrakech-Safi",
+        "state_code": "MAS",
+        "country_code": "MAR"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-9.5, 31.0],
+            [-9.5, 33.0],
+            [-6.5, 33.0],
+            [-6.5, 31.0],
+            [-9.5, 31.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Drâa-Tafilalet",
+        "state_code": "DRT",
+        "country_code": "MAR"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-6.0, 29.5],
+            [-6.0, 32.5],
+            [-3.0, 32.5],
+            [-3.0, 29.5],
+            [-6.0, 29.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Souss-Massa",
+        "state_code": "SOM",
+        "country_code": "MAR"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-9.5, 29.0],
+            [-9.5, 31.0],
+            [-5.5, 31.0],
+            [-5.5, 29.0],
+            [-9.5, 29.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Guelmim-Oued Noun",
+        "state_code": "GON",
+        "country_code": "MAR"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-10.5, 27.0],
+            [-10.5, 29.5],
+            [-7.0, 29.5],
+            [-7.0, 27.0],
+            [-10.5, 27.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Laâyoune-Sakia El Hamra",
+        "state_code": "LSH",
+        "country_code": "MAR"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-14.0, 26.0],
+            [-14.0, 28.0],
+            [-10.0, 28.0],
+            [-10.0, 26.0],
+            [-14.0, 26.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dakhla-Oued Ed-Dahab",
+        "state_code": "DOD",
+        "country_code": "MAR"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-17.0, 20.0],
+            [-17.0, 24.0],
+            [-13.0, 24.0],
+            [-13.0, 20.0],
+            [-17.0, 20.0]
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import axios from "axios";
 import { MapContainer, TileLayer, GeoJSON, useMap, useMapEvents, CircleMarker, Popup } from "react-leaflet";
 import countriesData from "../data/countries.json";
+import statesData from "../data/states.json";
 import citiesCoords from "../data/cities.json";
+import { data } from "react-router";
 
 const BASE_URL = "https://projectsens.pythonanywhere.com";
 
@@ -15,7 +17,63 @@ function ClickDebug() {
   return null;
 }
 
-function MapController({ visibleCities, onCountryClick, backendCountriesRef, backendIds, allCitiesRef }) {
+function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendStatesIds, countryCode }) {
+  const map = useMap();
+
+  const getStateCode = useCallback((feature) => {
+    return feature?.properties?.state_code || null;
+  }, []);
+
+  const styleState = useCallback((feature) => {
+    const stateCode = getStateCode(feature);
+    const isInBackend = stateCode && backendStatesIds.has(stateCode);
+
+    return {
+      weight: 1,
+      color: "#999",
+      opacity: 0.8,
+      fillOpacity: isInBackend ? 0.2 : 0.05,
+      fillColor: isInBackend ? "#ff6b6b" : "#ccc",
+    };
+  }, [backendStatesIds, getStateCode]);
+
+  const onEachState = useCallback((feature, layer) => {
+    layer.on("click", () => {
+      const stateCode = getStateCode(feature);
+      if (!stateCode) return;
+
+      const backendMatch = backendStatesRef.current[stateCode];
+      if (backendMatch) {
+        onStateClick(backendMatch, stateCode);
+        map.fitBounds(layer.getBounds(), { padding: [40, 40] });
+
+        const stateCities = visibleCities.filter(city => city.state_code === stateCode);
+        const html = `
+          <div style="min-width: 250px">
+            <div style="font-weight: 700; margin-bottom: 8px; font-size: 1.1rem">
+              ${backendMatch.name} (${backendMatch.state_code})
+            </div>
+            <div><b>capital:</b> ${backendMatch.capital || 'N/A'} </div>
+            <div style="margin-top: 8px">
+              <b>cities (${stateCities.length}): </b>
+              <ul style="margin: 4px 0 0 16px; padding: 0">
+                ${stateCities.slice(0,5).map(city => `<li>${city.name}</li>`).join('')}
+                ${stateCities.length > 5 ? `<li>... and ${stateCities.length - 5} more</li>` : ''}
+              </ul>
+            </div>
+        `;
+        layer.bindPopup(html).openPopup();
+      }
+    });
+  }, [backendStatesRef, getStateCode, map, onStateClick, visibleCities]);
+
+  return (
+    <GeoJSON key="states-layer" data={statesData} style={styleState} onEachFeature={onEachState}/>
+  );
+
+}
+
+function MapController({ visibleCities, onCountryClick, backendCountriesRef, backendIds, allCitiesRef, showStates, selectedCountry, visibleStates, onStateClick, backendStatesRef, backendStatesIds }) {
   const map = useMap();
 
   const getIso3 = useCallback((feature) => {
@@ -25,13 +83,14 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
   const styleFeature = useCallback((feature) => {
     const iso3 = getIso3(feature);
     const isInBackend = iso3 && backendIds.has(iso3);
+
     return {
       weight: 1,
       color: "#444",
       fillOpacity: isInBackend ? 0.45 : 0.08,
       fillColor: isInBackend ? "#1e90ff" : "#999",
     };
-  }, [backendIds, getIso3]);
+  }, [backendIds, getIso3, showStates, selectedCountry]);
 
   const onEachFeature = useCallback((feature, layer) => {
     layer.on("click", () => {
@@ -59,6 +118,11 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
   return (
     <>
       <GeoJSON data={countriesData} style={styleFeature} onEachFeature={onEachFeature} />
+
+      {showStates && selectedCountry && (
+        <StatesLayer visibleCities={visibleCities} onStateClick={onStateClick} backendStatesRef={backendStatesRef} backendStatesIds={backendStatesIds} countryCode={selectedCountry._id}/>
+      )}
+
       {visibleCities.map((city) => {
         const coords = citiesCoords[city.city];
         if (!coords) return null;
@@ -66,12 +130,17 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
           <CircleMarker
             key={city.city}
             center={[coords.lat, coords.lng]}
-            radius={8}
-            pathOptions={{ color: "#ff6600", fillColor: "#ff6600", fillOpacity: 1 }}
+            radius={showStates ? 6 : 8}
+            pathOptions={{ 
+              color: showStates ? "#ff9900" : "#ff6600", 
+              fillColor: showStates ? "#ff9900" : "#ff6600", 
+              fillOpacity: 1 
+            }}
           >
             <Popup>
               <div>
                 <div style={{ fontWeight: 700 }}>{city.city}</div>
+                {city.state && <div><b>state:</b> {city.state}</div>}
                 {city.rec_restaurant && <div><b>rec restaurant:</b> {city.rec_restaurant}</div>}
               </div>
             </Popup>
@@ -88,6 +157,11 @@ export default function MapView() {
   const [visibleCities, setVisibleCities] = useState([]);
   const allCitiesRef = useRef({});
   const backendCountriesRef = useRef({});
+  const backendStatesRef = useRef({});
+  const [backendStates, setBackendStates] = useState({});
+  const [selectedState, setSelectedState] = useState(null);
+  const [visibleStates, setVisibleStates] = useState([]);
+  const [showStates, setShowStates] = useState(false);
 
   useEffect(() => {
     axios.get(`${BASE_URL}/countries`)
@@ -98,19 +172,50 @@ export default function MapView() {
       })
       .catch((err) => console.error("Error fetching countries:", err));
 
+    axios.get(`${BASE_URL}/states`)
+      .then(({ data }) => {
+        const states = data?.states || {};
+        setBackendStates(states);
+        backendStatesRef.current = states;
+      })
+      .catch((err) => console.error("Error fetching states: ", err));
+
     axios.get(`${BASE_URL}/cities/read`)
       .then(({ data }) => { allCitiesRef.current = data?.Cities || {}; })
       .catch((err) => console.error("Error fetching cities:", err));
   }, []);
 
   const backendIds = useMemo(() => new Set(Object.keys(backendCountries)), [backendCountries]);
+  const backendStatesIds = useMemo(() => new Set(Object.keys(backendStates)), [backendStates]);
 
   const handleCountryClick = useCallback((country, iso3) => {
     setSelectedCountry(country);
+    setSelectedState(null);
+    setShowStates(true);
     const cities = Object.values(allCitiesRef.current).filter(c => c.country_code === iso3);
     console.log("clicked:", iso3, "cities:", cities);
     setVisibleCities(cities);
   }, []);
+
+  const handleStateClick = useCallback((state, stateCode) => {
+    setSelectedState(state);
+
+    const cities = Object.values(allCitiesRef.current).filter(c => c.state_code === stateCode);
+    console.log("clicked state: ", stateCode, "cities: ", cities.length);
+    setVisibleCities(cities);
+  }, []);
+
+  const handleBackToCountries = useCallback (() => {
+    setShowStates(false);
+    setSelectedState(null);
+
+    if (selectedCountry) {
+      const cities = Object.values(allCitiesRef.current).filter(
+        c => c.country_code === selectedCountry._id
+      );
+      setVisibleCities(cities);
+    }
+  }, [selectedCountry]);
 
   return (
     <div style={{ width: "100%" }}>
@@ -146,6 +251,11 @@ export default function MapView() {
             backendCountriesRef={backendCountriesRef}
             backendIds={backendIds}
             allCitiesRef={allCitiesRef}
+            showStates={showStates}
+            selectedCountry={selectedCountry}
+            onStateClick={handleStateClick}
+            backendStatesRef={backendStatesRef}
+            backendStatesIds={backendStatesIds}
           />
         </MapContainer>
       </div>
