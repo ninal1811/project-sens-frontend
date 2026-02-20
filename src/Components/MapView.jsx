@@ -5,6 +5,7 @@ import countriesData from "../data/countries.json";
 import statesData from "../data/states.json";
 import citiesCoords from "../data/cities.json";
 import { data } from "react-router";
+import Legend from "./Legend";
 
 const BASE_URL = "https://projectsens.pythonanywhere.com";
 
@@ -259,8 +260,9 @@ export default function MapView() {
           <div style={{ color: "#666" }}>Click a <span style={{ color: "#1e90ff", fontWeight: 700 }}>blue</span> country to see details.</div>
         )}
       </div>
-
-      <div style={{ height: "500px", width: "100%" }}>
+      
+      <Legend showStates={showStates} />
+      <div style={{ height: "70vh", width: "100%" }}>
         <MapContainer
           center={[20, 0]}
           zoom={2}
