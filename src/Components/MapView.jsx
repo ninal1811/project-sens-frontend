@@ -32,12 +32,18 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
       weight: 1,
       color: "#999",
       opacity: 0.8,
-      fillOpacity: isInBackend ? 0.2 : 0.05,
-      fillColor: isInBackend ? "#ff6b6b" : "#ccc",
+      fillOpacity: isInBackend ? 0.6 : 0.25,
+      fillColor: isInBackend ? "#0d47a1" : "#000000",
     };
   }, [backendStatesIds, getStateCode]);
 
   const onEachState = useCallback((feature, layer) => {
+    console.log("state feature:", feature?.properties);
+    const stateName = feature?.properties?.name;
+    if (stateName) {
+      layer.bindTooltip(stateName, { permanet: false, direction: "center" });
+    }
+
     layer.on("click", () => {
       const stateCode = getStateCode(feature);
       if (!stateCode) return;
@@ -65,6 +71,7 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
         layer.bindPopup(html).openPopup();
       }
     });
+
   }, [backendStatesRef, getStateCode, map, onStateClick, visibleCities]);
 
   return (
@@ -75,6 +82,25 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
 
 function MapController({ visibleCities, onCountryClick, backendCountriesRef, backendIds, allCitiesRef, showStates, selectedCountry, visibleStates, onStateClick, backendStatesRef, backendStatesIds }) {
   const map = useMap();
+
+  useEffect(() => {
+    const overlayPane = map.getPane('overlayPane')
+    if (overlayPane) {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutations) => {
+          mutations.addedNodes.forEach((node) => {
+            if (node.nodeName === 'path' || node.classList?.contains('leaflet-interactive')) {
+              node.style.outline = 'none';
+              node.addEventListener('focus', (e) => e.target.style.outline = 'none');
+              node.addEventListener('blur', (e) => e.target.style.outline = 'none');
+            }
+          });
+        });
+      });
+      observer.observe(overlayPane, { childList: true, subtree: true });
+      return () => observer.disconnect();
+    }
+  }, [map]);
 
   const getIso3 = useCallback((feature) => {
     return feature?.properties?.["ISO3166-1-Alpha-3"] || null;
@@ -126,6 +152,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
       {visibleCities.map((city) => {
         const coords = citiesCoords[city.city];
         if (!coords) return null;
+
         return (
           <CircleMarker
             key={city.city}
@@ -172,7 +199,7 @@ export default function MapView() {
       })
       .catch((err) => console.error("Error fetching countries:", err));
 
-    axios.get(`${BASE_URL}/states`)
+    axios.get(`${BASE_URL}/states/read`)
       .then(({ data }) => {
         const states = data?.states || {};
         setBackendStates(states);
