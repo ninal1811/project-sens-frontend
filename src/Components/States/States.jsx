@@ -39,30 +39,44 @@ function StateCard( {stateData} ) {
   );
 }
 
-function States() {
-    const [results, setResults] = useState();
-    console.log(results);
+export default function States() {
+    const [results, setResults] = useState(null);
+    // console.log(results);
     const baseURL = 'https://projectsens.pythonanywhere.com';
     const stateReadEP = 'states/read';
 
     useEffect(() => {
-        axios.get('${baseURL}/${stateReadEP}').then(({data}) => {
-            setResults(data.States);
+        axios
+        .get(`${baseURL}/${stateReadEP}`).then(({data}) => {
+            const raw = data?.states ?? data?.States ?? [];
+            const list = Array.isArray(raw) ? raw : Object.values(raw);
+            setResults(list);
         })
-    })
+        .catch((err) => {
+            console.error("Failed to fetch states:", err);
+            setResults([]);
+          });
+      }, []);
 
     return (
         <div>
             <h1>state data</h1>
-            <ul>
-                {results && Object.keys(results).map((objKey) => {
-                    return (
-                        <StateCard stateData={results[objKey]} key={objKey}/>
-                    )
-                })}
+            {results === null && <p>Loading...</p>}
+
+            {results && results.length === 0 && <p>No states found.</p>}
+
+            {results && results.length > 0 && (
+                <ul style={{ paddingLeft: 0, listStyle: "none" }}>
+                {results.map((stateObj, idx) => (
+                    <StateCard
+                    stateData={stateObj}
+                    key={`${stateObj?.state_code ?? "no-code"}-${idx}`}
+                    />
+                ))}
             </ul>
+            )}
         </div>
-    )
+    );
 }
 
-export default States
+// export default States
