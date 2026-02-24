@@ -35,4 +35,62 @@ describe('States Component', () => {
       expect(screen.getByText('state data')).toBeInTheDocument()
     })
   })
+  // Group 2: Successful Data Fetching
+  describe('API Integration - Success Cases', () => {
+    it('fetches from correct endpoint', async () => {
+      axios.get.mockResolvedValue({ data: { States: [] } })
+      
+      render(<States />)
+      
+      await waitFor(() => {
+        expect(axios.get).toHaveBeenCalledWith(
+          'https://projectsens.pythonanywhere.com/states/read'
+        )
+      })
+    })
+
+    it('renders states when API returns lowercase "states"', async () => {
+      const mockStates = [
+        { country_code: 'US', state_code: 'NY', name: 'New York' },
+        { country_code: 'US', state_code: 'CA', name: 'California' }
+      ]
+      axios.get.mockResolvedValue({ data: { states: mockStates } })
+      
+      render(<States />)
+      
+      await waitFor(() => {
+        expect(screen.getByText(/New York/)).toBeInTheDocument()
+        expect(screen.getByText(/California/)).toBeInTheDocument()
+      })
+    })
+
+    it('renders states when API returns uppercase "States"', async () => {
+      const mockStates = [
+        { country_code: 'US', state_code: 'TX', name: 'Texas' }
+      ]
+      axios.get.mockResolvedValue({ data: { States: mockStates } })
+      
+      render(<States />)
+      
+      await waitFor(() => {
+        expect(screen.getByText(/Texas/)).toBeInTheDocument()
+      })
+    })
+
+    it('converts object response to array', async () => {
+      const mockStatesObj = {
+        NY: { country_code: 'US', state_code: 'NY', name: 'New York' },
+        CA: { country_code: 'US', state_code: 'CA', name: 'California' }
+      }
+      axios.get.mockResolvedValue({ data: { States: mockStatesObj } })
+      
+      render(<States />)
+      
+      await waitFor(() => {
+        expect(screen.getByText(/New York/)).toBeInTheDocument()
+        expect(screen.getByText(/California/)).toBeInTheDocument()
+      })
+    })
+  })
+
 }) 
