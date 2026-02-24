@@ -246,6 +246,11 @@ export default function MapView() {
     mapRef.current?.setView([20, 0], 2);
   }, [selectedCountry]);
 
+  const WORLD_BOUNDS = [
+    [-90, -180],
+    [90, 180],
+  ];
+
   return (
     <div style={{ width: "100%" }}>
       <div style={{ marginBottom: "1rem", padding: "0.75rem 1rem", border: "1px solid #ccc", borderRadius: "8px", textAlign: "left" }}>
@@ -273,12 +278,16 @@ export default function MapView() {
           ref={mapRef}
           center={[20, 0]}
           zoom={2}
+          maxBounds={WORLD_BOUNDS}
+          maxBoundsViscosity={1.0}
           scrollWheelZoom={true}
           doubleClickZoom={false}
           style={{ height: "100%", width: "100%" }}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            noWrap={true}
+            bounds={WORLD_BOUNDS}
           />
           <ClickDebug />
           <MapController
