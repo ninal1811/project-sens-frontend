@@ -133,11 +133,11 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
         const html = `
           <div style="min-width:220px">
             ${imageUrl ? `<img src="${imageUrl}" style="width:100%;border-radius:4px;margin-bottom:8px" />` : ''}
-            <div style="font-weight:700;margin-bottom:4px">${backendMatch.name} (${backendMatch._id})</div>
-            <div><b>capital:</b> ${backendMatch.capital}</div>
-            <div><b>nat_dish:</b> ${backendMatch.nat_dish}</div>
-            <div><b>pop_dish_1:</b> ${backendMatch.pop_dish_1}</div>
-            <div><b>pop_dish_2:</b> ${backendMatch.pop_dish_2}</div>
+            <div style="font-weight:700;margin-bottom:4px;text-transform:capitalize">${backendMatch.name}</div>
+            <div><b>Capital:</b> ${backendMatch.capital.charAt(0).toUpperCase() + backendMatch.capital.slice(1)}</div>
+            <div><b>National Dish:</b> ${backendMatch.nat_dish}</div>
+            <div><b>Popular Dish 1:</b> ${backendMatch.pop_dish_1}</div>
+            <div><b>Popular Dish 2:</b> ${backendMatch.pop_dish_2}</div>
           </div>
         `;
         layer.bindPopup(html).openPopup();
@@ -171,8 +171,8 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
             <Popup>
               <div>
                 <div style={{ fontWeight: 700 }}>{city.city}</div>
-                {city.state && <div><b>state:</b> {city.state}</div>}
-                {city.rec_restaurant && <div><b>rec restaurant:</b> {city.rec_restaurant}</div>}
+                {city.state && <div><b>State:</b> {city.state}</div>}
+                {city.rec_restaurant && <div><b>Recommended Restaurant:</b> {city.rec_restaurant}</div>}
               </div>
             </Popup>
           </CircleMarker>
@@ -260,15 +260,15 @@ export default function MapView() {
         {selectedCountry ? (
           <>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div style={{ fontSize: "1.1rem", fontWeight: 700 }}>{selectedCountry.name} ({selectedCountry._id})</div>
               {showStates && (
                 <button onClick={handleBackToCountries}>← Back to World</button>
               )}
             </div>
-            <div><strong>capital:</strong> {selectedCountry.capital}</div>
-            <div><strong>nat_dish:</strong> {selectedCountry.nat_dish}</div>
-            <div><strong>pop_dish_1:</strong> {selectedCountry.pop_dish_1}</div>
-            <div><strong>pop_dish_2:</strong> {selectedCountry.pop_dish_2}</div>
+            <div style={{ fontSize: "1.1rem", fontWeight: 700, textTransform: "capitalize" }}>{selectedCountry.name}</div>
+            <div><strong>Capital:</strong> {selectedCountry.capital.charAt(0).toUpperCase() + selectedCountry.capital.slice(1)}</div>
+            <div><strong>National Dish:</strong> {selectedCountry.nat_dish}</div>
+            <div><strong>Popular Dish 1:</strong> {selectedCountry.pop_dish_1}</div>
+            <div><strong>Popular Dish 2:</strong> {selectedCountry.pop_dish_2}</div>
           </>
         ) : (
           <div style={{ color: "#666" }}>Click a <span style={{ color: "#1e90ff", fontWeight: 700 }}>blue</span> country to see details.</div>
