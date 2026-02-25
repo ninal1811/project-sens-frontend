@@ -128,8 +128,11 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
       if (backendMatch) {
         onCountryClick(backendMatch, iso3);
         map.fitBounds(layer.getBounds(), { padding: [40, 40] });
+        const imageUrl = backendMatch.image_url || (backendMatch._id === 'MAR' ? 'https://koshercowboy.com/wp-content/uploads/2017/10/couscous-Photo-source-sahara-experience.jpg' : '');
+
         const html = `
           <div style="min-width:220px">
+            ${imageUrl ? `<img src="${imageUrl}" style="width:100%;border-radius:4px;margin-bottom:8px" />` : ''}
             <div style="font-weight:700;margin-bottom:4px">${backendMatch.name} (${backendMatch._id})</div>
             <div><b>capital:</b> ${backendMatch.capital}</div>
             <div><b>nat_dish:</b> ${backendMatch.nat_dish}</div>
