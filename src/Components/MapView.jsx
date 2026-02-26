@@ -4,10 +4,12 @@ import { MapContainer, TileLayer, GeoJSON, useMap, useMapEvents, CircleMarker, P
 import countriesData from "../data/countries.json";
 import statesData from "../data/states.json";
 import citiesCoords from "../data/cities.json";
+import { COUNTRY_IMAGE_URLS } from '../constants/imgUrls';
 import { data } from "react-router";
 import Legend from "./Legend";
 
 const BASE_URL = "https://projectsens.pythonanywhere.com";
+
 
 function ClickDebug() {
   useMapEvents({
@@ -128,7 +130,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
       if (backendMatch) {
         onCountryClick(backendMatch, iso3);
         map.fitBounds(layer.getBounds(), { padding: [40, 40] });
-        const imageUrl = backendMatch.image_url || (backendMatch._id === 'MAR' ? 'https://koshercowboy.com/wp-content/uploads/2017/10/couscous-Photo-source-sahara-experience.jpg' : '');
+        const imageUrl = backendMatch.image_url || COUNTRY_IMAGE_URLS[backendMatch._id] || '';
 
         const html = `
           <div style="min-width:220px">
