@@ -1,8 +1,29 @@
 FORCE:
 
+# Code quality
+lint: FORCE
+	npm run lint
+
+lint_fix: FORCE
+	npm run lint --fix
+
+format: FORCE
+	npx prettier --write .
+
+type_check: FORCE
+	npx tsc --noEmit
+	
 # Install dependencies
 dev_env: FORCE
 	npm install
+
+clean: FORCE
+	rm -rf node_modules dist .cache
+
+reinstall: clean dev_env
+
+env: FORCE
+	cp .env.example .env
 
 # Run tests (currently just States)
 tests: FORCE
@@ -15,6 +36,9 @@ test_watch: FORCE
 # Build the project
 build: FORCE
 	npm run build
+
+dev: tests FORCE
+	npm run dev
 
 # GitHub deployment
 github: FORCE
