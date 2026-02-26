@@ -194,6 +194,9 @@ export default function MapView() {
   const [selectedState, setSelectedState] = useState(null);
   const [visibleStates, setVisibleStates] = useState([]);
   const [showStates, setShowStates] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
 
   useEffect(() => {
     axios.get(`${BASE_URL}/countries`)
@@ -235,6 +238,8 @@ export default function MapView() {
     const cities = Object.values(allCitiesRef.current).filter(c => c.state_code === stateCode);
     console.log("clicked state: ", stateCode, "cities: ", cities.length);
     setVisibleCities(cities);
+    setSearchQuery("");
+    setShowSearchResults(false);
   }, []);
 
   const handleBackToCountries = useCallback (() => {
@@ -247,7 +252,64 @@ export default function MapView() {
       setVisibleCities(cities);
     }
     mapRef.current?.setView([20, 0], 2);
+    setSearchQuery("");
+    setShowSearchResults(false);
   }, [selectedCountry]);
+
+  const handleSearch = useCallback((query) => {
+    setSearchQuery(query);
+
+    if (query.length < 2) {
+      setSearchResults([]);
+      setShowSearchResults(false);
+      return;
+    }
+
+    const results = [];
+    const searchLower = query.toLowerCase();
+
+    Object.values(backendStatesRef.current).forEach(state => {
+      if (state.name.toLowerCase().includes(searchLower) || state.state_code?.toLowerCase().includes(searchLower)) {
+        
+        let countryName = "Unknown";
+        if (state.country_code && backendCountriesRef.current[state.country_code]) {
+          countryName = backendCountriesRef.current[state.country_code].name;
+        }
+
+        results.push({
+          type: 'state',
+          id: state.state_code,
+          name: state.name,
+          countryCode: state.country_code,
+          countryName: countryName,
+          state: state
+        });
+      }
+    });
+
+    setSearchResults(results.slice(0, 10));
+    setShowSearchResults(true);
+  }, []);
+
+  const handleSelectState = useCallback((result) => {
+    setSearchQuery(result.name);
+    setShowSearchResults(false);
+    
+    if (result.countryCode && backendCountriesRef.current[result.countryCode]) {
+      const country = backendCountriesRef.current[result.countryCode];
+
+      if (!selectedCountry || selectedCountry._id !== result.countryCode) {
+        setSelectedCountry(country);
+        setShowStates(true);
+        
+        const countryCities = Object.values(allCitiesRef.current).filter(
+          c => c.country_code === result.countryCode
+        );
+        setVisibleCities(countryCities);
+      }      
+      handleStateClick(result.state, result.id);
+    }
+  }, [selectedCountry, handleStateClick]);
 
   const WORLD_BOUNDS = [
     [-90, -180],
@@ -256,6 +318,102 @@ export default function MapView() {
 
   return (
     <div style={{ width: "100%" }}>
+      <div style={{ 
+          marginBottom: "1rem", 
+          padding: "0.75rem 1rem", 
+          border: "1px solid #ccc", 
+          borderRadius: "8px",
+          position: "relative"
+        }}>
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            <input
+              type="text"
+              placeholder="Search for states/provinces..."
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
+              style={{
+                flex: 1,
+                padding: "10px",
+                borderRadius: "4px",
+                border: "1px solid #ddd",
+                fontSize: "16px"
+              }}
+            />
+            {searchQuery && (
+              <button 
+                onClick={() => {
+                  setSearchQuery("");
+                  setSearchResults([]);
+                  setShowSearchResults(false);
+                }}
+                style={{
+                  padding: "8px 12px",
+                  background: "#f0f0f0",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer"
+                }}
+              >
+                Clear
+              </button>
+            )}
+          </div>
+          
+          {showSearchResults && searchResults.length > 0 && (
+            <div style={{
+              position: "absolute",
+              top: "100%",
+              left: "1rem",
+              right: "1rem",
+              backgroundColor: "white",
+              border: "1px solid #ddd",
+              borderRadius: "4px",
+              maxHeight: "300px",
+              overflowY: "auto",
+              zIndex: 1000,
+              boxShadow: "0 4px 8px rgba(0,0,0,0.1)"
+            }}>
+              {searchResults.map((result) => (
+                <div
+                  key={result.id}
+                  onClick={() => handleSelectState(result)}
+                  style={{
+                    padding: "12px",
+                    cursor: "pointer",
+                    borderBottom: "1px solid #eee",
+                    transition: "background-color 0.2s"
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#f5f5f5"}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "white"}
+                >
+                  <div style={{ fontWeight: 600 }}>{result.name}</div>
+                  <div style={{ fontSize: "0.9em", color: "#666" }}>
+                    {result.countryName} {result.id && `(${result.id})`}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          
+          {showSearchResults && searchResults.length === 0 && searchQuery.length >= 2 && (
+            <div style={{
+              position: "absolute",
+              top: "100%",
+              left: "1rem",
+              right: "1rem",
+              backgroundColor: "white",
+              border: "1px solid #ddd",
+              borderRadius: "4px",
+              padding: "12px",
+              textAlign: "center",
+              color: "#666",
+              zIndex: 1000
+            }}>
+              No states found matching "{searchQuery}"
+            </div>
+          )}
+        </div>
+
       <div style={{ marginBottom: "1rem", padding: "0.75rem 1rem", border: "1px solid #ccc", borderRadius: "8px", textAlign: "left" }}>
         {selectedCountry ? (
           <>
