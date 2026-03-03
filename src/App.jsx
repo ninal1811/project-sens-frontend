@@ -9,11 +9,13 @@ function Home() {
   return (
     <div>
       <h1>project-sens</h1>
-      <Link to='/States'>View States</Link>
-      <br />
-      <Link to='/Countries'>View Countries</Link>
-      <br />
-      <Link to='/Cities'>View Cities</Link>
+
+      <div className="nav-buttons">
+        <Link to="/States" className="nav-btn">View States</Link>
+        <Link to="/Countries" className="nav-btn">View Countries</Link>
+        <Link to="/Cities" className="nav-btn">View Cities</Link>
+      </div>
+
       <MapView/>
     </div>
   )

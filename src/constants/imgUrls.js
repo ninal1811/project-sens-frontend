@@ -6,5 +6,6 @@ export const COUNTRY_IMAGE_URLS = {
   MEX: 'https://www.thecookierookie.com/wp-content/uploads/2024/05/street-tacos-recipe-2.jpg',
   IND: 'https://carveyourcraving.com/wp-content/uploads/2023/01/Daliya-khichdi.jpg',
   JPN: 'https://www.justonecookbook.com/wp-content/uploads/2021/10/Japanese-Chicken-Curry-3787-I-1.jpg',
-  KOR: 'https://www.koreanbapsang.com/wp-content/uploads/2019/11/DSC_0831-e1645400234347.jpg'
+  KOR: 'https://www.koreanbapsang.com/wp-content/uploads/2019/11/DSC_0831-e1645400234347.jpg',
+  BGD: 'https://pikturenama.com/wp-content/uploads/2020/10/Low-res-Sosrshe-Ilish-8.jpg'
 };
