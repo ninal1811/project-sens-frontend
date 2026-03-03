@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router'
 import axios from 'axios'
 
 function CityCard({ cityData }) {
@@ -61,7 +62,10 @@ export default function Cities() {
     }, []);
 
     return (
-        <div>
+        <div style={{ padding: "20px" }}>
+        <div style={{ marginBottom: "16px", textAlign: "left" }}>
+            <Link to="/" className="nav-btn">← Back to Home</Link>
+        </div>
             <h1>city data</h1>
             {results === null && <p>Loading...</p>}
 

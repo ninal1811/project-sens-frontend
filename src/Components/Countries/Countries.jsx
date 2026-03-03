@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router'
 import axios from 'axios'
 
 function CountryCard({ countryData }) {
@@ -54,7 +55,10 @@ export default function Countries() {
   }, []);
 
   return (
-    <div>
+    <div style={{ padding: "20px" }}>
+    <div style={{ marginBottom: "16px", textAlign: "left" }}>
+      <Link to="/" className="nav-btn">← Back to Home</Link>
+    </div>
       <h1>country data</h1>
       {results === null && <p>Loading...</p>}
       {results && results.length === 0 && <p>No countries found.</p>}

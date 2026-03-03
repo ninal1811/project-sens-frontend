@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Link } from "react-router";
 import axios from 'axios';
 
 function StateCard({ stateData }) {
@@ -168,6 +169,10 @@ export default function States() {
             minHeight: "100vh",
             color: "#ffffff"
         }}>
+            <div style={{ marginBottom: "16px", textAlign: "left" }}>
+                <Link to="/" className="nav-btn">← Back to Home</Link>
+            </div>
+
             <h1 style={{ 
                 marginBottom: "20px",
                 color: "#ffffff",
