@@ -52,7 +52,7 @@ export default function States() {
     const [isSearching, setIsSearching] = useState(false);
     const [selectedState, setSelectedState] = useState(null);
     
-    const baseURL = 'https://projectsens.pythonanywhere.com';
+    const baseURL = import.meta.env.REACT_APP_API_URL || 'https://projectsens.pythonanywhere.com';
 
     useEffect(() => {
         axios

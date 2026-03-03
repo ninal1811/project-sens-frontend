@@ -43,7 +43,7 @@ function CityCard({ cityData }) {
 
 export default function Cities() {
     const [results, setResults] = useState(null);
-    const baseURL = 'https://projectsens.pythonanywhere.com';
+    const baseURL = import.meta.env.REACT_APP_API_URL || 'https://projectsens.pythonanywhere.com';
     const cityReadEP = 'cities/read';
 
     useEffect(() => {

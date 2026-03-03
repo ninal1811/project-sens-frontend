@@ -11,7 +11,7 @@ import { COUNTRY_IMAGE_URLS } from '../constants/imgUrls';
 import { data } from "react-router";
 import Legend from "./Legend";
 
-const BASE_URL = "https://projectsens.pythonanywhere.com";
+const BASE_URL = import.meta.env.REACT_APP_API_URL || "https://projectsens.pythonanywhere.com";
 
 // logs latitude and longitude data whenever you click on a new area on the map
 function ClickDebug() {
