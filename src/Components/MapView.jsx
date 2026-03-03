@@ -1,8 +1,11 @@
+// import statements
 import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import axios from "axios";
 import { MapContainer, TileLayer, GeoJSON, useMap, useMapEvents, CircleMarker, Popup } from "react-leaflet";
+// contains boundary conditions to see outlines of countries and states
 import countriesData from "../data/countries.json";
 import statesData from "../data/states.json";
+// city marker data: lat and long coordinates
 import citiesCoords from "../data/cities.json";
 import { COUNTRY_IMAGE_URLS } from '../constants/imgUrls';
 import { data } from "react-router";
@@ -10,7 +13,7 @@ import Legend from "./Legend";
 
 const BASE_URL = "https://projectsens.pythonanywhere.com";
 
-
+// logs latitude and longitude data whenever you click on a new area on the map
 function ClickDebug() {
   useMapEvents({
     click: (e) => {
@@ -20,13 +23,15 @@ function ClickDebug() {
   return null;
 }
 
+// receives list of cities, click handler, and state codes
 function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendStatesIds, countryCode }) {
   const map = useMap();
 
   const getStateCode = useCallback((feature) => {
     return feature?.properties?.state_code || null;
   }, []);
-
+  // decides look of state, if state exists in backend data, it shows as blue to filter what's in our dataset
+  // otherwise, it shows as gray
   const styleState = useCallback((feature) => {
     const stateCode = getStateCode(feature);
     const isInBackend = stateCode && backendStatesIds.has(stateCode);
@@ -39,7 +44,9 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
       fillColor: isInBackend ? "#0d47a1" : "#000000",
     };
   }, [backendStatesIds, getStateCode]);
-
+  // adds state name on hover
+  // when clicked, zooms the map to fit state boundaries
+  // shows popup of state info and list of its cities
   const onEachState = useCallback((feature, layer) => {
     console.log("state feature:", feature?.properties);
     const stateName = feature?.properties?.name;
@@ -83,6 +90,7 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
 
 }
 
+// map logic component
 function MapController({ visibleCities, onCountryClick, backendCountriesRef, backendIds, allCitiesRef, showStates, selectedCountry, visibleStates, onStateClick, backendStatesRef, backendStatesIds }) {
   const map = useMap();
 
@@ -108,7 +116,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
   const getIso3 = useCallback((feature) => {
     return feature?.properties?.["ISO3166-1-Alpha-3"] || null;
   }, []);
-
+  // same logic as states for frontend look, those in backend are highlighted in blue
   const styleFeature = useCallback((feature) => {
     const iso3 = getIso3(feature);
     const isInBackend = iso3 && backendIds.has(iso3);
@@ -146,7 +154,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
       }
     });
   }, [backendCountriesRef, getIso3, map, onCountryClick]);
-
+// when a country is clicked, it looks at the country code, finds the matching backend data, and shows a popup of the dish info and image
   return (
     <>
       <GeoJSON data={countriesData} style={styleFeature} onEachFeature={onEachFeature} />
@@ -225,6 +233,7 @@ export default function MapView() {
   const backendIds = useMemo(() => new Set(Object.keys(backendCountries)), [backendCountries]);
   const backendStatesIds = useMemo(() => new Set(Object.keys(backendStates)), [backendStates]);
 
+  // code to fetch endpoints and data and stores the results
   const handleCountryClick = useCallback((country, iso3) => {
     setSelectedCountry(country);
     setSelectedState(null);
@@ -234,6 +243,7 @@ export default function MapView() {
     setVisibleCities(cities);
   }, []);
 
+  // when a country is clicked, turns on states layer to filter states only for that specific country
   const handleStateClick = useCallback((state, stateCode) => {
     setSelectedState(state);
 
@@ -243,7 +253,7 @@ export default function MapView() {
     setSearchQuery("");
     setShowSearchResults(false);
   }, []);
-
+// same idea - when a state is clicked, filters so it looks at cities just belonging to that state
   const handleBackToCountries = useCallback (() => {
     setShowStates(false);
     setSelectedState(null);
