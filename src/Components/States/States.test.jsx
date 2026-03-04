@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router'
 import axios from 'axios'
 import States from './States'
 
@@ -22,17 +23,25 @@ describe('States Component', () => {
   describe('Loading State', () => {
     it('displays loading message initially', () => {
       axios.get.mockImplementation(() => new Promise(() => {})) 
-      render(<States />)
+      render(
+        <MemoryRouter>
+          <States />
+        </MemoryRouter>
+      )
       
-      expect(screen.getByText('Loading...')).toBeInTheDocument()
+      expect(screen.getByText('Loading states...')).toBeInTheDocument()
     })
 
     it('shows heading while loading', () => {
       axios.get.mockImplementation(() => new Promise(() => {}))
       
-      render(<States />)
+      render(
+        <MemoryRouter>
+          <States />
+        </MemoryRouter>
+      )
       
-      expect(screen.getByText('state data')).toBeInTheDocument()
+      expect(screen.getByText('States Database')).toBeInTheDocument()
     })
   })
   // Group 2: Successful Data Fetching
@@ -40,7 +49,11 @@ describe('States Component', () => {
     it('fetches from correct endpoint', async () => {
       axios.get.mockResolvedValue({ data: { States: [] } })
       
-      render(<States />)
+      render(
+        <MemoryRouter>
+          <States />
+        </MemoryRouter>
+      )
       
       await waitFor(() => {
         expect(axios.get).toHaveBeenCalledWith(
@@ -56,7 +69,11 @@ describe('States Component', () => {
       ]
       axios.get.mockResolvedValue({ data: { states: mockStates } })
       
-      render(<States />)
+      render(
+        <MemoryRouter>
+          <States />
+        </MemoryRouter>
+      )
       
       await waitFor(() => {
         expect(screen.getByText(/New York/)).toBeInTheDocument()
@@ -70,7 +87,11 @@ describe('States Component', () => {
       ]
       axios.get.mockResolvedValue({ data: { States: mockStates } })
       
-      render(<States />)
+      render(
+        <MemoryRouter>
+          <States />
+        </MemoryRouter>
+      )
       
       await waitFor(() => {
         expect(screen.getByText(/Texas/)).toBeInTheDocument()
@@ -84,7 +105,11 @@ describe('States Component', () => {
       }
       axios.get.mockResolvedValue({ data: { States: mockStatesObj } })
       
-      render(<States />)
+      render(
+        <MemoryRouter>
+          <States />
+        </MemoryRouter>
+      )
       
       await waitFor(() => {
         expect(screen.getByText(/New York/)).toBeInTheDocument()
@@ -93,4 +118,4 @@ describe('States Component', () => {
     })
   })
 
-}) 
+})
