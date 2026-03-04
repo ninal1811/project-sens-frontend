@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
 import axios from 'axios'
-import States from './States'
+import States from '../Components/States/States'
 
 vi.mock('axios')
 
