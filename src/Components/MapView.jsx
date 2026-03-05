@@ -148,17 +148,17 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
             ${natImg ? `
               <div style="text-align:center;margin-bottom:6px">
                 <img src="${natImg}" style="width:100%;border-radius:6px" />
-                <div style="font-size:0.75rem;color:#666;margin-top:2px">${backendMatch.nat_dish}</div>
+                <div style="font-size:0.75rem;color:#666;margin-top:2px">National Dish: ${backendMatch.nat_dish}</div>
               </div>` : ''}
             ${(pop1Img || pop2Img) ? `
               <div style="display:flex;gap:6px;margin-bottom:8px">
                 ${pop1Img ? `<div style="flex:1;text-align:center">
                   <img src="${pop1Img}" style="width:100%;border-radius:6px" />
-                  <div style="font-size:0.75rem;color:#666;margin-top:2px">${backendMatch.pop_dish_1}</div>
+                  <div style="font-size:0.75rem;color:#666;margin-top:2px">Popular Dish: ${backendMatch.pop_dish_1}</div>
                 </div>` : ''}
                 ${pop2Img ? `<div style="flex:1;text-align:center">
                   <img src="${pop2Img}" style="width:100%;border-radius:6px" />
-                  <div style="font-size:0.75rem;color:#666;margin-top:2px">${backendMatch.pop_dish_2}</div>
+                  <div style="font-size:0.75rem;color:#666;margin-top:2px">Popular Dish: ${backendMatch.pop_dish_2}</div>
                 </div>` : ''}
               </div>` : ''}
             <div style="font-weight:700;text-transform:capitalize;margin-bottom:4px">${backendMatch.name}</div>
