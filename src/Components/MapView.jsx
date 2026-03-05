@@ -10,6 +10,7 @@ import citiesCoords from "../data/cities.json";
 import { COUNTRY_IMAGE_URLS } from '../constants/imgUrls';
 import { data } from "react-router";
 import Legend from "./Legend";
+import InfoPanel from "./InfoPanel";
 
 const BASE_URL = import.meta.env.REACT_APP_API_URL || "https://projectsens.pythonanywhere.com";
 
@@ -295,6 +296,18 @@ export default function MapView() {
     const results = [];
     const searchLower = query.toLowerCase();
 
+    // search countries
+    Object.values(backendCountriesRef.current).forEach(country => {
+      if (country.name.toLowerCase().includes(searchLower)) {
+        results.push({
+          type: "country",
+          id: country._id,
+          name: country.name,
+          country: country
+        });
+      }
+    });
+
     Object.values(backendStatesRef.current).forEach(state => {
       if (state.name.toLowerCase().includes(searchLower) || state.state_code?.toLowerCase().includes(searchLower)) {
         
@@ -314,6 +327,20 @@ export default function MapView() {
       }
     });
 
+    // search cities
+    Object.values(allCitiesRef.current).forEach(city => {
+      if (city.city.toLowerCase().includes(searchLower)) {
+        results.push({
+          type: "city",
+          id: city.city,
+          name: city.city,
+          countryCode: city.country_code,
+          stateCode: city.state_code
+        });
+      }
+    });
+    
+
     setSearchResults(results.slice(0, 10));
     setShowSearchResults(true);
   }, []);
@@ -321,7 +348,22 @@ export default function MapView() {
   const handleSelectState = useCallback((result) => {
     setSearchQuery(result.name);
     setShowSearchResults(false);
+
+    // COUNTRY SEARCH
+    if (result.type === "country") {
+      const country = result.country;
+      setSelectedCountry(country);
+      setShowStates(true);
+
+      const cities = Object.values(allCitiesRef.current).filter(
+        c => c.country_code === result.id
+      );
+
+      setVisibleCities(cities);
+      return;
+    }
     
+    // STATE SEARCH
     if (result.countryCode && backendCountriesRef.current[result.countryCode]) {
       const country = backendCountriesRef.current[result.countryCode];
 
@@ -336,6 +378,22 @@ export default function MapView() {
       }      
       handleStateClick(result.state, result.id);
     }
+
+    // CITY SEARCH
+  if (result.type === "city") {
+    const coords = citiesCoords[result.name];
+    if (coords && mapRef.current) {
+      mapRef.current.setView([coords.lat, coords.lng], 10);
+    }
+
+    const city = Object.values(allCitiesRef.current).find(
+      c => c.city === result.name
+    );
+
+    if (city) {
+      setVisibleCities([city]);
+    }
+  }
   }, [selectedCountry, handleStateClick]);
 
   const WORLD_BOUNDS = [
@@ -355,7 +413,7 @@ export default function MapView() {
           <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <input
               type="text"
-              placeholder="Search for states/provinces..."
+              placeholder="Search countries, states, or cities..."
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
               style={{
@@ -415,7 +473,9 @@ export default function MapView() {
                 >
                   <div style={{ fontWeight: 600 }}>{result.name}</div>
                   <div style={{ fontSize: "0.9em", color: "#666" }}>
-                    {result.countryName} {result.id && `(${result.id})`}
+                    {result.type === "country" && "Country"}
+                    {result.type === "state" && `${result.countryName} (State)`}
+                    {result.type === "city" && "City"}
                   </div>
                 </div>
               ))}
@@ -442,22 +502,11 @@ export default function MapView() {
         </div>
 
       <div style={{ marginBottom: "1rem", padding: "0.75rem 1rem", border: "1px solid #ccc", borderRadius: "8px", textAlign: "left" }}>
-        {selectedCountry ? (
-          <>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              {showStates && (
-                <button onClick={handleBackToCountries}>← Back to World</button>
-              )}
-            </div>
-            <div style={{ fontSize: "1.1rem", fontWeight: 700, textTransform: "capitalize" }}>{selectedCountry.name}</div>
-            <div><strong>Capital:</strong> {selectedCountry.capital.charAt(0).toUpperCase() + selectedCountry.capital.slice(1)}</div>
-            <div><strong>National Dish:</strong> {selectedCountry.nat_dish}</div>
-            <div><strong>Popular Dish 1:</strong> {selectedCountry.pop_dish_1}</div>
-            <div><strong>Popular Dish 2:</strong> {selectedCountry.pop_dish_2}</div>
-          </>
-        ) : (
-          <div style={{ color: "#666" }}>Click a <span style={{ color: "#1e90ff", fontWeight: 700 }}>blue</span> country to see details.</div>
-        )}
+        <InfoPanel
+          selectedCountry={selectedCountry}
+          showStates={showStates}
+          onBackToCountries={handleBackToCountries}
+        />
       </div>
       
       <Legend showStates={showStates} />
