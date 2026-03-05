@@ -47,3 +47,16 @@ github: FORCE
 
 # Production deployment (run tests first)
 prod: tests github
+
+ci: FORCE
+	npm ci
+	npm run lint
+	npx tsc --noEmit
+	npm test
+	npm run build
+
+open: FORCE
+	open http://localhost:5173
+
+ping_backend: FORCE
+	curl -s https://projectsens.pythonanywhere.com/countries | python3 -m json.tool | head -20
