@@ -138,16 +138,31 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
       if (backendMatch) {
         onCountryClick(backendMatch, iso3);
         map.fitBounds(layer.getBounds(), { padding: [40, 40] });
-        const imageUrl = backendMatch.image_url || COUNTRY_IMAGE_URLS[backendMatch._id] || '';
+        const imgs = COUNTRY_IMAGE_URLS[backendMatch._id];
+        const natImg = backendMatch.image_url || (typeof imgs === 'object' ? imgs.nat_dish : imgs) || '';
+        const pop1Img = typeof imgs === 'object' ? imgs.pop_dish_1 : '';
+        const pop2Img = typeof imgs === 'object' ? imgs.pop_dish_2 : '';
 
         const html = `
-          <div style="min-width:220px">
-            ${imageUrl ? `<img src="${imageUrl}" style="width:100%;border-radius:4px;margin-bottom:8px" />` : ''}
-            <div style="font-weight:700;margin-bottom:4px;text-transform:capitalize">${backendMatch.name}</div>
+          <div style="min-width:260px">
+            ${natImg ? `
+              <div style="text-align:center;margin-bottom:6px">
+                <img src="${natImg}" style="width:100%;border-radius:6px" />
+                <div style="font-size:0.75rem;color:#666;margin-top:2px">${backendMatch.nat_dish}</div>
+              </div>` : ''}
+            ${(pop1Img || pop2Img) ? `
+              <div style="display:flex;gap:6px;margin-bottom:8px">
+                ${pop1Img ? `<div style="flex:1;text-align:center">
+                  <img src="${pop1Img}" style="width:100%;border-radius:6px" />
+                  <div style="font-size:0.75rem;color:#666;margin-top:2px">${backendMatch.pop_dish_1}</div>
+                </div>` : ''}
+                ${pop2Img ? `<div style="flex:1;text-align:center">
+                  <img src="${pop2Img}" style="width:100%;border-radius:6px" />
+                  <div style="font-size:0.75rem;color:#666;margin-top:2px">${backendMatch.pop_dish_2}</div>
+                </div>` : ''}
+              </div>` : ''}
+            <div style="font-weight:700;text-transform:capitalize;margin-bottom:4px">${backendMatch.name}</div>
             <div><b>Capital:</b> ${backendMatch.capital.charAt(0).toUpperCase() + backendMatch.capital.slice(1)}</div>
-            <div><b>National Dish:</b> ${backendMatch.nat_dish}</div>
-            <div><b>Popular Dish 1:</b> ${backendMatch.pop_dish_1}</div>
-            <div><b>Popular Dish 2:</b> ${backendMatch.pop_dish_2}</div>
           </div>
         `;
         layer.bindPopup(html).openPopup();
