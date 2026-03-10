@@ -11,6 +11,7 @@ import { COUNTRY_IMAGE_URLS } from '../constants/imgUrls';
 import { data } from "react-router";
 import Legend from "./Legend";
 import InfoPanel from "./InfoPanel";
+import './MapView.css';
 
 const BASE_URL = import.meta.env.REACT_APP_API_URL || "https://projectsens.pythonanywhere.com";
 
@@ -402,27 +403,15 @@ export default function MapView() {
   ];
 
   return (
-    <div style={{ width: "100%" }}>
-      <div style={{ 
-          marginBottom: "1rem", 
-          padding: "0.75rem 1rem", 
-          border: "1px solid #ccc", 
-          borderRadius: "8px",
-          position: "relative"
-        }}>
-          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+    <div className="mapview-root">
+      <div className="search-container">
+          <div className="search-input-wrapper">
             <input
               type="text"
               placeholder="Search countries, states, or cities..."
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
-              style={{
-                flex: 1,
-                padding: "10px",
-                borderRadius: "4px",
-                border: "1px solid #ddd",
-                fontSize: "16px"
-              }}
+              className="search-input"
             />
             {searchQuery && (
               <button 
@@ -431,13 +420,7 @@ export default function MapView() {
                   setSearchResults([]);
                   setShowSearchResults(false);
                 }}
-                style={{
-                  padding: "8px 12px",
-                  background: "#f0f0f0",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer"
-                }}
+                className="search-clear-btn"
               >
                 Clear
               </button>
@@ -445,34 +428,15 @@ export default function MapView() {
           </div>
           
           {showSearchResults && searchResults.length > 0 && (
-            <div style={{
-              position: "absolute",
-              top: "100%",
-              left: "1rem",
-              right: "1rem",
-              backgroundColor: "white",
-              border: "1px solid #ddd",
-              borderRadius: "4px",
-              maxHeight: "300px",
-              overflowY: "auto",
-              zIndex: 1000,
-              boxShadow: "0 4px 8px rgba(0,0,0,0.1)"
-            }}>
+            <div className="search-dropdown">
               {searchResults.map((result) => (
                 <div
                   key={result.id}
                   onClick={() => handleSelectState(result)}
-                  style={{
-                    padding: "12px",
-                    cursor: "pointer",
-                    borderBottom: "1px solid #eee",
-                    transition: "background-color 0.2s"
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#f5f5f5"}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "white"}
+                  className="search-result-item"
                 >
-                  <div style={{ fontWeight: 600 }}>{result.name}</div>
-                  <div style={{ fontSize: "0.9em", color: "#666" }}>
+                  <div className="search-result-name">{result.name}</div>
+                  <div className="search-result-type">
                     {result.type === "country" && "Country"}
                     {result.type === "state" && `${result.countryName} (State)`}
                     {result.type === "city" && "City"}
@@ -483,25 +447,13 @@ export default function MapView() {
           )}
           
           {showSearchResults && searchResults.length === 0 && searchQuery.length >= 2 && (
-            <div style={{
-              position: "absolute",
-              top: "100%",
-              left: "1rem",
-              right: "1rem",
-              backgroundColor: "white",
-              border: "1px solid #ddd",
-              borderRadius: "4px",
-              padding: "12px",
-              textAlign: "center",
-              color: "#666",
-              zIndex: 1000
-            }}>
+            <div className="search-no-results">
               No states found matching "{searchQuery}"
             </div>
           )}
         </div>
 
-      <div style={{ marginBottom: "1rem", padding: "0.75rem 1rem", border: "1px solid #ccc", borderRadius: "8px", textAlign: "left" }}>
+      <div className="info-panel-container">
         <InfoPanel
           selectedCountry={selectedCountry}
           showStates={showStates}
@@ -510,7 +462,7 @@ export default function MapView() {
       </div>
       
       <Legend showStates={showStates} />
-      <div style={{ height: "70vh", width: "100%" }}>
+      <div className="map-wrapper">
         <MapContainer
           ref={mapRef}
           center={[20, 0]}
