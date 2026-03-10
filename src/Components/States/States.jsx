@@ -169,8 +169,14 @@ export default function States() {
             minHeight: "100vh",
             color: "#ffffff"
         }}>
-            <div style={{ marginBottom: "16px", textAlign: "left" }}>
+            <div style={{
+                marginBottom: "16px", 
+                textAlign: "left", 
+                display: "flex", 
+                gap: "10px"
+            }}>
                 <Link to="/" className="nav-btn">← Back to Home</Link>
+                <Link to="/Countries" className="nav-btn">View Countries</Link>
             </div>
 
             <h1 style={{ 
