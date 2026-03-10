@@ -1,0 +1,141 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`InfoPanel > matches snapshot with back button visible 1`] = `
+<div>
+  <div
+    style="display: flex; justify-content: space-between; align-items: center;"
+  >
+    <button>
+      ← Back to World
+    </button>
+  </div>
+  <div
+    style="font-size: 1.1rem; font-weight: 700; text-transform: capitalize;"
+  >
+    morocco
+  </div>
+  <div>
+    <strong>
+      Capital:
+    </strong>
+     
+    Rabat
+  </div>
+  <div>
+    <strong>
+      National Dish:
+    </strong>
+     
+    couscous
+  </div>
+  <div>
+    <strong>
+      Popular Dish 1:
+    </strong>
+     
+    tagine
+  </div>
+  <div>
+    <strong>
+      Popular Dish 2:
+    </strong>
+     
+    pastilla
+  </div>
+</div>
+`;
+
+exports[`InfoPanel > matches snapshot with country and state selected 1`] = `
+<div>
+  <div
+    style="display: flex; justify-content: space-between; align-items: center;"
+  >
+    <button>
+      ← Back to World
+    </button>
+  </div>
+  <div
+    style="font-size: 1.1rem; font-weight: 700; text-transform: capitalize;"
+  >
+    New York
+     (
+    NY
+    )
+  </div>
+  <div>
+    <strong>
+      Country:
+    </strong>
+     
+    <span
+      style="text-transform: capitalize;"
+    >
+      morocco
+    </span>
+  </div>
+  <div>
+    <strong>
+      Popular Dish:
+    </strong>
+     
+    New York Pizza
+  </div>
+</div>
+`;
+
+exports[`InfoPanel > matches snapshot with country selected 1`] = `
+<div>
+  <div
+    style="display: flex; justify-content: space-between; align-items: center;"
+  />
+  <div
+    style="font-size: 1.1rem; font-weight: 700; text-transform: capitalize;"
+  >
+    morocco
+  </div>
+  <div>
+    <strong>
+      Capital:
+    </strong>
+     
+    Rabat
+  </div>
+  <div>
+    <strong>
+      National Dish:
+    </strong>
+     
+    couscous
+  </div>
+  <div>
+    <strong>
+      Popular Dish 1:
+    </strong>
+     
+    tagine
+  </div>
+  <div>
+    <strong>
+      Popular Dish 2:
+    </strong>
+     
+    pastilla
+  </div>
+</div>
+`;
+
+exports[`InfoPanel > matches snapshot with no country selected 1`] = `
+<div>
+  <div
+    style="color: rgb(102, 102, 102);"
+  >
+    Click a 
+    <span
+      style="color: rgb(30, 144, 255); font-weight: 700;"
+    >
+      blue
+    </span>
+     country to see details.
+  </div>
+</div>
+`;
