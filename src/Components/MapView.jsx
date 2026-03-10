@@ -11,7 +11,7 @@ import { data } from "react-router";
 import Legend from "./Legend";
 import InfoPanel from "./InfoPanel";
 import './MapView.css';
-import { COUNTRY_IMAGE_URLS, STATE_IMAGE_URLS } from '../constants/imgUrls';
+import { COUNTRY_IMAGE_URLS, STATE_IMAGE_URLS, CITY_IMAGE_URLS } from '../constants/imgUrls';
 
 const BASE_URL = import.meta.env.REACT_APP_API_URL || "https://projectsens.pythonanywhere.com";
 
@@ -183,6 +183,8 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
         const coords = citiesCoords[city.city];
         if (!coords) return null;
 
+        const cityImg = CITY_IMAGE_URLS[city.city];
+
         return (
           <CircleMarker
             key={city.city}
@@ -195,7 +197,20 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
             }}
           >
             <Popup>
-              <div>
+              <div
+                div style={{ minWidth: "240px" }}>
+                {cityImg && (
+                  <div style={{ textAlign: "center", marginBottom: "6px" }}>
+                    <img
+                      src={cityImg.image}
+                      alt={cityImg.restaurant_name}
+                      style={{ width: "100%", borderRadius: "6px" }}
+                    />
+                    <div style={{ fontSize: "0.75rem", color: "#666", marginTop: "2px" }}>
+                      Popular Restaurant: {cityImg.restaurant_name}
+                    </div>
+                  </div>
+                )}
                 <div style={{ fontWeight: 700 }}>{city.city}</div>
                 {city.state && <div><b>State:</b> {city.state}</div>}
                 {city.rec_restaurant && <div><b>Recommended Restaurant:</b> {city.rec_restaurant}</div>}

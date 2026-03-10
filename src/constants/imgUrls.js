@@ -260,3 +260,10 @@ export const STATE_IMAGE_URLS = {
     image: 'https://www.recipetineats.com/tachyon/2023/11/Lamb-souvlaki_7.jpg'
   },
 };
+
+export const CITY_IMAGE_URLS = {
+  Barishal: {
+    restaurant_name: "Zafran Restaurant Barishal",
+    image: "https://media-cdn.tripadvisor.com/media/photo-s/1b/63/e2/5c/an-elegant-upscale-multi.jpg"
+  }
+};
