@@ -7,11 +7,11 @@ import countriesData from "../data/countries.json";
 import statesData from "../data/states.json";
 // city marker data: lat and long coordinates
 import citiesCoords from "../data/cities.json";
-import { COUNTRY_IMAGE_URLS } from '../constants/imgUrls';
 import { data } from "react-router";
 import Legend from "./Legend";
 import InfoPanel from "./InfoPanel";
 import './MapView.css';
+import { COUNTRY_IMAGE_URLS, STATE_IMAGE_URLS } from '../constants/imgUrls';
 
 const BASE_URL = import.meta.env.REACT_APP_API_URL || "https://projectsens.pythonanywhere.com";
 
@@ -66,19 +66,18 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
         map.fitBounds(layer.getBounds(), { padding: [40, 40] });
 
         const stateCities = visibleCities.filter(city => city.state_code === stateCode);
+        const stateImg = STATE_IMAGE_URLS[stateCode];
         const html = `
           <div style="min-width: 250px">
-            <div style="font-weight: 700; margin-bottom: 8px; font-size: 1.1rem">
+            ${stateImg ? `
+              <div style="text-align:center;margin-bottom:6px">
+                <img src="${stateImg.image}" style="width:100%;border-radius:6px" />
+                <div style="font-size:0.75rem;color:#666;margin-top:2px">${stateImg.food_name}</div>
+              </div>` : ''}
+            <div style="font-weight: 700; font-size: 1.1rem; text-transform: capitalize">
               ${backendMatch.name} (${backendMatch.state_code})
             </div>
-            <div><b>capital:</b> ${backendMatch.capital || 'N/A'} </div>
-            <div style="margin-top: 8px">
-              <b>cities (${stateCities.length}): </b>
-              <ul style="margin: 4px 0 0 16px; padding: 0">
-                ${stateCities.slice(0,5).map(city => `<li>${city.name}</li>`).join('')}
-                ${stateCities.length > 5 ? `<li>... and ${stateCities.length - 5} more</li>` : ''}
-              </ul>
-            </div>
+          </div>
         `;
         layer.bindPopup(html).openPopup();
       }
@@ -87,7 +86,7 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
   }, [backendStatesRef, getStateCode, map, onStateClick, visibleCities]);
 
   return (
-    <GeoJSON key="states-layer" data={statesData} style={styleState} onEachFeature={onEachState}/>
+    <GeoJSON key="states-layer" data={statesData} style={styleState} onEachFeature={onEachState} bubblingMouseEvents={false}/>
   );
 
 }
@@ -236,9 +235,14 @@ export default function MapView() {
 
     axios.get(`${BASE_URL}/states/read`)
       .then(({ data }) => {
-        const states = data?.states || {};
-        setBackendStates(states);
-        backendStatesRef.current = states;
+        const raw = data?.states ?? data?.States ?? [];
+        const list = Array.isArray(raw) ? raw : Object.values(raw);
+        const statesMap = {};
+        list.forEach(s => {
+          if (s.state_code) statesMap[s.state_code] = s;
+        });
+        setBackendStates(statesMap);
+        backendStatesRef.current = statesMap;
       })
       .catch((err) => console.error("Error fetching states: ", err));
 
@@ -263,6 +267,10 @@ export default function MapView() {
   // when a country is clicked, turns on states layer to filter states only for that specific country
   const handleStateClick = useCallback((state, stateCode) => {
     setSelectedState(state);
+
+    if (state.country_code && backendCountriesRef.current[state.country_code]) {
+      setSelectedCountry(backendCountriesRef.current[state.country_code]);
+    }
 
     const cities = Object.values(allCitiesRef.current).filter(c => c.state_code === stateCode);
     console.log("clicked state: ", stateCode, "cities: ", cities.length);
@@ -456,6 +464,7 @@ export default function MapView() {
       <div className="info-panel-container">
         <InfoPanel
           selectedCountry={selectedCountry}
+          selectedState={selectedState}
           showStates={showStates}
           onBackToCountries={handleBackToCountries}
         />
