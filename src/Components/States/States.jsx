@@ -493,8 +493,11 @@ export default function States() {
                     list = data.states;
                 } else if (Array.isArray(data.States)) {
                     list = data.States;
-                } else {
-                    list = Object.values(data);
+                } else if (data.states && typeof data.states === 'object'){
+                    list = Object.values(data.states);
+                } else if (data.States && typeof data.States === 'object') {
+                    list = Object.values(data.States);
+
                 }
             }
             

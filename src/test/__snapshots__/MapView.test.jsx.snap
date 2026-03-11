@@ -1,0 +1,244 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MapView Snapshots > matches snapshot with all components rendered 1`] = `
+<div>
+  <div
+    class="mapview-root"
+  >
+    <div
+      class="search-container"
+    >
+      <div
+        class="search-input-wrapper"
+      >
+        <input
+          class="search-input"
+          placeholder="Search countries, states, or cities..."
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="info-panel-container"
+    >
+      <div
+        style="color: rgb(102, 102, 102);"
+      >
+        Click a 
+        <span
+          style="color: rgb(30, 144, 255); font-weight: 700;"
+        >
+          blue
+        </span>
+         country to see details.
+      </div>
+    </div>
+    <div
+      style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; padding: 0.75rem 1rem; margin-bottom: 0.5rem; background: rgba(30, 30, 30, 0.9); border: 1px solid rgb(68, 68, 68); border-radius: 8px; color: rgb(255, 255, 255); font-size: 0.85rem;"
+    >
+      <div
+        style="font-weight: 700;"
+      >
+        Legend:
+      </div>
+      <div
+        style="display: flex; align-items: center; gap: 0.4rem;"
+      >
+        <div
+          style="width: 14px; height: 14px; border-radius: 2px; background: rgb(30, 144, 255); opacity: 0.7;"
+        />
+        <span>
+          Country in database
+        </span>
+      </div>
+      <div
+        style="display: flex; align-items: center; gap: 0.4rem;"
+      >
+        <div
+          style="width: 14px; height: 14px; border-radius: 2px; background: rgb(153, 153, 153); opacity: 0.4;"
+        />
+        <span>
+          No data
+        </span>
+      </div>
+    </div>
+    <div
+      class="map-wrapper"
+    >
+      <div
+        data-testid="map"
+      >
+        <div
+          data-testid="tile-layer"
+        />
+        <div
+          data-testid="geojson-layer"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MapView Snapshots > matches snapshot with countries loaded 1`] = `
+<div>
+  <div
+    class="mapview-root"
+  >
+    <div
+      class="search-container"
+    >
+      <div
+        class="search-input-wrapper"
+      >
+        <input
+          class="search-input"
+          placeholder="Search countries, states, or cities..."
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="info-panel-container"
+    >
+      <div
+        style="color: rgb(102, 102, 102);"
+      >
+        Click a 
+        <span
+          style="color: rgb(30, 144, 255); font-weight: 700;"
+        >
+          blue
+        </span>
+         country to see details.
+      </div>
+    </div>
+    <div
+      style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; padding: 0.75rem 1rem; margin-bottom: 0.5rem; background: rgba(30, 30, 30, 0.9); border: 1px solid rgb(68, 68, 68); border-radius: 8px; color: rgb(255, 255, 255); font-size: 0.85rem;"
+    >
+      <div
+        style="font-weight: 700;"
+      >
+        Legend:
+      </div>
+      <div
+        style="display: flex; align-items: center; gap: 0.4rem;"
+      >
+        <div
+          style="width: 14px; height: 14px; border-radius: 2px; background: rgb(30, 144, 255); opacity: 0.7;"
+        />
+        <span>
+          Country in database
+        </span>
+      </div>
+      <div
+        style="display: flex; align-items: center; gap: 0.4rem;"
+      >
+        <div
+          style="width: 14px; height: 14px; border-radius: 2px; background: rgb(153, 153, 153); opacity: 0.4;"
+        />
+        <span>
+          No data
+        </span>
+      </div>
+    </div>
+    <div
+      class="map-wrapper"
+    >
+      <div
+        data-testid="map"
+      >
+        <div
+          data-testid="tile-layer"
+        />
+        <div
+          data-testid="geojson-layer"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MapView Snapshots > matches snapshot with initial load (no data) 1`] = `
+<div>
+  <div
+    class="mapview-root"
+  >
+    <div
+      class="search-container"
+    >
+      <div
+        class="search-input-wrapper"
+      >
+        <input
+          class="search-input"
+          placeholder="Search countries, states, or cities..."
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="info-panel-container"
+    >
+      <div
+        style="color: rgb(102, 102, 102);"
+      >
+        Click a 
+        <span
+          style="color: rgb(30, 144, 255); font-weight: 700;"
+        >
+          blue
+        </span>
+         country to see details.
+      </div>
+    </div>
+    <div
+      style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; padding: 0.75rem 1rem; margin-bottom: 0.5rem; background: rgba(30, 30, 30, 0.9); border: 1px solid rgb(68, 68, 68); border-radius: 8px; color: rgb(255, 255, 255); font-size: 0.85rem;"
+    >
+      <div
+        style="font-weight: 700;"
+      >
+        Legend:
+      </div>
+      <div
+        style="display: flex; align-items: center; gap: 0.4rem;"
+      >
+        <div
+          style="width: 14px; height: 14px; border-radius: 2px; background: rgb(30, 144, 255); opacity: 0.7;"
+        />
+        <span>
+          Country in database
+        </span>
+      </div>
+      <div
+        style="display: flex; align-items: center; gap: 0.4rem;"
+      >
+        <div
+          style="width: 14px; height: 14px; border-radius: 2px; background: rgb(153, 153, 153); opacity: 0.4;"
+        />
+        <span>
+          No data
+        </span>
+      </div>
+    </div>
+    <div
+      class="map-wrapper"
+    >
+      <div
+        data-testid="map"
+      >
+        <div
+          data-testid="tile-layer"
+        />
+        <div
+          data-testid="geojson-layer"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
