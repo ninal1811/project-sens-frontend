@@ -40,7 +40,7 @@ function StateCard({ stateData, onDelete, onUpdate }) {
 
         setIsUpdating(true);
         try {
-            const updateData = {
+            const _updateData = {
               ...editForm,
               name: capitalizeStateName(editForm.name)
             }
@@ -637,7 +637,7 @@ export default function States() {
         searchStates(query);
     };
 
-    const handleSelectState = async (state) => {
+    const _handleSelectState = async (state) => {
         if (state.state_code && state.country_code) {
             const details = await fetchStateDetails(state.state_code, state.country_code);
             if (details) {

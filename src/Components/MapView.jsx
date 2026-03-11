@@ -7,7 +7,6 @@ import countriesData from "../data/countries.json";
 import statesData from "../data/states.json";
 // city marker data: lat and long coordinates
 import citiesCoords from "../data/cities.json";
-import { data } from "react-router";
 import Legend from "./Legend";
 import InfoPanel from "./InfoPanel";
 import './MapView.css';
@@ -26,12 +25,13 @@ function ClickDebug() {
 }
 
 // receives list of cities, click handler, and state codes
-function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendStatesIds, countryCode }) {
+function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendStatesIds}) {
   const map = useMap();
 
   const getStateCode = useCallback((feature) => {
     return feature?.properties?.state_code || null;
   }, []);
+
   // decides look of state, if state exists in backend data, it shows as blue to filter what's in our dataset
   // otherwise, it shows as gray
   const styleState = useCallback((feature) => {
@@ -65,7 +65,7 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
         onStateClick(backendMatch, stateCode);
         map.fitBounds(layer.getBounds(), { padding: [40, 40] });
 
-        const stateCities = visibleCities.filter(city => city.state_code === stateCode);
+        const _stateCities = visibleCities.filter(city => city.state_code === stateCode);
         const stateImg = STATE_IMAGE_URLS[stateCode];
         const html = `
           <div style="min-width: 250px">
@@ -92,7 +92,7 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
 }
 
 // map logic component
-function MapController({ visibleCities, onCountryClick, backendCountriesRef, backendIds, allCitiesRef, showStates, selectedCountry, visibleStates, onStateClick, backendStatesRef, backendStatesIds }) {
+function MapController({ visibleCities, onCountryClick, backendCountriesRef, backendIds, showStates, selectedCountry, onStateClick, backendStatesRef, backendStatesIds }) {
   const map = useMap();
 
   useEffect(() => {
@@ -128,7 +128,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
       fillOpacity: isInBackend ? 0.45 : 0.08,
       fillColor: isInBackend ? "#1e90ff" : "#999",
     };
-  }, [backendIds, getIso3, showStates, selectedCountry]);
+  }, [backendIds, getIso3]);
 
   const onEachFeature = useCallback((feature, layer) => {
     layer.on("click", () => {
@@ -233,7 +233,7 @@ export default function MapView() {
   const mapRef = useRef(null);
   const [backendStates, setBackendStates] = useState({});
   const [selectedState, setSelectedState] = useState(null);
-  const [visibleStates, setVisibleStates] = useState([]);
+  const [_visibleStates, _setVisibleStates] = useState([]);
   const [showStates, setShowStates] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);

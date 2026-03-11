@@ -29,7 +29,7 @@ vi.mock('./Legend', () => ({
 
 
 vi.mock('./InfoPanel', () => ({
-  default: ({ selectedCountry, selectedState, showStates, onBackToCountries }) => (
+  default: ({ selectedCountry, selectedState, showStates}) => (
     <div data-testid="info-panel">
       {selectedCountry ? `Country: ${selectedCountry.name}` : 'No country selected'}
       {selectedState && ` | State: ${selectedState.name}`}

@@ -52,7 +52,7 @@ export default function Countries() {
         console.error("Failed to fetch countries:", err);
         setResults([]);
       });
-  }, []);
+  }, [baseURL]);
 
   return (
     <div style={{ padding: "20px" }}>

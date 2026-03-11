@@ -59,7 +59,7 @@ export default function Cities() {
                 console.error("Failed to fetch cities:", err);
                 setResults([]);
             });
-    }, []);
+    }, [baseURL]);
 
     return (
         <div style={{ padding: "20px" }}>
