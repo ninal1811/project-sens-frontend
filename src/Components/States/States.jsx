@@ -486,14 +486,16 @@ export default function States() {
             console.log("States loaded:", data);
             
             let list = [];
-            if (data?.states && Array.isArray(data.states)) {
-                list = data.states;
-            } else if (data?.States && Array.isArray(data.States)) {
-                list = data.States;
-            } else if (Array.isArray(data)) {
-                list = data;
-            } else if (data && typeof data === 'object') {
-                list = Object.values(data).filter(Array.isArray)[0] || [];
+            if (data && typeof data === 'object') {
+                if (Array.isArray(data)) {
+                    list = data;
+                } else if (Array.isArray(data.states)) {
+                    list = data.states;
+                } else if (Array.isArray(data.States)) {
+                    list = data.States;
+                } else {
+                    list = Object.values(data);
+                }
             }
             
             setResults(list);
@@ -529,7 +531,7 @@ export default function States() {
 
     const addState = async (stateData) => {
         try {
-            const response = await axios.post(`${baseURL}/states/create`, {
+            const response = await axios.post(`${baseURL}/states/add`, {
                 name: stateData.name,
                 state_code: stateData.state_code,
                 country_code: stateData.country_code
