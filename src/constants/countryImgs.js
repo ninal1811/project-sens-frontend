@@ -6,7 +6,11 @@ export const COUNTRY_IMAGE_URLS = {
     },
     PHL: 'https://upload.wikimedia.org/wikipedia/commons/c/c9/Adobo_DSCF4391.jpg',
     CHN: 'https://www.seriouseats.com/thmb/5WEmtEV2Y37pU1joxKllpZ7uvDo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__recipes__images__20100910-duck-primary-43f6bb74c3b7490b9b6b99b643fd31f3.jpg',
-    USA: 'https://www.sargento.com/assets/Uploads/Recipe/Image/burger_0__FocusFillWyIwLjAwIiwiMC4wMCIsODAwLDQ3OF0_CompressedW10.jpg',
+    USA: {
+      nat_dish: 'https://www.sargento.com/assets/Uploads/Recipe/Image/burger_0__FocusFillWyIwLjAwIiwiMC4wMCIsODAwLDQ3OF0_CompressedW10.jpg',
+      pop_dish_1: 'https://www.foodandwine.com/thmb/VvRtBJaCUpuzFOzTiWHoWBmDFJ8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/best-pizza-in-america-via313-VT-BLOG0421-4cf334b76d1f41a1ab202b165837155c.jpg',
+      pop_dish_2: 'https://img.texasmonthly.com/2024/08/united-states-of-barbecue-Jon-Gs-BBQ-1.jpg?auto=compress&crop=faces&fit=fit&fm=jpg&h=0&ixlib=php-3.3.1&q=45&w=750'
+    },
     MEX: 'https://www.thecookierookie.com/wp-content/uploads/2024/05/street-tacos-recipe-2.jpg',
     IND: 'https://carveyourcraving.com/wp-content/uploads/2023/01/Daliya-khichdi.jpg',
     JPN: 'https://www.justonecookbook.com/wp-content/uploads/2021/10/Japanese-Chicken-Curry-3787-I-1.jpg',

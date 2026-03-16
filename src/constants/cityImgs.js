@@ -79,4 +79,20 @@ export const CITY_IMAGE_URLS = {
         restaurant_name: "Echarfaa Food",
         image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/fd/cb/e0/caption.jpg?w=700&h=-1&s=1"
       },
+      Boston: {
+        restaurant_name: "Carmelina's",
+        image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/a6/2b/13/20180101-120032-largejpg.jpg?w=900&h=500&s=1"
+      },
+      'New York City': {
+        restaurant_name: '',
+        image: "https://media.newyorker.com/photos/609ed8bdd60710aaa9f4848a/master/pass/Rosner-Carbone.jpg"
+      },
+      Philadelphia: {
+        restaurant_name: "Shay's Steaks",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKr8Yfz9miCi_Rn-1VfrjStuXUA2kkV2n6XA&s"
+      },
+      Atlanta: {
+        restaurant_name: 'South City Kitchen Midtown',
+        image: "https://popmenucloud.com/cdn-cgi/image/width%3D1200%2Cheight%3D1200%2Cfit%3Dscale-down%2Cformat%3Dauto%2Cquality%3D60/drkntvsg/8b131c1b-2179-4307-a6cc-e810141713b4.jpg"
+      }
   };
