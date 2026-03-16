@@ -4,6 +4,7 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   position: relative;
+  background-color: #1f1f1f;
 }
 
 .search-input-wrapper {
@@ -14,18 +15,26 @@
 
 .search-input {
   flex: 1;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  font-size: 16px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #555;
+  font-size: 15px;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.search-input:focus {
+  color: black;
 }
 
 .search-clear-btn {
-  padding: 8px 12px;
-  background: #f0f0f0;
-  border: none;
-  border-radius: 4px;
+  padding: 8px 14px;
+  background: #3a3a3a;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 14px;
 }
 
 /* search results dropdown */
@@ -51,7 +60,7 @@
 }
 
 .search-result-item:hover {
-  background-color: #f5f5f5;
+  background-color: #4a4a4a;
 }
 
 .search-result-name {

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import './App.css'
 import { Routes, Route, Link } from 'react-router'
 import States from './Components/States/States'
@@ -6,9 +7,25 @@ import Cities from './Components/Cities/Cities'
 import MapView from './Components/MapView'
 
 function Home() {
+  const [showAbout, setShowAbout] = useState(false)
   return (
     <div>
       <h1>project-sens</h1>
+
+      <button
+        className="about-btn"
+        onClick={() => setShowAbout(!showAbout)}
+      >
+        {showAbout ? 'Hide About' : 'Learn More'}
+      </button>
+
+      {showAbout && (
+        <div className="about-box">
+          Project Sens is an interactive map platform that lets users explore
+          countries, states, and cities through location-based information,
+          food culture, and recommended restaurants.
+        </div>
+      )}
 
       <div className="nav-buttons">
         <Link to="/States" className="nav-btn">View States</Link>

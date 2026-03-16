@@ -62,3 +62,30 @@
 .nav-btn:hover {
   background-color: #0d47a1;
 }
+
+.about-btn {
+  margin-bottom: 16px;
+  padding: 10px 18px;
+  background-color: #2f2f2f;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.about-btn:hover {
+  background-color: #3d3d3d;
+}
+
+.about-box {
+  max-width: 700px;
+  margin: 0 auto 20px auto;
+  padding: 14px 18px;
+  background-color: #1f1f1f;
+  color: #f1f1f1;
+  border: 1px solid #444;
+  border-radius: 8px;
+  line-height: 1.5;
+}
