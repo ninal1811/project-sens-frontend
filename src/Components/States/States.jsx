@@ -478,6 +478,15 @@ export default function States() {
     
     const baseURL = import.meta.env.REACT_APP_API_URL || 'https://projectsens.pythonanywhere.com';
 
+    const sortStatesAlphabetically = (statesArray) => {
+        if (!statesArray || !Array.isArray(statesArray)) return [];
+        return [...statesArray].sort((a, b) => {
+            const nameA = (a.name || '').toLowerCase();
+            const nameB = (b.name || '').toLowerCase();
+            return nameA.localeCompare(nameB);
+        });
+    };
+
     const fetchStates = useCallback(async () => {
         setIsLoading(true);
         setError(null);
@@ -500,8 +509,9 @@ export default function States() {
 
                 }
             }
-            
-            setResults(list);
+
+            const sortedList = sortStatesAlphabetically(list);
+            setResults(sortedList);
         } catch (err) {
             console.error("Failed to fetch states:", err);
             setError(err.response?.data?.message || err.message || 'Failed to fetch states');
@@ -621,7 +631,8 @@ export default function States() {
                 });
 
                 console.log(`Found ${filtered.length} results for "${query}"`);
-                setSearchResults(filtered);
+                const sortedFiltered = sortStatesAlphabetically(filtered)
+                setSearchResults(sortedFiltered);
             } catch (err) {
                 console.error("Search failed:", err);
                 setSearchResults([]);
@@ -662,7 +673,7 @@ export default function States() {
         setSelectedState(null);
     };
 
-    const displayData = searchResults || results;
+    const displayData = searchResults || (results ? sortStatesAlphabetically(results) : null);
 
     return (
         <div style={{ 

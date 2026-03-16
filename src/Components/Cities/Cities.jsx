@@ -47,13 +47,22 @@ export default function Cities() {
     const baseURL = import.meta.env.REACT_APP_API_URL || 'https://projectsens.pythonanywhere.com';
     const cityReadEP = 'cities/read';
 
+    const sortCitiesAlphabetically = (citiesArray) => {
+        if (!citiesArray || !Array.isArray(citiesArray)) return [];
+        return [...citiesArray].sort((a, b) => {
+            const nameA = (a.city || '').toLowerCase();
+            const nameB = (b.city || '').toLowerCase();
+            return nameA.localeCompare(nameB);
+        });
+    };
+
     useEffect(() => {
         axios
             .get(`${baseURL}/${cityReadEP}`)
             .then(({ data }) => {
                 const raw = data?.Cities ?? data?.cities ?? {};
-                const list = Array.isArray(raw) ? raw : Object.values(raw);
-                setResults(list);
+                const sortedList = sortCitiesAlphabetically(Array.isArray(raw) ? raw : Object.values(raw));
+                setResults(sortedList);
             })
             .catch((err) => {
                 console.error("Failed to fetch cities:", err);

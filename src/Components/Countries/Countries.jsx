@@ -40,13 +40,22 @@ export default function Countries() {
   const [results, setResults] = useState(null);
   const baseURL = import.meta.env.REACT_APP_API_URL || 'https://projectsens.pythonanywhere.com';
 
+  const sortCountriesAlphabetically = (countriesArray) => {
+    if (!countriesArray || !Array.isArray(countriesArray)) return [];
+    return [...countriesArray].sort((a, b) => {
+        const nameA = (a.name || '').toLowerCase();
+        const nameB = (b.name || '').toLowerCase();
+        return nameA.localeCompare(nameB);
+    });
+};
+
   useEffect(() => {
     axios
       .get(`${baseURL}/countries`)
       .then(({ data }) => {
         const raw = data?.countries ?? {};
-        const list = Array.isArray(raw) ? raw : Object.values(raw);
-        setResults(list);
+        const sortedList = sortCountriesAlphabetically(Array.isArray(raw) ? raw : Object.values(raw));
+        setResults(sortedList);
       })
       .catch((err) => {
         console.error("Failed to fetch countries:", err);
