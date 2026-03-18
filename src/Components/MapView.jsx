@@ -46,6 +46,7 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
       fillColor: isInBackend ? "#0d47a1" : "#000000",
     };
   }, [backendStatesIds, getStateCode]);
+  
   // adds state name on hover
   // when clicked, zooms the map to fit state boundaries
   // shows popup of state info and list of its cities
@@ -117,6 +118,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
   const getIso3 = useCallback((feature) => {
     return feature?.properties?.["ISO3166-1-Alpha-3"] || null;
   }, []);
+  
   // same logic as states for frontend look, those in backend are highlighted in blue
   const styleFeature = useCallback((feature) => {
     const iso3 = getIso3(feature);
@@ -139,6 +141,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
       if (backendMatch) {
         onCountryClick(backendMatch, iso3);
         map.fitBounds(layer.getBounds(), { padding: [40, 40] });
+        
         const imgs = COUNTRY_IMAGE_URLS[backendMatch._id];
         const natImg = backendMatch.image_url || (typeof imgs === 'object' ? imgs.nat_dish : imgs) || '';
         const pop1Img = typeof imgs === 'object' ? imgs.pop_dish_1 : '';
@@ -170,7 +173,8 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
       }
     });
   }, [backendCountriesRef, getIso3, map, onCountryClick]);
-// when a country is clicked, it looks at the country code, finds the matching backend data, and shows a popup of the dish info and image
+
+  // when a country is clicked, it looks at the country code, finds the matching backend data, and shows a popup of the dish info and image
   return (
     <>
       <GeoJSON data={countriesData} style={styleFeature} onEachFeature={onEachFeature} />
@@ -189,16 +193,16 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
           <CircleMarker
             key={city.city}
             center={[coords.lat, coords.lng]}
-            radius={showStates ? 6 : 8}
+            radius={showStates ? 8 : 6}  // Bigger when state selected (reversed)
             pathOptions={{ 
-              color: showStates ? "#ff9900" : "#ff6600", 
-              fillColor: showStates ? "#ff9900" : "#ff6600", 
-              fillOpacity: 1 
+              color: "#ffffff",                              // White border for contrast
+              fillColor: showStates ? "#ff0000" : "#ff6600", // Red when state selected, orange otherwise
+              fillOpacity: 1,
+              weight: 2                                       // Border thickness
             }}
           >
             <Popup>
-              <div
-                div style={{ minWidth: "240px" }}>
+              <div style={{ minWidth: "240px" }}>
                 {cityImg && (
                   <div style={{ textAlign: "center", marginBottom: "6px" }}>
                     <img
@@ -293,7 +297,8 @@ export default function MapView() {
     setSearchQuery("");
     setShowSearchResults(false);
   }, []);
-// same idea - when a state is clicked, filters so it looks at cities just belonging to that state
+  
+  // same idea - when a state is clicked, filters so it looks at cities just belonging to that state
   const handleBackToCountries = useCallback (() => {
     setShowStates(false);
     setSelectedState(null);
@@ -364,7 +369,6 @@ export default function MapView() {
       }
     });
     
-
     setSearchResults(results.slice(0, 10));
     setShowSearchResults(true);
   }, []);
@@ -404,21 +408,36 @@ export default function MapView() {
     }
 
     // CITY SEARCH
-  if (result.type === "city") {
-    const coords = citiesCoords[result.name];
-    if (coords && mapRef.current) {
-      mapRef.current.setView([coords.lat, coords.lng], 10);
-    }
+    if (result.type === "city") {
+      const coords = citiesCoords[result.name];
+      if (coords && mapRef.current) {
+        mapRef.current.setView([coords.lat, coords.lng], 10);
+      }
 
-    const city = Object.values(allCitiesRef.current).find(
-      c => c.city === result.name
-    );
+      const city = Object.values(allCitiesRef.current).find(
+        c => c.city === result.name
+      );
 
-    if (city) {
-      setVisibleCities([city]);
+      if (city) {
+        setVisibleCities([city]);
+      }
     }
-  }
   }, [selectedCountry, handleStateClick]);
+
+  // ESC key to go back to world view
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && showStates) {
+        handleBackToCountries();
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showStates, handleBackToCountries]);
 
   const WORLD_BOUNDS = [
     [-90, -180],
