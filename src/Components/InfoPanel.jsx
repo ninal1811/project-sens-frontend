@@ -15,7 +15,23 @@ export default function InfoPanel({ selectedCountry, selectedState, showStates, 
     <>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         {showStates && (
-          <button onClick={onBackToCountries}>← Back to World</button>
+          <button 
+            onClick={onBackToCountries}
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "#1e90ff",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontWeight: "bold",
+              fontSize: "16px",
+              marginBottom: "12px",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
+            }}
+          >
+            ← Back to World
+          </button>
         )}
       </div>
       {selectedState ? (
