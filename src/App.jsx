@@ -28,8 +28,8 @@ function Home() {
       )}
 
       <div className="nav-buttons">
-        <Link to="/States" className="nav-btn">View States</Link>
         <Link to="/Countries" className="nav-btn">View Countries</Link>
+        <Link to="/States" className="nav-btn">View States</Link>
         <Link to="/Cities" className="nav-btn">View Cities</Link>
       </div>
 

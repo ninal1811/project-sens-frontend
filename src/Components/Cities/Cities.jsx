@@ -79,8 +79,8 @@ export default function Cities() {
             justifyContent: "flex-start"
          }}>
             <Link to="/" className="nav-btn">← Back to Home</Link>
-            <Link to="/States" className="nav-btn">View States</Link>
             <Link to="/Countries" className="nav-btn">View Countries</Link>
+            <Link to="/States" className="nav-btn">View States</Link>
         </div>
             <h1>city data</h1>
             {results === null && <p>Loading...</p>}

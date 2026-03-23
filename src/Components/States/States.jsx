@@ -8,7 +8,7 @@ function capitalizeStateName(name) {
     return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
 
-function StateCard({ stateData, onDelete, onUpdate }) {
+function StateCard({ stateData, onDelete, onUpdate, onViewCities }) {
     const [open, setOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editForm, setEditForm] = useState({
@@ -18,6 +18,9 @@ function StateCard({ stateData, onDelete, onUpdate }) {
     });
     const [isDeleting, setIsDeleting] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
+    const [cities, setCities] = useState([]);
+    const [isLoadingCities, setIsLoadingCities] = useState(false);
+    const [citiesLoaded, setCitiesLoaded] = useState(false);
     const { country_code, state_code, name } = stateData || {};
 
     const handleEdit = () => {
@@ -63,6 +66,31 @@ function StateCard({ stateData, onDelete, onUpdate }) {
             }
         }
     };
+
+    useEffect(() => {
+        const loadCities = async () => {
+            if (open && !citiesLoaded && !isLoadingCities) {
+                setIsLoadingCities(true);
+                try {
+                    const citiesData = await onViewCities(state_code, country_code);
+                    setCities(citiesData || []);
+                    setCitiesLoaded(true);
+                } catch (error) {
+                    console.error("Failed to load cities:", error);
+                    setCities([]);
+                    setCitiesLoaded(true);
+                } finally {
+                    setIsLoadingCities(false);
+                }
+            }
+        };
+        loadCities();
+    }, [open, citiesLoaded, isLoadingCities, state_code, country_code, onViewCities]);
+
+    useEffect(() => {
+        setCitiesLoaded(false);
+        setCities([]);
+    }, [state_code, country_code]);
 
     if (isEditing) {
         return (
@@ -180,15 +208,44 @@ function StateCard({ stateData, onDelete, onUpdate }) {
             
             {open && (
                 <div className='card-details'>
-                    <p className='detail-text'>
-                        <strong className='detail-text'>Full Name:</strong> {capitalizeStateName(name)}
-                    </p>
-                    <p className='detail-text'>
-                        <strong className='detail-text'>State Code:</strong> {state_code}
-                    </p>
-                    <p className='detail-text'>
-                        <strong className='detail-text'>Country Code:</strong> {country_code}
-                    </p>
+                    <div className='state-info-section'>
+                        <p className='detail-text'>
+                            <strong className='detail-text'>Full Name:</strong> {capitalizeStateName(name)}
+                        </p>
+                        <p className='detail-text'>
+                            <strong className='detail-text'>State Code:</strong> {state_code}
+                        </p>
+                        <p className='detail-text'>
+                            <strong className='detail-text'>Country Code:</strong> {country_code}
+                        </p>
+                    </div>
+                    <div className='cities-section'>
+                        <div className='cities-header'>
+                            <h4 className='cities-title'>
+                                Cities in {capitalizeStateName(name)}
+                                {cities.length > 0 && <span className='city-count'>({cities.length})</span>}
+                            </h4>
+                        </div>
+
+                        {isLoadingCities ? (
+                            <div className='cities-loading'>
+                                <div className='small-spinner'></div>
+                                <p>Loading cities...</p>
+                            </div>
+                        ) : cities && cities.length > 0 ? (
+                            <div className='cities-list'>
+                                {cities.map((city, idx) => (
+                                    <div key={idx} className='city-item'>
+                                        <span className='city-name'>{capitalizeStateName(city.name || city)}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className='no-cities'>
+                                <p>No cities found for this state/province.</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
             )}
         </li>
@@ -448,6 +505,32 @@ export default function States() {
         }
     }, [baseURL]);
 
+    const fetchCitiesByState = useCallback(async (stateCode) => {
+        try {
+            console.log(`Fetching details for: ${stateCode}`);
+            const response = await axios.get(`${baseURL}/cities/state/${stateCode}`);
+            console.log("Cities response:", response.data);
+            
+            if (response.data) {
+                if (Array.isArray(response.data)) {
+                    return response.data;
+                } else if (response.data.cities && Array.isArray(response.data.cities)) {
+                    return response.data.cities;
+                } else if (response.data.Cities && Array.isArray(response.data.Cities)) {
+                    return response.data.Cities;
+                } else if (response.data.results && Array.isArray(response.data.results)) {
+                    return response.data.results;
+                } else {
+                    return [];
+                }
+            }
+            return [];
+        } catch (err) {
+            console.error("Failed to fetch cities for state:", err);
+            return [];
+        }
+    }, [baseURL]);
+
     const addState = async (stateData) => {
         try {
             const response = await axios.post(`${baseURL}/states/add`, {
@@ -584,27 +667,12 @@ export default function States() {
     return (
         <div className='states-container'>
             <div className='states-nav'>
-                <Link to="/" className="nav-btn"
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#444"}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#333"}
-                >
-                    ← Back to Home
-                </Link>
-                <Link to="/Countries" className="nav-btn"
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#444"}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#333"}
-                >
-                    View Countries
-                </Link>
-                <Link to="/Cities" className="nav-btn"
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#444"}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#333"}
-                >
-                    View Cities
-                </Link>
+                <Link to="/" className="nav-btn-states">← Back to Home</Link>
+                <Link to="/Countries" className="nav-btn-states">View Countries</Link>
+                <Link to="/Cities" className="nav-btn-states">View Cities</Link>
                 <button onClick={() => setShowAddForm(!showAddForm)}
                     style={{
-                        padding: "8px 16px",
+                        padding: "10px 20px",
                         background: showAddForm ? "#f44336" : "#4caf50",
                         border: "none",
                         borderRadius: "4px",
@@ -759,6 +827,7 @@ export default function States() {
                                 key={`${stateObj?.country_code}-${stateObj?.state_code ?? "no-code"}-${idx}`}
                                 onDelete={deleteState}
                                 onUpdate={updateState}
+                                onViewCities={fetchCitiesByState}
                             />
                         ))}
                     </ul>

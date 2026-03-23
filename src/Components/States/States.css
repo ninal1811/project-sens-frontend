@@ -1,5 +1,3 @@
-/* States.css - Complete styles for the States component */
-
 /* Container Styles */
 .states-container {
     max-width: 900px;
@@ -8,35 +6,35 @@
     min-height: 100vh;
     color: #ffffff;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  }
+}
   
-  /* Navigation Bar */
-  .states-nav {
+/* Navigation Bar */ 
+.states-nav {
     margin-bottom: 20px;
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
     border-bottom: 1px solid #333;
     padding-bottom: 15px;
-  }
+}
   
-  .nav-btn {
-    padding: 8px 16px;
-    background-color: #333;
-    color: #ffffff;
+.nav-btn-states {
+    padding: 10px 20px;
+    background-color: #e5e5e5;
+    color: black;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 6px;
     transition: background-color 0.2s;
     border: none;
     cursor: pointer;
     font-size: 14px;
-  }
+}
   
-  .nav-btn:hover {
-    background-color: #444;
-  }
+.nav-btn-states:hover {
+    background-color: #0d47a1;
+}
   
-  .add-btn {
+.add-btn {
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
@@ -46,34 +44,34 @@
     font-weight: bold;
     margin-left: auto;
     transition: background-color 0.2s;
-  }
+}
   
-  .add-btn.add-mode {
+.add-btn.add-mode {
     background-color: #4caf50;
-  }
+}
   
-  .add-btn.add-mode:hover {
+.add-btn.add-mode:hover {
     background-color: #45a049;
-  }
+}
   
-  .add-btn.cancel-mode {
+.add-btn.cancel-mode {
     background-color: #f44336;
-  }
+}
   
-  .add-btn.cancel-mode:hover {
+.add-btn.cancel-mode:hover {
     background-color: #d32f2f;
-  }
+}
   
-  /* Page Title */
-  .states-title {
+/* Page Title */
+.states-title {
     margin-bottom: 25px;
     color: #ffffff;
     font-size: 28px;
     font-weight: 600;
-  }
+}
   
-  /* Error Message */
-  .error-container {
+/* Error Message */
+.error-container {
     margin-bottom: 20px;
     padding: 15px;
     background-color: #ffebee;
@@ -83,48 +81,48 @@
     display: flex;
     align-items: center;
     gap: 15px;
-  }
+}
   
-  .retry-btn {
+.retry-btn {
     padding: 5px 10px;
     background: #c62828;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-  }
+}
   
-  .retry-btn:hover {
+.retry-btn:hover {
     background: #b71c1c;
-  }
+}
   
-  /* Add Form Styles */
-  .add-form-container {
+/* Add Form Styles */
+.add-form-container {
     margin-bottom: 30px;
     padding: 20px;
     border: 1px solid #4caf50;
     border-radius: 8px;
     background-color: #1a2a1a;
-  }
+}
   
-  .add-form-title {
+.add-form-title {
     margin: 0 0 15px 0;
     color: #4caf50;
     font-size: 18px;
     font-weight: 600;
-  }
+}
   
-  .add-form {
+.add-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
-  }
+}
   
-  .form-group {
+.form-group {
     width: 100%;
-  }
+}
   
-  .form-input {
+.form-input {
     width: 100%;
     padding: 10px;
     border-radius: 4px;
@@ -134,36 +132,36 @@
     font-size: 14px;
     box-sizing: border-box;
     transition: border-color 0.2s;
-  }
+}
   
-  .form-input:focus {
+.form-input:focus {
     outline: none;
     border-color: #4caf50;
-  }
+}
   
-  .form-input.error {
+.form-input.error {
     border-color: #f44336;
-  }
+}
   
-  .form-input:disabled {
+.form-input:disabled {
     opacity: 0.7;
     cursor: not-allowed;
-  }
+}
   
-  .error-text {
+.error-text {
     margin: 5px 0 0 0;
     color: #f44336;
     font-size: 12px;
-  }
+}
   
-  .form-actions {
+.form-actions {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
-  }
+}
   
-  /* Buttons */
-  .btn {
+/* Buttons */
+.btn {
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
@@ -171,32 +169,32 @@
     font-size: 14px;
     font-weight: bold;
     transition: all 0.2s;
-  }
+}
   
-  .btn:disabled {
+.btn:disabled {
     opacity: 0.7;
     cursor: not-allowed;
-  }
+}
   
-  .btn-primary {
+.btn-primary {
     background: #4caf50;
     color: white;
-  }
+}
   
-  .btn-primary:hover:not(:disabled) {
+.btn-primary:hover:not(:disabled) {
     background: #45a049;
-  }
+}
   
-  .btn-secondary {
+.btn-secondary {
     background: #666;
     color: white;
-  }
+}
   
-  .btn-secondary:hover:not(:disabled) {
+.btn-secondary:hover:not(:disabled) {
     background: #777;
-  }
+}
   
-  .btn-edit {
+.btn-edit {
     padding: 0.75rem 1rem;
     background: #2196f3;
     color: white;
@@ -205,13 +203,13 @@
     font-size: 16px;
     font-weight: bold;
     transition: background-color 0.2s;
-  }
+}
   
-  .btn-edit:hover:not(:disabled) {
+.btn-edit:hover:not(:disabled) {
     background: #1976d2;
-  }
+}
   
-  .btn-delete {
+.btn-delete {
     padding: 0.75rem 1rem;
     background: #f44336;
     color: white;
@@ -221,34 +219,34 @@
     font-size: 18px;
     font-weight: bold;
     transition: background-color 0.2s;
-  }
+}
   
-  .btn-delete:hover:not(:disabled) {
+.btn-delete:hover:not(:disabled) {
     background: #d32f2f;
-  }
+}
   
-  .btn-delete:disabled {
+.btn-delete:disabled {
     opacity: 0.7;
     cursor: not-allowed;
-  }
+}
   
-  .btn-small {
+.btn-small {
     padding: 6px 12px;
     font-size: 13px;
-  }
+}
   
-  /* Search Section */
-  .search-section {
+/* Search Section */
+.search-section {
     margin-bottom: 30px;
     position: relative;
-  }
+}
   
-  .search-container {
+.search-container {
     display: flex;
     gap: 10px;
-  }
+}
   
-  .search-input {
+.search-input {
     flex: 1;
     padding: 12px 15px;
     border-radius: 6px;
@@ -258,13 +256,13 @@
     background-color: #1a1a1a;
     outline: none;
     transition: border-color 0.2s;
-  }
+}
   
-  .search-input:focus {
+.search-input:focus {
     border-color: #4caf50;
-  }
+}
   
-  .clear-btn {
+.clear-btn {
     padding: 0 16px;
     background: #333;
     border: 1px solid #444;
@@ -273,20 +271,20 @@
     color: #ffffff;
     font-size: 14px;
     transition: background-color 0.2s;
-  }
+}
   
-  .clear-btn:hover {
+.clear-btn:hover {
     background: #444;
-  }
+}
   
-  .searching-indicator {
+.searching-indicator {
     margin-top: 10px;
     color: #888;
     font-style: italic;
     font-size: 14px;
-  }
+}
   
-  .no-results {
+.no-results {
     margin-top: 10px;
     padding: 15px;
     text-align: center;
@@ -295,68 +293,68 @@
     color: #888;
     border: 1px solid #333;
     font-size: 14px;
-  }
+}
   
-  /* Selected State Card */
-  .selected-state-container {
+/* Selected State Card */
+.selected-state-container {
     margin-bottom: 25px;
     padding: 20px;
     border: 1px solid #2196f3;
     border-radius: 8px;
     background-color: #0a1929;
-  }
+}
   
-  .selected-header {
+.selected-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-  }
+}
   
-  .selected-title {
+.selected-title {
     margin: 0;
     color: #90caf9;
     font-size: 18px;
-  }
+}
   
-  .selected-details {
+.selected-details {
     display: grid;
     gap: 10px;
-  }
+}
   
-  .detail-item {
+.detail-item {
     margin: 0;
     color: #e0e0e0;
-  }
+}
   
-  .detail-label {
+.detail-label {
     color: #aaa;
     min-width: 100px;
     display: inline-block;
-  }
+}
   
-  /* State Card Styles */
-  .state-list {
+/* State Card Styles */
+.state-list {
     padding-left: 0;
     list-style: none;
     margin: 0;
-  }
+}
   
-  .state-card {
+.state-card {
     margin-bottom: 1rem;
     border: 1px solid #333;
     border-radius: 4px;
     background-color: #1a1a1a;
     transition: all 0.2s ease;
-  }
+}
   
-  .state-card-header {
+.state-card-header {
     display: flex;
     align-items: center;
     width: 100%;
-  }
+}
   
-  .expand-btn {
+.expand-btn {
     flex: 1;
     text-align: left;
     padding: 0.75rem 1rem;
@@ -370,47 +368,47 @@
     justify-content: space-between;
     align-items: center;
     transition: background-color 0.2s;
-  }
+}
   
-  .expand-btn:hover {
+.expand-btn:hover {
     background-color: #3d3d3d;
-  }
+}
   
-  .state-info {
+.state-info {
     color: #ffffff;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     flex: 1;
-  }
+}
   
-  .country-badge {
+.country-badge {
     margin-left: 10px;
     font-size: 12px;
     color: #888;
-  }
+}
   
-  .expand-icon {
+.expand-icon {
     color: #888;
     margin-left: 10px;
-  }
+}
   
-  /* Edit Mode Card */
-  .edit-card {
+/* Edit Mode Card */
+.edit-card {
     margin-bottom: 1rem;
     border: 1px solid #2196f3;
     border-radius: 4px;
     background-color: #0a1929;
     padding: 1rem;
-  }
+}
   
-  .edit-form {
+.edit-form {
     display: flex;
     flex-direction: column;
     gap: 10px;
-  }
+}
   
-  .edit-input {
+.edit-input {
     padding: 8px;
     border-radius: 4px;
     border: 1px solid #333;
@@ -418,49 +416,49 @@
     color: #ffffff;
     font-size: 14px;
     transition: border-color 0.2s;
-  }
+}
   
-  .edit-input:focus {
+.edit-input:focus {
     outline: none;
     border-color: #2196f3;
-  }
+}
   
-  .edit-input:disabled {
+.edit-input:disabled {
     opacity: 0.7;
     cursor: not-allowed;
-  }
+}
   
-  .edit-actions {
+.edit-actions {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
-  }
+}
   
-  /* Expanded Card Details */
-  .card-details {
+/* Expanded Card Details */
+.card-details {
     padding: 1rem;
     border-top: 1px solid #333;
     background-color: #242424;
     border-radius: 0 0 4px 4px;
-  }
+}
   
-  .detail-text {
+.detail-text {
     margin: 5px 0;
     color: #ccc;
-  }
+}
   
-  .detail-text strong {
+.detail-text strong {
     color: #fff;
-  }
+}
   
-  /* Loading Spinner */
-  .loading-container {
+/* Loading Spinner */
+.loading-container {
     text-align: center;
     padding: 40px;
     color: #888;
-  }
+}
   
-  .spinner {
+.spinner {
     display: inline-block;
     width: 40px;
     height: 40px;
@@ -468,95 +466,95 @@
     border-top-color: #4caf50;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-  }
+}
   
-  @keyframes spin {
+@keyframes spin {
     to { transform: rotate(360deg); }
-  }
+}
   
-  .loading-text {
+.loading-text {
     margin-top: 15px;
-  }
+}
   
-  /* Empty State */
-  .empty-state {
+/* Empty State */
+.empty-state {
     text-align: center;
     padding: 50px 20px;
     background-color: #1a1a1a;
     border-radius: 8px;
     border: 1px solid #333;
-  }
+}
   
-  .empty-text {
+.empty-text {
     color: #888;
     font-size: 16px;
     margin-bottom: 15px;
-  }
+}
   
-  /* Stats Display */
-  .stats-display {
+/* Stats Display */
+.stats-display {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-  }
+}
   
-  .state-count {
+.state-count {
     color: #888;
     font-size: 14px;
-  }
+}
   
-  /* Responsive Design */
-  @media (max-width: 600px) {
+/* Responsive Design */
+@media (max-width: 600px) {
     .states-container {
-      padding: 10px;
+        padding: 10px;
     }
   
     .states-nav {
-      flex-direction: column;
+        flex-direction: column;
     }
   
     .add-btn {
-      margin-left: 0;
-      width: 100%;
+        margin-left: 0;
+        width: 100%;
     }
   
     .search-container {
-      flex-direction: column;
+        flex-direction: column;
     }
   
     .clear-btn {
-      padding: 10px;
-      width: 100%;
+        padding: 10px;
+        width: 100%;
     }
   
     .state-card-header {
-      flex-wrap: wrap;
+        flex-wrap: wrap;
     }
   
     .expand-btn {
-      width: 100%;
-      border-radius: 4px 4px 0 0;
+        width: 100%;
+        border-radius: 4px 4px 0 0;
     }
   
     .btn-edit, .btn-delete {
-      flex: 1;
-      border-radius: 0;
+        flex: 1;
+        border-radius: 0;
     }
   
     .btn-delete {
-      border-radius: 0 0 4px 4px;
+        border-radius: 0 0 4px 4px;
     }
   
     .selected-header {
-      flex-direction: column;
-      gap: 10px;
-      align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
     }
-  }
+}
   
-  /* Print Styles */
-  @media print {
+/* Print Styles */
+@media print {
     .states-nav,
     .search-section,
     .add-form-container,
@@ -564,21 +562,166 @@
     .btn-delete,
     .clear-btn,
     .retry-btn {
-      display: none;
+        display: none;
     }
   
     .states-container {
-      background: white;
-      color: black;
+        background: white;
+        color: black;
     }
   
     .state-card {
-      border: 1px solid #ccc;
-      background: white;
+        border: 1px solid #ccc;
+        background: white;
     }
   
     .expand-btn {
-      background: white;
-      color: black;
+        background: white;
+        color: black;
     }
-  }
+}
+
+.cities-section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid #333;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cities-header {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+
+.cities-title {
+    color: #4caf50;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cities-count {
+    font-size: 0.85rem;
+    color: #888;
+    font-weight: normal;
+}
+
+.cities-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.cities-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.cities-list::-webkit-scrollbar-track {
+    background: #2a2a2a;
+    border-radius: 3px;
+}
+
+.cities-list::-webkit-scrollbar-thumb {
+    background: #4caf50;
+    border-radius: 3px;
+}
+
+.cities-list::-webkit-scrollbar-thumb:hover {
+    background: #45a049;
+}
+
+.city-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background-color: #252525;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    border-left: 3px solid #4caf50;
+}
+
+.city-item:hover {
+    background-color: #2a2a2a;
+    transform: translateX(5px);
+}
+
+.city-name {
+    color: #e0e0e0;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.cities-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    gap: 10px;
+}
+
+.small-spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid #333;
+    border-top-color: #4caf50;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.cities-loading p {
+    color: #888;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.no-cities {
+    text-align: center;
+    padding: 30px;
+    color: #888;
+    font-style: italic;
+}
+
+.no-cities p {
+    margin: 0;
+}
+
+.state-info-section {
+    margin-bottom: 15px;
+}
+
+.detail-text {
+    margin: 8px 0;
+    color: #e0e0e0;
+}
+
+.detail-text strong {
+    color: #4caf50;
+    min-width: 100px;
+    display: inline-block;
+}

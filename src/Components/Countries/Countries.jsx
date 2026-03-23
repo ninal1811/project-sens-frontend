@@ -65,8 +65,10 @@ export default function Countries() {
 
   return (
     <div style={{ padding: "20px" }}>
-    <div style={{ marginBottom: "16px", textAlign: "left" }}>
+    <div style={{ marginBottom: "16px", display: "flex", gap: "10px", justifyContent: "flex-start"}}>
       <Link to="/" className="nav-btn">← Back to Home</Link>
+      <Link to="/States" className="nav-btn">View States</Link>
+      <Link to="/Cities" className="nav-btn">View Cities</Link>
     </div>
       <h1>country data</h1>
       {results === null && <p>Loading...</p>}
