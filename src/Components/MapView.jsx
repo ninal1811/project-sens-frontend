@@ -12,7 +12,7 @@ import InfoPanel from "./InfoPanel";
 import './MapView.css';
 import { COUNTRY_IMAGE_URLS, STATE_IMAGE_URLS, CITY_IMAGE_URLS } from '../constants/imgUrls';
 
-const BASE_URL = window.APP_CONFIG.API_URL || "https://projectsens.pythonanywhere.com";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 // logs latitude and longitude data whenever you click on a new area on the map
 function ClickDebug() {
@@ -242,7 +242,8 @@ export default function MapView() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
-
+  console.log("BASE_URL:", BASE_URL);
+  
   useEffect(() => {
     axios.get(`${BASE_URL}/countries`)
       .then(({ data }) => {

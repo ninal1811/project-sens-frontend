@@ -439,7 +439,7 @@ export default function States() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     
-    const baseURL = import.meta.env.REACT_APP_API_URL || 'https://projectsens.pythonanywhere.com';
+    const baseURL = import.meta.env.VITE_API_URL;
 
     const sortStatesAlphabetically = (statesArray) => {
         if (!statesArray || !Array.isArray(statesArray)) return [];
