@@ -1,0 +1,122 @@
+.countries-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    color: #ffffff;
+  }
+  
+  .countries-title {
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: 600;
+  }
+  
+  .country-list {
+    padding-left: 0;
+    list-style: none;
+    margin: 0;
+  }
+  
+  .country-card {
+    margin-bottom: 1rem;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #1a1a1a;
+  }
+  
+  .country-toggle-btn {
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border: none;
+    background-color: #2d2d2d;
+    color: #ffffff;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+  
+  .country-toggle-btn:hover {
+    background-color: #3d3d3d;
+  }
+  
+  .country-toggle-btn.open {
+    border-radius: 4px 4px 0 0;
+  }
+  
+  .country-toggle-label {
+    text-transform: capitalize;
+  }
+  
+  .country-expand-icon {
+    color: #888;
+  }
+  
+  .country-details {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #333;
+    background-color: #242424;
+    border-radius: 0 0 4px 4px;
+  }
+  
+  .country-detail-text {
+    margin: 8px 0;
+    color: #e0e0e0;
+  }
+  
+  .country-detail-label {
+    color: #4caf50;
+    min-width: 100px;
+    display: inline-block;
+  }
+  
+  .country-capitalize {
+    text-transform: capitalize;
+  }
+  
+  .error-inline-btn {
+    padding: 5px 10px;
+    background: #c62828;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .error-inline-btn:hover {
+    background: #b71c1c;
+  }
+  
+  .loading-block {
+    text-align: center;
+    padding: 40px;
+    color: #888;
+  }
+  
+  .loading-block p {
+    margin-top: 15px;
+  }
+  
+  .empty-state-box {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    border: 1px solid #333;
+  }
+  
+  .empty-state-box p {
+    color: #888;
+    font-size: 16px;
+  }
+  
+  @media (max-width: 600px) {
+    .countries-container {
+      padding: 10px;
+    }
+  }

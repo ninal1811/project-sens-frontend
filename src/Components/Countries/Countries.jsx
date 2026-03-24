@@ -1,47 +1,46 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router'
 import axios from 'axios'
+import './Countries.css';
 
 function CountryCard({ countryData }) {
   const [open, setOpen] = useState(false);
   const { _id, name, capital, nat_dish, pop_dish_1, pop_dish_2 } = countryData || {};
 
   return (
-    <li style={{ marginBottom: "1rem", border: "1px solid #333", borderRadius: "4px", backgroundColor: "#1a1a1a" }}>
+    <li className="country-card">
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        style={{
-          width: "100%",
-          textAlign: "left",
-          padding: "0.75rem 1rem",
-          cursor: "pointer",
-          border: "none",
-          backgroundColor: "#2d2d2d",
-          color: "#ffffff",
-          borderRadius: open ? "4px 4px 0 0" : "4px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          fontWeight: 500,
-          transition: "background-color 0.2s"
-        }}
-        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#3d3d3d"}
-        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#2d2d2d"}
+        className={`country-toggle-btn ${open ? 'open' : ''}`}
       >
-        <span style={{ textTransform: "capitalize" }}>
+        <span className="country-toggle-label">
           {name ?? "Unnamed country"} {_id ? `(${_id})` : ""}
         </span>
-        <span style={{ color: "#888" }}>{open ? "▾" : "▸"}</span>
+        <span className="country-expand-icon">{open ? '▾' : '▸'} </span>
       </button>
       {open && (
-        <div style={{ padding: "0.75rem 1rem", borderTop: "1px solid #333", backgroundColor: "#242424", borderRadius: "0 0 4px 4px" }}>
-          <p style={{ margin: "8px 0", color: "#e0e0e0" }}><strong style={{ color: "#4caf50", minWidth: "100px", display: "inline-block" }}>Code:</strong> {_id ?? "—"}</p>
-          <p style={{ margin: "8px 0", color: "#e0e0e0" }}><strong style={{ color: "#4caf50", minWidth: "100px", display: "inline-block" }}>Name:</strong> <span style={{ textTransform: "capitalize" }}>{name ?? "—"}</span></p>
-          <p style={{ margin: "8px 0", color: "#e0e0e0" }}><strong style={{ color: "#4caf50", minWidth: "100px", display: "inline-block" }}>Capital:</strong> <span style={{ textTransform: "capitalize" }}>{capital ?? "—"}</span></p>
-          <p style={{ margin: "8px 0", color: "#e0e0e0" }}><strong style={{ color: "#4caf50", minWidth: "100px", display: "inline-block" }}>National Dish:</strong> {nat_dish ?? "—"}</p>
-          <p style={{ margin: "8px 0", color: "#e0e0e0" }}><strong style={{ color: "#4caf50", minWidth: "100px", display: "inline-block" }}>Popular Dish 1:</strong> {pop_dish_1 ?? "—"}</p>
-          <p style={{ margin: "8px 0", color: "#e0e0e0" }}><strong style={{ color: "#4caf50", minWidth: "100px", display: "inline-block" }}>Popular Dish 2:</strong> {pop_dish_2 ?? "—"}</p>
+        <div className="country-details">
+        <p className="country-detail-text">
+          <strong className="country-detail-label">Code:</strong> {_id ?? '—'}
+        </p>
+        <p className="country-detail-text">
+          <strong className="country-detail-label">Name:</strong>{' '}
+          <span className="country-capitalize">{name ?? '—'}</span>
+        </p>
+        <p className="country-detail-text">
+          <strong className="country-detail-label">Capital:</strong>{' '}
+          <span className="country-capitalize">{capital ?? '—'}</span>
+        </p>
+        <p className="country-detail-text">
+          <strong className="country-detail-label">National Dish:</strong> {nat_dish ?? '—'}
+        </p>
+        <p className="country-detail-text">
+          <strong className="country-detail-label">Popular Dish 1:</strong> {pop_dish_1 ?? '—'}
+        </p>
+        <p className="country-detail-text">
+          <strong className="country-detail-label">Popular Dish 2:</strong> {pop_dish_2 ?? '—'}
+        </p>
         </div>
       )}
     </li>
@@ -140,19 +139,19 @@ export default function Countries() {
   const displayData = searchResults || (results ? sortCountriesAlphabetically(results) : null);
 
   return (
-    <div style={{ maxWidth: "900px", margin: "0 auto", padding: "20px", minHeight: "100vh", color: "#ffffff" }}>
+    <div className="countries-container">
       <div style={{ marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap", borderBottom: "1px solid #333", paddingBottom: "15px" }}>
         <Link to="/" className="nav-btn-states">← Back to Home</Link>
         <Link to="/States" className="nav-btn-states">View States</Link>
         <Link to="/Cities" className="nav-btn-states">View Cities</Link>
       </div>
 
-      <h1 style={{ marginBottom: "25px", fontSize: "28px", fontWeight: 600 }}>Countries Database</h1>
+      <h1 className="countries-title">Countries Database</h1>
 
       {error && (
         <div style={{ marginBottom: "20px", padding: "15px", backgroundColor: "#ffebee", border: "1px solid #ef5350", borderRadius: "4px", color: "#c62828", display: "flex", alignItems: "center", gap: "15px" }}>
           <strong>Error:</strong> {error}
-          <button onClick={fetchCountries} style={{ padding: "5px 10px", background: "#c62828", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>Retry</button>
+          <button onClick={fetchCountries} className="error-inline-btn">Retry</button>
         </div>
       )}
 
@@ -185,7 +184,7 @@ export default function Countries() {
       </div>
 
       {isLoading && (
-        <div style={{ textAlign: "center", padding: "40px", color: "#888" }}>
+        <div className="loading-block">
           <div className="spinner"></div>
           <p style={{ marginTop: "15px" }}>Loading countries...</p>
         </div>
@@ -203,8 +202,8 @@ export default function Countries() {
       )}
 
       {!isLoading && displayData?.length === 0 && !searchQuery && (
-        <div style={{ textAlign: "center", padding: "50px 20px", backgroundColor: "#1a1a1a", borderRadius: "8px", border: "1px solid #333" }}>
-          <p style={{ color: "#888", fontSize: "16px" }}>No countries found.</p>
+        <div className="empty-state-box">
+          <p>No countries found.</p>
         </div>
       )}
     </div>
