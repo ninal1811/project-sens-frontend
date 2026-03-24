@@ -94,5 +94,69 @@ export const CITY_IMAGE_URLS = {
       Atlanta: {
         restaurant_name: 'South City Kitchen Midtown',
         image: "https://popmenucloud.com/cdn-cgi/image/width%3D1200%2Cheight%3D1200%2Cfit%3Dscale-down%2Cformat%3Dauto%2Cquality%3D60/drkntvsg/8b131c1b-2179-4307-a6cc-e810141713b4.jpg"
-      }
+      },
+      Singapore: {
+        restaurant_name: "Lau Pa Sat",
+        image: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Lau_Pa_Sat_Singapore_2.jpg"
+      },
+      Visakhapatnam: {
+        restaurant_name: "Dharani",
+        image: "https://b.zmtcdn.com/data/pictures/7/2800067/b463788e345d70b9241d8fa9eeec9dc0.jpg?fit=around|960:500&crop=960:500;*,*"
+      },
+      Vijayawada: {
+        restaurant_name: "Sweet Magic",
+        image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/d8/dc/83/new-branch-at-ntr-university.jpg?w=900&h=500&s=1"
+      },
+      Tirupati: {
+        restaurant_name: "Hotel Mayura",
+        image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/a7/9b/27/hotel-mayura.jpg?w=500&h=-1&s=1"
+      },
+        Bengaluru: {
+        restaurant_name: "Vidyarthi Bhavan",
+        image: "https://images.happycow.net/venues/1024/82/23/hcmp82234_2059349.jpeg"
+      },
+      Mysuru: {
+        restaurant_name: "RRR",
+        image: "https://content.jdmagicbox.com/comp/mysore/g7/0821px821.x821.121213193039.c9g7/catalogue/hotel-rrr-mysore-mysore-1hqgld5j00.jpg"
+      },
+      Mangaluru: {
+        restaurant_name: "Machali",
+        image: "https://hblimg.mmtcdn.com/content/hubble/img/manglore/mmt/activities/m_Machali%20Restaurant-3_p_541_541.jpg"
+      },
+      Kochi: {
+    restaurant_name: "Paragon",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2b/d5/92/9e/caption.jpg?w=900&h=500&s=1"
+  },
+  Thiruvananthapuram: {
+    restaurant_name: "Villa Maya",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0b/d5/17/ad/villa-maya.jpg?w=500&h=-1&s=1"
+  },
+  Kozhikode: {
+    restaurant_name: "Paragon",
+    image: "https://lh3.googleusercontent.com/gps-cs-s/AHVAweo80ZmHu9cjfHXAzrcruUqNd7pdalMyHzAxBX51-6CCr9NRXXFxtV8mOLvk5b6_3Dc9PbCA4xZOyoaFPLV_puK7Vh6Ssbeb7eXZT7f12xTRP7KZ5DhXxDrYVCzN3D7T-FskeqXHa8z0QaMy=s1360-w1360-h1020-rw"
+  },
+  Chennai: {
+    restaurant_name: "Murugan Idli Shop",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/07/08/7f/5b/murugan-idli-shop.jpg?w=500&h=-1&s=1"
+  },
+  Coimbatore: {
+    restaurant_name: "Annapoorna",
+    image: "https://ikonbyannapoorna.com/images/kove.webp"
+  },
+  Madurai: {
+    restaurant_name: "Amma Mess",
+    image: "https://b.zmtcdn.com/data/pictures/8/18696868/6805e682bb064a8544dceaa0a60b94fe.jpg?fit=around|960:500&crop=960:500;*,*"
+  },
+  Hyderabad: {
+    restaurant_name: "Shah Ghouse",
+    image: "https://dineout-media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/DINEOUT_ALL_RESTAURANTS/IMAGES/RESTAURANT_IMAGE_SERVICE/2024/5/17/d27b4c14-2428-467e-bc25-fd9fe58c4b8d_20240517T203148946.jpg"
+  },
+  Warangal: {
+    restaurant_name: "Shankar Vilas",
+    image: "https://content.jdmagicbox.com/comp/warangal/j6/9999px870.x870.170922082614.l1j6/catalogue/shankar-vilas-mgm-warangal-hotels-rc27pul5w5.jpg"
+  },
+  Khammam: {
+    restaurant_name: "Sri Krishna Vilas",
+    image: "https://content.jdmagicbox.com/v2/comp/khammam/e5/9999p8742.8742.221219002255.f4e5/catalogue/lord-krishna-temple-gandhi-nagar-khammam-temples-hj5QmtDokt.jpg"
+  }
   };
