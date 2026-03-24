@@ -72,7 +72,7 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities }) {
             if (open && !citiesLoaded && !isLoadingCities) {
                 setIsLoadingCities(true);
                 try {
-                    const citiesData = await onViewCities(state_code, country_code);
+                    const citiesData = await onViewCities(state_code);
                     setCities(citiesData || []);
                     setCitiesLoaded(true);
                 } catch (error) {
@@ -85,12 +85,12 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities }) {
             }
         };
         loadCities();
-    }, [open, citiesLoaded, isLoadingCities, state_code, country_code, onViewCities]);
+    }, [open, citiesLoaded, isLoadingCities, state_code, onViewCities]);
 
     useEffect(() => {
         setCitiesLoaded(false);
         setCities([]);
-    }, [state_code, country_code]);
+    }, [state_code]);
 
     if (isEditing) {
         return (
@@ -511,20 +511,42 @@ export default function States() {
             const response = await axios.get(`${baseURL}/cities/state/${stateCode}`);
             console.log("Cities response:", response.data);
             
-            if (response.data) {
-                if (Array.isArray(response.data)) {
-                    return response.data;
-                } else if (response.data.cities && Array.isArray(response.data.cities)) {
-                    return response.data.cities;
-                } else if (response.data.Cities && Array.isArray(response.data.Cities)) {
-                    return response.data.Cities;
-                } else if (response.data.results && Array.isArray(response.data.results)) {
-                    return response.data.results;
-                } else {
-                    return [];
-                }
+            if (!response.data) {
+                console.error("No data received from cities");
+                return [];
             }
-            return [];
+
+            let citiesArray = [];
+            if (response.data.Cities && typeof response.data.Cities === 'object') {
+                console.log("Found Cities object:", response.data.Cities);
+                citiesArray = Object.values(response.data.Cities);
+                console.log("Converted to array:", citiesArray);
+            } else if (typeof response.data === 'object' && !Array.isArray(response.data)) {
+                const possibleCities = Object.values(response.data);
+                if (possibleCities.length > 0 && possibleCities[0] && typeof possibleCities[0] === 'object') {
+                    citiesArray = possibleCities;
+                }
+            } else if (Array.isArray(response.data)) {
+                citiesArray = response.data;
+            }
+            console.log("Extracted cities array:", citiesArray);
+            console.log("Number of cities found:", citiesArray.length);
+            
+            const formattedCities = citiesArray.map(city => {
+                if (city && typeof city === 'object') {
+                    const cityName = city.city || city.name || city.city_name || 'Unnamed City';
+                    return {
+                        name: cityName,
+                        ...city
+                    };
+                } else if (typeof city === 'string') {
+                    return { name: city };
+                }
+                return null;
+            }).filter(city => city !== null);
+            
+            console.log("Formatted cities:", formattedCities);
+            return formattedCities;    
         } catch (err) {
             console.error("Failed to fetch cities for state:", err);
             return [];
