@@ -13,6 +13,26 @@ import './MapView.css';
 import { COUNTRY_IMAGE_URLS, STATE_IMAGE_URLS, CITY_IMAGE_URLS } from '../constants/imgUrls';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
+
+// Helper function to get dietary icons
+const getDietaryIcons = (dietaryArray) => {
+  if (!dietaryArray) return '';
+  
+  const iconMap = {
+    vegetarian: '🌱',
+    vegan: '🥬',
+    meat: '🥩',
+    seafood: '🐟'
+  };
+  
+  // If array, show all icons
+  if (Array.isArray(dietaryArray)) {
+    return dietaryArray.map(d => iconMap[d] || '').join(' ');
+  }
+  
+  // If single value, show one icon
+  return iconMap[dietaryArray] || '';
+};
 // logs latitude and longitude data whenever you click on a new area on the map
 function ClickDebug() {
   useMapEvents({
@@ -174,17 +194,17 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
             ${natImg ? `
               <div style="text-align:center;margin-bottom:6px">
                 <img src="${natImg}" style="width:100%;border-radius:6px" />
-                <div style="font-size:0.75rem;color:#666;margin-top:2px">National Dish: ${backendMatch.nat_dish}</div>
+                <div style="font-size:0.75rem;color:#666;margin-top:2px">National Dish: ${backendMatch.nat_dish} ${getDietaryIcons(backendMatch.nat_dish_dietary)}</div>
               </div>` : ''}
             ${(pop1Img || pop2Img) ? `
               <div style="display:flex;gap:6px;margin-bottom:8px">
                 ${pop1Img ? `<div style="flex:1;text-align:center">
                   <img src="${pop1Img}" style="width:100%;border-radius:6px" />
-                  <div style="font-size:0.75rem;color:#666;margin-top:2px">Popular Dish: ${backendMatch.pop_dish_1}</div>
+                  <div style="font-size:0.75rem;color:#666;margin-top:2px">Popular Dish: ${backendMatch.pop_dish_1} ${getDietaryIcons(backendMatch.pop_dish_1_dietary)}</div>
                 </div>` : ''}
                 ${pop2Img ? `<div style="flex:1;text-align:center">
                   <img src="${pop2Img}" style="width:100%;border-radius:6px" />
-                  <div style="font-size:0.75rem;color:#666;margin-top:2px">Popular Dish: ${backendMatch.pop_dish_2}</div>
+                  <div style="font-size:0.75rem;color:#666;margin-top:2px">Popular Dish: ${backendMatch.pop_dish_2} ${getDietaryIcons(backendMatch.pop_dish_2_dietary)}</div>
                 </div>` : ''}
               </div>` : ''}
             <div style="font-weight:700;text-transform:capitalize;margin-bottom:4px">${backendMatch.name}</div>
