@@ -38,6 +38,22 @@ export default function Legend({ showStates }) {
           </div>
         </>
       )}
+
+      {/* Dietary Icons */}
+      <div style={{ 
+        borderLeft: "1px solid #555", 
+        paddingLeft: "1rem", 
+        marginLeft: "0.5rem",
+        display: "flex",
+        gap: "1rem",
+        flexWrap: "wrap"
+      }}>
+        <span style={{ fontWeight: 600 }}>Dietary:</span>
+        <span>🌱 Vegetarian</span>
+        <span>🥩 Meat</span>
+        <span>🐟 Seafood</span>
+        <span>🥬 Vegan</span>
+      </div>
     </div>
   );
 }
