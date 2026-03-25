@@ -13,7 +13,6 @@ import './MapView.css';
 import { COUNTRY_IMAGE_URLS, STATE_IMAGE_URLS, CITY_IMAGE_URLS } from '../constants/imgUrls';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
-
 // logs latitude and longitude data whenever you click on a new area on the map
 function ClickDebug() {
   useMapEvents({
@@ -93,7 +92,7 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
 }
 
 // map logic component
-function MapController({ visibleCities, onCountryClick, backendCountriesRef, backendIds, showStates, selectedCountry, onStateClick, backendStatesRef, backendStatesIds }) {
+function MapController({ visibleCities, onCountryClick, backendCountriesRef, backendIds, showStates, selectedCountry, onStateClick, backendStatesRef, backendStatesIds, onBackToCountries }) {
   const map = useMap();
 
   useEffect(() => {
@@ -114,6 +113,29 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
       return () => observer.disconnect();
     }
   }, [map]);
+
+  // Click on map background (ocean/gray areas) to go back to country view
+  useEffect(() => {
+    if (!showStates) return;
+
+    const handleMapClick = (e) => {
+      // Check if the click target is the map container (background), not a feature
+      const clickedElement = e.originalEvent.target;
+      const isMapBackground = clickedElement.classList.contains('leaflet-container') || 
+                              clickedElement.classList.contains('leaflet-tile') ||
+                              clickedElement.tagName === 'IMG'; // Tile images
+      
+      if (isMapBackground) {
+        onBackToCountries();
+      }
+    };
+
+    map.on('click', handleMapClick);
+
+    return () => {
+      map.off('click', handleMapClick);
+    };
+  }, [map, showStates, onBackToCountries]);
 
   const getIso3 = useCallback((feature) => {
     return feature?.properties?.["ISO3166-1-Alpha-3"] || null;
@@ -188,6 +210,9 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
         if (!coords) return null;
 
         const cityImg = CITY_IMAGE_URLS[city.city];
+        
+        // DEBUG
+        console.log('CITY:', city.city, 'hasCityImg:', !!cityImg, 'cityImg:', cityImg);
 
         return (
           <CircleMarker
@@ -242,8 +267,7 @@ export default function MapView() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
-  console.log("BASE_URL:", BASE_URL);
-  
+
   useEffect(() => {
     axios.get(`${BASE_URL}/countries`)
       .then(({ data }) => {
@@ -534,6 +558,7 @@ export default function MapView() {
             onStateClick={handleStateClick}
             backendStatesRef={backendStatesRef}
             backendStatesIds={backendStatesIds}
+            onBackToCountries={handleBackToCountries}
           />
         </MapContainer>
       </div>
