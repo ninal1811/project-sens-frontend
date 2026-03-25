@@ -5,7 +5,9 @@ exports[`InfoPanel > matches snapshot with back button visible 1`] = `
   <div
     style="display: flex; justify-content: space-between; align-items: center;"
   >
-    <button>
+    <button
+      style="padding: 10px 20px; background-color: rgb(30, 144, 255); color: white; border: medium; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"
+    >
       ← Back to World
     </button>
   </div>
@@ -50,7 +52,9 @@ exports[`InfoPanel > matches snapshot with country and state selected 1`] = `
   <div
     style="display: flex; justify-content: space-between; align-items: center;"
   >
-    <button>
+    <button
+      style="padding: 10px 20px; background-color: rgb(30, 144, 255); color: white; border: medium; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"
+    >
       ← Back to World
     </button>
   </div>

@@ -8,4 +8,7 @@ export default defineConfig({
     globals: true,
     setupFiles: './src/test/setup.js',
   },
+  define: {
+    'import.meta.env.VITE_API_URL': JSON.stringify('https://projectsens.pythonanywhere.com')
+  }
 })

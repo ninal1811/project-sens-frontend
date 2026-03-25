@@ -25,13 +25,9 @@ reinstall: clean dev_env
 env: FORCE
 	cp .env.example .env
 
-# Run tests (currently just States)
+# Run tests
 tests: FORCE
 	npm test
-
-# Watch mode for development to run tests continuously
-test_watch: FORCE
-	npm run test:watch
 
 # Build the project
 build: FORCE

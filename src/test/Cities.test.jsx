@@ -29,7 +29,7 @@ describe('Cities Component', () => {
         </MemoryRouter>
       )
       
-      expect(screen.getByText('Loading...')).toBeInTheDocument()
+      expect(screen.getByText('Loading cities...')).toBeInTheDocument()
     })
 
     it('shows heading while loading', () => {
@@ -41,7 +41,7 @@ describe('Cities Component', () => {
         </MemoryRouter>
       )
       
-      expect(screen.getByText('city data')).toBeInTheDocument()
+      expect(screen.getByText('Cities Database')).toBeInTheDocument()
     })
 
     it('shows back to home link', () => {

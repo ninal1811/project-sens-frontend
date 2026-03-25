@@ -62,6 +62,27 @@ exports[`MapView Snapshots > matches snapshot with all components rendered 1`] =
           No data
         </span>
       </div>
+      <div
+        style="border-left: 1px solid rgb(85, 85, 85); padding-left: 1rem; margin-left: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap;"
+      >
+        <span
+          style="font-weight: 600;"
+        >
+          Dietary:
+        </span>
+        <span>
+          🌱 Vegetarian
+        </span>
+        <span>
+          🥩 Meat
+        </span>
+        <span>
+          🐟 Seafood
+        </span>
+        <span>
+          🥬 Vegan
+        </span>
+      </div>
     </div>
     <div
       class="map-wrapper"
@@ -143,6 +164,27 @@ exports[`MapView Snapshots > matches snapshot with countries loaded 1`] = `
           No data
         </span>
       </div>
+      <div
+        style="border-left: 1px solid rgb(85, 85, 85); padding-left: 1rem; margin-left: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap;"
+      >
+        <span
+          style="font-weight: 600;"
+        >
+          Dietary:
+        </span>
+        <span>
+          🌱 Vegetarian
+        </span>
+        <span>
+          🥩 Meat
+        </span>
+        <span>
+          🐟 Seafood
+        </span>
+        <span>
+          🥬 Vegan
+        </span>
+      </div>
     </div>
     <div
       class="map-wrapper"
@@ -222,6 +264,27 @@ exports[`MapView Snapshots > matches snapshot with initial load (no data) 1`] = 
         />
         <span>
           No data
+        </span>
+      </div>
+      <div
+        style="border-left: 1px solid rgb(85, 85, 85); padding-left: 1rem; margin-left: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap;"
+      >
+        <span
+          style="font-weight: 600;"
+        >
+          Dietary:
+        </span>
+        <span>
+          🌱 Vegetarian
+        </span>
+        <span>
+          🥩 Meat
+        </span>
+        <span>
+          🐟 Seafood
+        </span>
+        <span>
+          🥬 Vegan
         </span>
       </div>
     </div>

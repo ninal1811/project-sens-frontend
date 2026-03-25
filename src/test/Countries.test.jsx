@@ -83,4 +83,88 @@ describe('Countries Component', () => {
       })
     })
   })
+  // Group 3: API Integration Errors
+  describe('API Integration Errors', () => {
+    it('displays error message when API fails', async () => {
+      axios.get.mockRejectedValue(new Error('Network error'))
+      
+      renderWithRouter(<Countries />)
+      
+      await waitFor(() => {
+        expect(screen.getByText(/Network error/)).toBeInTheDocument()
+      })
+    })
+
+    it('shows retry button on error', async () => {
+      axios.get.mockRejectedValue(new Error('Failed'))
+      
+      renderWithRouter(<Countries />)
+      
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: 'Retry' })).toBeInTheDocument()
+      })
+    })
+
+    it('retries API call when retry button clicked', async () => {
+      const user = userEvent.setup()
+      axios.get.mockRejectedValueOnce(new Error('Failed'))
+        .mockResolvedValueOnce({ data: { countries: {} } })
+      
+      renderWithRouter(<Countries />)
+      
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: 'Retry' })).toBeInTheDocument()
+      })
+      
+      await user.click(screen.getByRole('button', { name: 'Retry' }))
+      
+      expect(axios.get).toHaveBeenCalledTimes(2)
+    })
+  })
+  // Group 7: Multiple Countries
+  describe('Multiple Countries', () => {
+    it('displays multiple countries correctly', async () => {
+      const mockCountries = {
+        USA: { _id: 'USA', name: 'United States', capital: 'Washington DC' },
+        MAR: { _id: 'MAR', name: 'Morocco', capital: 'Rabat' },
+        JPN: { _id: 'JPN', name: 'Japan', capital: 'Tokyo' }
+      }
+      
+      axios.get.mockResolvedValue({ data: { countries: mockCountries } })
+      
+      renderWithRouter(<Countries />)
+      
+      await waitFor(() => {
+        expect(screen.getByText('United States (USA)')).toBeInTheDocument()
+      })
+      
+      expect(screen.getByText('Morocco (MAR)')).toBeInTheDocument()
+      expect(screen.getByText('Japan (JPN)')).toBeInTheDocument()
+    })
+
+    it('can expand multiple countries independently', async () => {
+      const user = userEvent.setup()
+      const mockCountries = {
+        USA: { _id: 'USA', name: 'United States', capital: 'Washington DC' },
+        MAR: { _id: 'MAR', name: 'Morocco', capital: 'Rabat' }
+      }
+      
+      axios.get.mockResolvedValue({ data: { countries: mockCountries } })
+      
+      renderWithRouter(<Countries />)
+      
+      await waitFor(() => {
+        expect(screen.getByText('United States (USA)')).toBeInTheDocument()
+      })
+      
+      const usaButton = screen.getByRole('button', { name: /United States/ })
+      const marButton = screen.getByRole('button', { name: /Morocco/ })
+      
+      await user.click(usaButton)
+      await user.click(marButton)
+      
+      expect(screen.getByText('Washington DC')).toBeInTheDocument()
+      expect(screen.getByText('Rabat')).toBeInTheDocument()
+    })
+  })
 })
