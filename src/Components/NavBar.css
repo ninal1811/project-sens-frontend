@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+/* ── Base ── */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  height: 60px;
+  background: #0c0c0e;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  box-shadow: 0 2px 24px rgba(0,0,0,0.45);
+}
+
+.navbar-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* ── Logo ── */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.navbar-logo-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.navbar-logo-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.navbar-logo-accent {
+  color: #3b9eff;
+}
+
+/* ── Tagline ── */
+.navbar-tagline {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: #555;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  padding-left: 0.75rem;
+  border-left: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ── Nav links ── */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.navbar-link {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #888;
+  text-decoration: none;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.navbar-link:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.06);
+}
+
+.navbar-link.active {
+  color: #fff;
+  font-weight: 500;
+  background: rgba(59,158,255,0.12);
+}
+
+/* ── Hamburger (mobile) ── */
+.navbar-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: auto;
+}
+
+.navbar-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #ccc;
+  border-radius: 2px;
+  transition: background 0.15s;
+}
+
+.navbar-hamburger:hover span {
+  background: #fff;
+}
+
+/* ── Mobile ── */
+@media (max-width: 680px) {
+  .navbar-tagline {
+    display: none;
+  }
+
+  .navbar-hamburger {
+    display: flex;
+  }
+
+  .navbar-links {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: #0c0c0e;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    padding: 0.75rem 1.5rem 1rem;
+    gap: 0.25rem;
+    align-items: flex-start;
+  }
+
+  .navbar-links.open {
+    display: flex;
+  }
+}
+
+/* ── Learn More button ── */
+.navbar-learn-more {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fff;
+  background: rgba(59,158,255,0.15);
+  border: 1px solid rgba(59,158,255,0.35);
+  padding: 0.35rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+  margin-left: 0.25rem;
+}
+
+.navbar-learn-more:hover {
+  background: rgba(59,158,255,0.28);
+  border-color: rgba(59,158,255,0.6);
+}

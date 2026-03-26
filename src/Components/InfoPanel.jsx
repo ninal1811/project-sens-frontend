@@ -3,8 +3,10 @@ import { STATE_IMAGE_URLS } from '../constants/imgUrls';
 export default function InfoPanel({ selectedCountry, selectedState, showStates, onBackToCountries }) {
   if (!selectedCountry) {
     return (
-      <div style={{ color: "#666" }}>
-        Click a <span style={{ color: "#1e90ff", fontWeight: 700 }}>blue</span> country to see details.
+      <div className="info-empty">
+        <div className="info-empty-text">
+          Click a <span className="info-empty-highlight">highlighted</span> country to explore its food culture
+        </div>
       </div>
     );
   }
