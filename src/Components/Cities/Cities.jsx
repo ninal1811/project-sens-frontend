@@ -3,23 +3,61 @@ import { Link } from 'react-router'
 import axios from 'axios'
 import './Cities.css'
 
-function CityCard({ cityData }) {
+function CityCard({ cityData, onDelete }) {
   const [open, setOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const { city, state_code, country_code, rec_restaurant } = cityData || {};
+
+  const handleDelete = async () => {
+    if (window.confirm(`Are you sure you want to delete ${city}?`)) {
+      setIsDeleting(true);
+      try {
+          await onDelete(cityData);
+      } catch (error) {
+          console.error("Delete failed:", error);
+      } finally {
+          setIsDeleting(false);
+      }
+    }
+  };
 
   return (
     <li className="city-card">
-      <button
-        type="button"
-        onClick={() => setOpen((prev) => !prev)}
-        className={`city-toggle-btn ${open ? 'open' : ''}`}
-      >
-        <span>
-          {city ?? "Unnamed city"} {state_code ? `(${state_code})` : ""}
-          <span className="city-country-code">{country_code}</span>
-        </span>
-        <span className="city-expand-icon">{open ? "▾" : "▸"}</span>
-      </button>
+      <div className='city-card-header'>
+        <button
+          type="button"
+          onClick={() => setOpen((prev) => !prev)}
+          className={`city-toggle-btn ${open ? 'open' : ''}`}
+        >
+          <span>
+            {city ?? "Unnamed city"} {state_code ? `(${state_code})` : ""}
+            <span className="city-country-code">{country_code}</span>
+          </span>
+          <span className="city-expand-icon">{open ? "▾" : "▸"}</span>
+        </button>
+        <button
+          onClick={handleDelete}
+          disabled={isDeleting}
+          style={{
+            padding: "0.75rem 1rem",
+            background: "#f44336",
+            color: "white",
+            border: "none",
+            borderRadius: "0 4px 4px 0",
+            cursor: isDeleting ? "not-allowed" : "pointer",
+            fontSize: "18px",
+            fontWeight: "bold",
+            opacity: isDeleting ? 0.7 : 1,
+            ransition: "background-color 0.2s"
+            }}
+            onMouseEnter={(e) => !isDeleting && (e.currentTarget.style.backgroundColor = "#d32f2f")}
+            onMouseLeave={(e) => !isDeleting && (e.currentTarget.style.backgroundColor = "#f44336")}
+            title="Delete city"
+          >
+            {isDeleting ? "..." : "×"}
+        </button>
+      </div>
+
       {open && (
        <div className="city-details">
        <p className="city-detail-text">
@@ -44,6 +82,7 @@ export default function Cities() {
   const [results, setResults] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -129,22 +168,43 @@ export default function Cities() {
     setSearchResults(null);
   };
 
+  const deleteCity = async (city) => {
+    try {
+        const response = await axios.delete(`${baseURL}/cities/${city}`);
+
+        if (response.status === 200) {
+            alert('City deleted successfully!');
+            await fetchCities();
+            
+            if (selectedCity && selectedCity.state_code === city.state_code && 
+                selectedCity.country_code === city.country_code) {
+                setSelectedCity(null);
+            }
+        }
+    } catch (err) {
+        console.error("Failed to delete city:", err);
+        const errorMessage = err.response?.data?.message || err.response?.data?.error || 'Failed to delete city. Please try again.';
+        alert(errorMessage);
+        throw err;
+    }
+};
+
   const displayData = searchResults || (results ? sortCitiesAlphabetically(results) : null);
 
   return (
-    <div className="cities-container-page">
-      <div style={{ marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap", borderBottom: "1px solid #333", paddingBottom: "15px" }}>
-        <Link to="/" className="nav-btn-states">← Back to Home</Link>
-        <Link to="/Countries" className="nav-btn-states">View Countries</Link>
-        <Link to="/States" className="nav-btn-states">View States</Link>
+    <div className="cities-container">
+      <div className='cities-nav'>
+        <Link to="/" className="nav-btn-cities">← Back to Home</Link>
+        <Link to="/Countries" className="nav-btn-cities">View Countries</Link>
+        <Link to="/States" className="nav-btn-cities">View States</Link>
       </div>
 
-      <h1 className="cities-page-title">Cities Database</h1>
+      <h1 className="cities-title">Cities Database</h1>
 
       {error && (
-        <div style={{ marginBottom: "20px", padding: "15px", backgroundColor: "#ffebee", border: "1px solid #ef5350", borderRadius: "4px", color: "#c62828", display: "flex", alignItems: "center", gap: "15px" }}>
+        <div className='error-container'>
           <strong>Error:</strong> {error}
-          <button onClick={fetchCities} className="error-inline-btn">Retry</button>
+          <button onClick={fetchCities} className="retry-btn">Retry</button>
         </div>
       )}
 
@@ -177,21 +237,25 @@ export default function Cities() {
       </div>
 
       {isLoading && (
-        <div className="loading-block">
+        <div className="loading-container">
           <div className="spinner"></div>
           <p>Loading cities...</p>
         </div>
       )}
 
       {displayData && displayData.length > 0 && (
-        <ul className="city-list-page">
-          {displayData.map((cityObj, idx) => (
-            <CityCard
-              cityData={cityObj}
-              key={`${cityObj?.city ?? "no-city"}-${idx}`}
-            />
-          ))}
-        </ul>
+        <>
+          <div className='stats-display'></div>
+          <ul className="city-list">
+            {displayData.map((cityObj, idx) => (
+              <CityCard
+                cityData={cityObj}
+                key={`${cityObj?.city ?? "no-city"}-${idx}`}
+                onDelete={deleteCity}
+              />
+            ))}
+          </ul>
+        </>
       )}
 
       {!isLoading && displayData?.length === 0 && !searchQuery && (
