@@ -165,6 +165,47 @@
   background: #b71c1c;
 }
 
+.add-form-container {
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid #4caf50;
+  border-radius: 8px;
+  background-color: #1a2a1a;
+}
+
+.add-form-title {
+  margin: 0 0 15px 0;
+  color: #4caf50;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.empty-city {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.empty-text {
+  color: #888;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
 .stats-display {
   display: flex;
   justify-content: space-between;
