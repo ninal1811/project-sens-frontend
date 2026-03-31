@@ -388,9 +388,9 @@ export default function Cities() {
     }
   };
 
-  const deleteCity = async (city) => {
+  const deleteCity = async (cityData) => {
     try {
-        const response = await axios.delete(`${baseURL}/cities/${city}`);
+        const response = await axios.delete(`${baseURL}/cities/${cityData.city}`);
 
         if (response.status === 200) {
             alert('City deleted successfully!');
@@ -584,11 +584,11 @@ export default function Cities() {
             <div className='selected-details'>
               <p className='detail-item'>
                 <strong className='detail-label'>Country Code:</strong> 
-                {selectedState.country_code}
+                {selectedCity.country_code}
               </p>
               <p className='detail-item'>
                 <strong className='detail-label'>State Code:</strong> 
-                {selectedState.state_code}
+                {selectedCity.state_code}
               </p>
             </div>
           </div>

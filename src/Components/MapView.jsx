@@ -7,7 +7,7 @@ import countriesData from "../data/countries.json";
 import statesData from "../data/states.json";
 // city marker data: lat and long coordinates
 import citiesCoords from "../data/cities.json";
-import './Legend.css';
+import Legend from "./Legend";
 import InfoPanel from "./InfoPanel";
 import './MapView.css';
 import { COUNTRY_IMAGE_URLS, STATE_IMAGE_URLS, CITY_IMAGE_URLS } from '../constants/imgUrls';
