@@ -1,0 +1,76 @@
+.dietary-icons-section {
+    border-left: 1px solid #555;
+    padding-left: 1rem;
+    margin-left: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .dietary-label {
+    font-weight: 600;
+  }
+  /* Legend Container */
+.legend-container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(30, 30, 30, 0.9);
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.85rem;
+  }
+  
+  .legend-title {
+    font-weight: 700;
+  }
+  
+  /* Legend Items */
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  
+  .legend-box {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+  }
+  
+  .legend-box-country {
+    background: #1e90ff;
+    opacity: 0.7;
+  }
+  
+  .legend-box-no-data {
+    background: #999;
+    opacity: 0.4;
+  }
+  
+  .legend-box-state {
+    background: #0d47a1;
+  }
+  
+  .legend-box-city {
+    background: #ff9900;
+    border-radius: 50%;
+  }
+  
+  /* Dietary Icons Section */
+  .dietary-icons-section {
+    border-left: 1px solid #555;
+    padding-left: 1rem;
+    margin-left: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .dietary-label {
+    font-weight: 600;
+  }

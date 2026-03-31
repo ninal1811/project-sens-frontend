@@ -1,54 +1,37 @@
+import './Legend.css';
+
 export default function Legend({ showStates }) {
   return (
-    <div style={{
-      display: "flex",
-      gap: "1rem",
-      flexWrap: "wrap",
-      alignItems: "center",
-      padding: "0.75rem 1rem",
-      marginBottom: "0.5rem",
-      background: "rgba(30, 30, 30, 0.9)",
-      border: "1px solid #444",
-      borderRadius: "8px",
-      color: "#fff",
-      fontSize: "0.85rem",
-    }}>
-      <div style={{ fontWeight: 700 }}>Legend:</div>
+    <div className="legend-container">
+      <div className="legend-title">Legend:</div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-        <div style={{ width: 14, height: 14, borderRadius: 2, background: "#1e90ff", opacity: 0.7 }} />
+      <div className="legend-item">
+        <div className="legend-box legend-box-country" />
         <span>Country in database</span>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-        <div style={{ width: 14, height: 14, borderRadius: 2, background: "#999", opacity: 0.4 }} />
+      <div className="legend-item">
+        <div className="legend-box legend-box-no-data" />
         <span>No data</span>
       </div>
 
       {showStates && (
         <>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-            <div style={{ width: 14, height: 14, borderRadius: 2, background: "#0d47a1" }} />
+          <div className="legend-item">
+            <div className="legend-box legend-box-state" />
             <span>State in database</span>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-            <div style={{ width: 14, height: 14, borderRadius: "50%", background: "#ff9900" }} />
+          <div className="legend-item">
+            <div className="legend-box legend-box-city" />
             <span>City</span>
           </div>
         </>
       )}
 
       {/* Dietary Icons */}
-      <div style={{ 
-        borderLeft: "1px solid #555", 
-        paddingLeft: "1rem", 
-        marginLeft: "0.5rem",
-        display: "flex",
-        gap: "1rem",
-        flexWrap: "wrap"
-      }}>
-        <span style={{ fontWeight: 600 }}>Dietary:</span>
+      <div className="dietary-icons-section">
+        <span className="dietary-label">Dietary:</span>
         <span>🌱 Vegetarian</span>
         <span>🥩 Meat</span>
         <span>🐟 Seafood</span>
