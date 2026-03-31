@@ -107,3 +107,83 @@
 .mapview-root {
   width: 100%;
 }
+
+/* Map Container */
+.map-container {
+  height: 100%;
+  width: 100%;
+}
+
+/* Country/State Popup Styles */
+.popup-container {
+  min-width: 260px;
+}
+
+.popup-image-container {
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.popup-image {
+  width: 100%;
+  border-radius: 6px;
+}
+
+.popup-dish-label {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 2px;
+}
+
+.popup-dishes-grid {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.popup-dish-item {
+  flex: 1;
+  text-align: center;
+}
+
+.popup-country-name {
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 4px;
+}
+
+/* State Popup Styles */
+.state-popup-container {
+  min-width: 250px;
+}
+
+.state-popup-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-transform: capitalize;
+}
+
+/* City Popup Styles */
+.city-popup-container {
+  min-width: 240px;
+}
+
+.city-popup-image-container {
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.city-popup-image {
+  width: 100%;
+  border-radius: 6px;
+}
+
+.city-popup-restaurant-label {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 2px;
+}
+
+.city-popup-name {
+  font-weight: 700;
+}

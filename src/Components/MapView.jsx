@@ -8,6 +8,7 @@ import statesData from "../data/states.json";
 // city marker data: lat and long coordinates
 import citiesCoords from "../data/cities.json";
 import Legend from "./Legend";
+import './Legend.css';
 import InfoPanel from "./InfoPanel";
 import './MapView.css';
 import { COUNTRY_IMAGE_URLS, STATE_IMAGE_URLS, CITY_IMAGE_URLS } from '../constants/imgUrls';
@@ -87,18 +88,18 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
 
         const _stateCities = visibleCities.filter(city => city.state_code === stateCode);
         const stateImg = STATE_IMAGE_URLS[stateCode];
-        const html = `
-          <div style="min-width: 250px">
-            ${stateImg ? `
-              <div style="text-align:center;margin-bottom:6px">
-                <img src="${stateImg.image}" style="width:100%;border-radius:6px" />
-                <div style="font-size:0.75rem;color:#666;margin-top:2px">${stateImg.food_name}</div>
-              </div>` : ''}
-            <div style="font-weight: 700; font-size: 1.1rem; text-transform: capitalize">
-              ${backendMatch.name} (${backendMatch.state_code})
+          const html = `
+            <div class="state-popup-container">
+              ${stateImg ? `
+                <div class="popup-image-container">
+                  <img src="${stateImg.image}" class="popup-image" />
+                  <div class="popup-dish-label">${stateImg.food_name}</div>
+                </div>` : ''}
+              <div class="state-popup-name">
+                ${backendMatch.name} (${backendMatch.state_code})
+              </div>
             </div>
-          </div>
-        `;
+`;
         layer.bindPopup(html).openPopup();
       }
     });
@@ -188,26 +189,25 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
         const natImg = backendMatch.image_url || (typeof imgs === 'object' ? imgs.nat_dish : imgs) || '';
         const pop1Img = typeof imgs === 'object' ? imgs.pop_dish_1 : '';
         const pop2Img = typeof imgs === 'object' ? imgs.pop_dish_2 : '';
-
         const html = `
-          <div style="min-width:260px">
+          <div class="popup-container">
             ${natImg ? `
-              <div style="text-align:center;margin-bottom:6px">
-                <img src="${natImg}" style="width:100%;border-radius:6px" />
-                <div style="font-size:0.75rem;color:#666;margin-top:2px">National Dish: ${backendMatch.nat_dish} ${getDietaryIcons(backendMatch.nat_dish_dietary)}</div>
+              <div class="popup-image-container">
+                <img src="${natImg}" class="popup-image" />
+                <div class="popup-dish-label">National Dish: ${backendMatch.nat_dish} ${getDietaryIcons(backendMatch.nat_dish_dietary)}</div>
               </div>` : ''}
             ${(pop1Img || pop2Img) ? `
-              <div style="display:flex;gap:6px;margin-bottom:8px">
-                ${pop1Img ? `<div style="flex:1;text-align:center">
-                  <img src="${pop1Img}" style="width:100%;border-radius:6px" />
-                  <div style="font-size:0.75rem;color:#666;margin-top:2px">Popular Dish: ${backendMatch.pop_dish_1} ${getDietaryIcons(backendMatch.pop_dish_1_dietary)}</div>
+              <div class="popup-dishes-grid">
+                ${pop1Img ? `<div class="popup-dish-item">
+                  <img src="${pop1Img}" class="popup-image" />
+                  <div class="popup-dish-label">Popular Dish: ${backendMatch.pop_dish_1} ${getDietaryIcons(backendMatch.pop_dish_1_dietary)}</div>
                 </div>` : ''}
-                ${pop2Img ? `<div style="flex:1;text-align:center">
-                  <img src="${pop2Img}" style="width:100%;border-radius:6px" />
-                  <div style="font-size:0.75rem;color:#666;margin-top:2px">Popular Dish: ${backendMatch.pop_dish_2} ${getDietaryIcons(backendMatch.pop_dish_2_dietary)}</div>
+                ${pop2Img ? `<div class="popup-dish-item">
+                  <img src="${pop2Img}" class="popup-image" />
+                  <div class="popup-dish-label">Popular Dish: ${backendMatch.pop_dish_2} ${getDietaryIcons(backendMatch.pop_dish_2_dietary)}</div>
                 </div>` : ''}
               </div>` : ''}
-            <div style="font-weight:700;text-transform:capitalize;margin-bottom:4px">${backendMatch.name}</div>
+            <div class="popup-country-name">${backendMatch.name}</div>
             <div><b>Capital:</b> ${backendMatch.capital.charAt(0).toUpperCase() + backendMatch.capital.slice(1)}</div>
           </div>
         `;
@@ -247,26 +247,26 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
             }}
           >
             <Popup>
-              <div style={{ minWidth: "240px" }}>
-                {cityImg && (
-                  <div style={{ textAlign: "center", marginBottom: "6px" }}>
-                    <img
-                      src={cityImg.image}
-                      alt={cityImg.restaurant_name}
-                      style={{ width: "100%", borderRadius: "6px" }}
-                    />
-                    <div style={{ fontSize: "0.75rem", color: "#666", marginTop: "2px" }}>
-                      Popular Restaurant: {cityImg.restaurant_name}
-                    </div>
+            <div className="city-popup-container">
+              {cityImg && (
+                <div className="city-popup-image-container">
+                  <img
+                    src={cityImg.image}
+                    alt={cityImg.restaurant_name}
+                    className="city-popup-image"
+                  />
+                  <div className="city-popup-restaurant-label">
+                    Popular Restaurant: {cityImg.restaurant_name}
                   </div>
-                )}
-                <div style={{ fontWeight: 700 }}>{city.city}</div>
-                {city.state && <div><b>State:</b> {city.state}</div>}
-                {city.rec_restaurant && <div><b>Recommended Restaurant:</b> {city.rec_restaurant}</div>}
-              </div>
-            </Popup>
+                </div>
+              )}
+              <div className="city-popup-name">{city.city}</div>
+              {city.state && <div><b>State:</b> {city.state}</div>}
+              {city.rec_restaurant && <div><b>Recommended Restaurant:</b> {city.rec_restaurant}</div>}
+            </div>
+          </Popup>
           </CircleMarker>
-        );
+        );  
       })}
     </>
   );
@@ -559,7 +559,7 @@ export default function MapView() {
           maxBoundsViscosity={1.0}
           scrollWheelZoom={true}
           doubleClickZoom={false}
-          style={{ height: "100%", width: "100%" }}>
+          className="map-container">
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
