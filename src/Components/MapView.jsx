@@ -7,7 +7,6 @@ import countriesData from "../data/countries.json";
 import statesData from "../data/states.json";
 // city marker data: lat and long coordinates
 import citiesCoords from "../data/cities.json";
-import Legend from "./Legend";
 import './Legend.css';
 import InfoPanel from "./InfoPanel";
 import './MapView.css';
