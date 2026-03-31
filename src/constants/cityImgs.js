@@ -69,7 +69,7 @@ export const CITY_IMAGE_URLS = {
       },
       Guelmim: {
         restaurant_name: "Restaurant 33",
-        image: "https://lh3.googleusercontent.com/gps-cs-s/AHVAweopNQdDHmnLtQERDRtaZ6cPCNv36ZjX8PgxXauku4yEqg-mkyEdAT_DSHaWKt9zZmU6AYdKSQxa1tkYjIqpUSUD4mS6ghHjp4qbD3GHZepcBGVKXay5e1Z7RFmEvkKe8qxDdOtmJursl6ns=s1360-w1360-h1020-rw"
+        image: "https://lh3.googleusercontent.com/gps-cs-s/AHVAwepZQ8qGDE-O7MH6DIVm6T9glFUWhqXQWDjf6pxbPUbBqNc__OInXVq_HBHdAiL71IZHFay3XJ4Tiocw2CGeoqa6xqEv9h0i4H1pEXGGtJZWI3zhQ7yj9g0anxCvEw3QcLFzcRMa5koyhTWy=s1360-w1360-h1020-rw"
       },
       Laayoun: {
         restaurant_name: "L'brunch",
