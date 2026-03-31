@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router'
 import axios from 'axios'
+import '../Common.css';
 import './Countries.css';
 
 function CountryCard({ countryData }) {
@@ -139,17 +140,17 @@ export default function Countries() {
   const displayData = searchResults || (results ? sortCountriesAlphabetically(results) : null);
 
   return (
-    <div className="countries-container">
-      <div style={{ marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap", borderBottom: "1px solid #333", paddingBottom: "15px" }}>
-        <Link to="/" className="nav-btn-states">← Back to Home</Link>
-        <Link to="/States" className="nav-btn-states">View States</Link>
-        <Link to="/Cities" className="nav-btn-states">View Cities</Link>
+    <div className="page-container">
+      <div className="page-nav">
+        <Link to="/" className="nav-btn">← Back to Home</Link>
+        <Link to="/States" className="nav-btn">View States</Link>
+        <Link to="/Cities" className="nav-btn">View Cities</Link>
       </div>
 
-      <h1 className="countries-title">Countries Database</h1>
+      <h1 className="page-title">Countries Database</h1>
 
       {error && (
-        <div style={{ marginBottom: "20px", padding: "15px", backgroundColor: "#ffebee", border: "1px solid #ef5350", borderRadius: "4px", color: "#c62828", display: "flex", alignItems: "center", gap: "15px" }}>
+        <div className="error-container">
           <strong>Error:</strong> {error}
           <button onClick={fetchCountries} className="error-inline-btn">Retry</button>
         </div>
@@ -186,12 +187,12 @@ export default function Countries() {
       {isLoading && (
         <div className="loading-block">
           <div className="spinner"></div>
-          <p style={{ marginTop: "15px" }}>Loading countries...</p>
+          <p>Loading countries...</p>
         </div>
       )}
 
       {displayData && displayData.length > 0 && (
-        <ul style={{ paddingLeft: 0, listStyle: "none", margin: 0 }}>
+        <ul className="country-list">
           {displayData.map((countryObj, idx) => (
             <CountryCard
               countryData={countryObj}

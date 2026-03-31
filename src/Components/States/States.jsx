@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from "react-router";
 import axios from 'axios';
+import '../Common.css';
 import './States.css'
 
 function capitalizeStateName(name) {
@@ -126,30 +127,14 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities }) {
                         <button
                             onClick={handleSave}
                             disabled={isUpdating}
-                            style={{
-                                padding: "6px 12px",
-                                background: "#4caf50",
-                                color: "white",
-                                border: "none",
-                                borderRadius: "4px",
-                                cursor: isUpdating ? "not-allowed" : "pointer",
-                                opacity: isUpdating ? 0.7 : 1
-                            }}
+                            className="btn btn-primary btn-small"
                         >
                             {isUpdating ? "Saving..." : "Save"}
                         </button>
                         <button
                             onClick={handleCancel}
                             disabled={isUpdating}
-                            style={{
-                                padding: "6px 12px",
-                                background: "#666",
-                                color: "white",
-                                border: "none",
-                                borderRadius: "4px",
-                                cursor: isUpdating ? "not-allowed" : "pointer",
-                                opacity: isUpdating ? 0.7 : 1
-                            }}
+                            className="btn btn-secondary btn-small"
                         >
                             Cancel
                         </button>
@@ -186,20 +171,7 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities }) {
                 <button
                     onClick={handleDelete}
                     disabled={isDeleting}
-                    style={{
-                        padding: "0.75rem 1rem",
-                        background: "#f44336",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "0 4px 4px 0",
-                        cursor: isDeleting ? "not-allowed" : "pointer",
-                        fontSize: "18px",
-                        fontWeight: "bold",
-                        opacity: isDeleting ? 0.7 : 1,
-                        transition: "background-color 0.2s"
-                    }}
-                    onMouseEnter={(e) => !isDeleting && (e.currentTarget.style.backgroundColor = "#d32f2f")}
-                    onMouseLeave={(e) => !isDeleting && (e.currentTarget.style.backgroundColor = "#f44336")}
+                    className="btn-delete"
                     title="Delete state"
                 >
                     {isDeleting ? "..." : "×"}
@@ -319,16 +291,7 @@ function AddStateForm({ onAdd, onCancel, countries = [] }) {
                             setFormData({...formData, name: e.target.value});
                             setErrors({...errors, name: null});
                         }}
-                        style={{
-                            width: "100%",
-                            padding: "10px",
-                            borderRadius: "4px",
-                            border: `1px solid ${errors.name ? '#f44336' : '#333'}`,
-                            backgroundColor: "#1a1a1a",
-                            color: "#ffffff",
-                            fontSize: "14px",
-                            boxSizing: "border-box"
-                        }}
+                        className={`form-input ${errors.name ? 'error' : ''}`}
                         disabled={isSubmitting}
                     />
                     {errors.name && ( <p className='error-text'>{errors.name}</p> )}
@@ -343,16 +306,7 @@ function AddStateForm({ onAdd, onCancel, countries = [] }) {
                             setFormData({...formData, state_code: e.target.value.toUpperCase()});
                             setErrors({...errors, state_code: null});
                         }}
-                        style={{
-                            width: "100%",
-                            padding: "10px",
-                            borderRadius: "4px",
-                            border: `1px solid ${errors.state_code ? '#f44336' : '#333'}`,
-                            backgroundColor: "#1a1a1a",
-                            color: "#ffffff",
-                            fontSize: "14px",
-                            boxSizing: "border-box"
-                        }}
+                        className={`form-input ${errors.state_code ? 'error' : ''}`}
                         maxLength="3"
                         disabled={isSubmitting}
                     />
@@ -366,16 +320,7 @@ function AddStateForm({ onAdd, onCancel, countries = [] }) {
                             setFormData({...formData, country_code: e.target.value});
                             setErrors({...errors, country_code: null});
                         }}
-                        style={{
-                            width: "100%",
-                            padding: "10px",
-                            borderRadius: "4px",
-                            border: `1px solid ${errors.country_code ? '#f44336' : '#333'}`,
-                            backgroundColor: "#1a1a1a",
-                            color: "#ffffff",
-                            fontSize: "14px",
-                            boxSizing: "border-box"
-                        }}
+                        className={`form-input ${errors.country_code ? 'error' : ''}`}
                         disabled={isSubmitting}
                     >
                         <option value="">Select Country *</option>
@@ -392,17 +337,7 @@ function AddStateForm({ onAdd, onCancel, countries = [] }) {
                     <button
                         type="submit"
                         disabled={isSubmitting}
-                        style={{
-                            padding: "10px 20px",
-                            background: "#4caf50",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "4px",
-                            cursor: isSubmitting ? "not-allowed" : "pointer",
-                            opacity: isSubmitting ? 0.7 : 1,
-                            fontSize: "14px",
-                            fontWeight: "bold"
-                        }}
+                        className="btn btn-primary"
                     >
                         {isSubmitting ? "Adding..." : "Add State"}
                     </button>
@@ -411,16 +346,7 @@ function AddStateForm({ onAdd, onCancel, countries = [] }) {
                             type="button"
                             onClick={onCancel}
                             disabled={isSubmitting}
-                            style={{
-                                padding: "10px 20px",
-                                background: "#666",
-                                color: "white",
-                                border: "none",
-                                borderRadius: "4px",
-                                cursor: isSubmitting ? "not-allowed" : "pointer",
-                                opacity: isSubmitting ? 0.7 : 1,
-                                fontSize: "14px"
-                            }}
+                            className="btn btn-secondary"
                         >
                             Cancel
                         </button>
@@ -696,44 +622,20 @@ export default function States() {
     const displayData = searchResults || (results ? sortStatesAlphabetically(results) : null);
 
     return (
-        <div className='states-container'>
-            <div className='states-nav'>
-                <Link to="/" className="nav-btn-states">← Back to Home</Link>
-                <Link to="/Countries" className="nav-btn-states">View Countries</Link>
-                <Link to="/Cities" className="nav-btn-states">View Cities</Link>
-                <button onClick={() => setShowAddForm(!showAddForm)}
-                    style={{
-                        padding: "10px 20px",
-                        background: showAddForm ? "#f44336" : "#4caf50",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        color: "#ffffff",
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                        marginLeft: "auto",
-                        transition: "background-color 0.2s"
-                    }}
-                    onMouseEnter={(e) => {
-                        if (showAddForm) {
-                            e.currentTarget.style.backgroundColor = "#d32f2f";
-                        } else {
-                            e.currentTarget.style.backgroundColor = "#45a049";
-                        }
-                    }}
-                    onMouseLeave={(e) => {
-                        if (showAddForm) {
-                            e.currentTarget.style.backgroundColor = "#f44336";
-                        } else {
-                            e.currentTarget.style.backgroundColor = "#4caf50";
-                        }
-                    }}
+        <div className='page-container'>
+            <div className='page-nav'>
+                <Link to="/" className="nav-btn">← Back to Home</Link>
+                <Link to="/Countries" className="nav-btn">View Countries</Link>
+                <Link to="/Cities" className="nav-btn">View Cities</Link>
+                <button 
+                    onClick={() => setShowAddForm(!showAddForm)}
+                    className={`add-btn ${showAddForm ? 'cancel-mode' : 'add-mode'}`}
                 >
                     {showAddForm ? "Cancel" : "+ Add New State"}
                 </button>
             </div>
 
-            <h1 className='states-title'>States Database</h1>
+            <h1 className='page-title'>States Database</h1>
 
             {error && (
                 <div className='error-container'>
@@ -781,18 +683,7 @@ export default function States() {
                         </h3>
                         <button
                             onClick={clearSelectedState}
-                            style={{
-                                padding: "6px 12px",
-                                background: "#d32f2f",
-                                color: "white",
-                                border: "none",
-                                borderRadius: "4px",
-                                cursor: "pointer",
-                                fontSize: "13px",
-                                transition: "background-color 0.2s"
-                            }}
-                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#b71c1c"}
-                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#d32f2f"}
+                            className="btn btn-secondary btn-small"
                         >
                             Clear
                         </button>
@@ -839,12 +730,7 @@ export default function States() {
 
             {isLoading && ( <div className='loading-container'>
                 <div className='spinner'/>
-                    <p style={{ marginTop: "15px" }}>Loading states...</p>
-                    <style>{`
-                        @keyframes spin {
-                            to { transform: rotate(360deg); }
-                        }
-                    `}</style>
+                    <p>Loading states...</p>
                 </div>
             )}
 
@@ -870,16 +756,7 @@ export default function States() {
                     <p className='empty-text'>No states found.</p>
                     <button
                         onClick={() => setShowAddForm(true)}
-                        style={{
-                            padding: "10px 20px",
-                            background: "#4caf50",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                            fontSize: "14px",
-                            fontWeight: "bold"
-                        }}
+                        className="btn btn-primary"
                     >Add Your First State
                     </button>
                 </div>

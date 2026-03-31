@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router'
 import axios from 'axios'
+import '../Common.css';
 import './Cities.css'
 
 function capitalizeCityName(city) {
@@ -43,21 +44,9 @@ function CityCard({ cityData, onDelete }) {
         <button
           onClick={handleDelete}
           disabled={isDeleting}
-          style={{
-            padding: "0.75rem 1rem",
-            background: "#f44336",
-            color: "white",
-            border: "none",
-            borderRadius: "0 4px 4px 0",
-            cursor: isDeleting ? "not-allowed" : "pointer",
-            fontSize: "18px",
-            fontWeight: "bold",
-            opacity: isDeleting ? 0.7 : 1,
-            ransition: "background-color 0.2s"
-            }}
-            onMouseEnter={(e) => !isDeleting && (e.currentTarget.style.backgroundColor = "#d32f2f")}
-            onMouseLeave={(e) => !isDeleting && (e.currentTarget.style.backgroundColor = "#f44336")}
-            title="Delete city"
+          className="btn-delete"
+          title="Delete city"
+          
           >
             {isDeleting ? "..." : "×"}
         </button>
@@ -155,16 +144,7 @@ function AddCityForm({ onAdd, onCancel, countries = [], states = [] }) {
               setFormData({...formData, city: e.target.value});
               setErrors({...errors, city: null});
             }}
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: `1px solid ${errors.city ? '#f44336' : '#333'}`,
-              backgroundColor: "#1a1a1a",
-              color: "#ffffff",
-              fontSize: "14px",
-              boxSizing: "border-box"
-            }}
+            className={`form-input ${errors.city ? 'error' : ''}`}
             disabled={isSubmitting}
           />
           {errors.city && ( <p className='error-text'>{errors.city}</p> )}
@@ -177,16 +157,7 @@ function AddCityForm({ onAdd, onCancel, countries = [], states = [] }) {
               setFormData({...formData, country_code: e.target.value, state_code: ''});
               setErrors({...errors, country_code: null, state_code: null});
             }}
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: `1px solid ${errors.country_code ? '#f44336' : '#333'}`,
-              backgroundColor: "#1a1a1a",
-              color: "#ffffff",
-              fontSize: "14px",
-              boxSizing: "border-box"
-            }}
+            className={`form-input ${errors.country_code ? 'error' : ''}`}
             disabled={isSubmitting}
           >
             <option value="">Select Country *</option>
@@ -206,16 +177,7 @@ function AddCityForm({ onAdd, onCancel, countries = [], states = [] }) {
               setFormData({...formData, state_code: e.target.value});
               setErrors({...errors, state_code: null});
             }}
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: `1px solid ${errors.state_code ? '#f44336' : '#333'}`,
-              backgroundColor: "#1a1a1a",
-              color: "#ffffff",
-              fontSize: "14px",
-              boxSizing: "border-box"
-            }}
+            className={`form-input ${errors.state_code ? 'error' : ''}`}
             disabled={isSubmitting || !formData.country_code}
           >
             <option value="">{formData.country_code ? 'Select State *' : 'Select a country first'}</option>
@@ -237,34 +199,16 @@ function AddCityForm({ onAdd, onCancel, countries = [], states = [] }) {
               setFormData({...formData, rec_restaurant: e.target.value.trim()});
               setErrors({...errors, rec_restaurant: null});
             }}
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: `1px solid ${errors.rec_restaurant ? '#f44336' : '#333'}`,
-              backgroundColor: "#1a1a1a",
-              color: "#ffffff",
-              fontSize: "14px",
-              boxSizing: "border-box"
-            }}
+            className={`form-input ${errors.rec_restaurant ? 'error' : ''}`}
             disabled={isSubmitting}
           />
           {errors.rec_restaurant && ( <p className='error-text'>{errors.rec_restaurant}</p> )}
         </div>
 
         <div className='form-actions'>
-          <button type='submit' disabled={isSubmitting}
-            style={{
-              padding: "10px 20px",
-              background: "#4caf50",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: isSubmitting ? "not-allowed" : "pointer",
-              opacity: isSubmitting ? 0.7 : 1,
-              fontSize: "14px",
-              fontWeight: "bold"
-            }}
+          <button type='submit' 
+            disabled={isSubmitting}
+            className="btn btn-primary"
           >
             {isSubmitting ? "Adding..." : "Add City"}
           </button>
@@ -273,16 +217,7 @@ function AddCityForm({ onAdd, onCancel, countries = [], states = [] }) {
               type="button"
               onClick={onCancel}
               disabled={isSubmitting}
-              style={{
-                  padding: "10px 20px",
-                  background: "#666",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: isSubmitting ? "not-allowed" : "pointer",
-                  opacity: isSubmitting ? 0.7 : 1,
-                  fontSize: "14px"
-              }}
+              className="btn btn-secondary"
             >
               Cancel
             </button>
@@ -505,44 +440,19 @@ export default function Cities() {
   const displayData = searchResults || (results ? sortCitiesAlphabetically(results) : null);
 
   return (
-    <div className="cities-container">
-      <div className='cities-nav'>
-        <Link to="/" className="nav-btn-cities">← Back to Home</Link>
-        <Link to="/Countries" className="nav-btn-cities">View Countries</Link>
-        <Link to="/States" className="nav-btn-cities">View States</Link>
+    <div className="page-container">
+      <div className='page-nav'>
+        <Link to="/" className="nav-btn">← Back to Home</Link>
+        <Link to="/Countries" className="nav-btn">View Countries</Link>
+        <Link to="/States" className="nav-btn">View States</Link>
         <button onClick={() => setShowAddForm(!showAddForm)}
-          style={{
-            padding: "10px 20px",
-            background: showAddForm ? "#f44336" : "#4caf50",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            color: "#ffffff",
-            fontSize: "14px",
-            fontWeight: "bold",
-            marginLeft: "auto",
-            transition: "background-color 0.2s"
-          }}
-          onMouseEnter={(e) => {
-            if (showAddForm) {
-              e.currentTarget.style.backgroundColor = "#d32f2f";
-            } else {
-              e.currentTarget.style.backgroundColor = "#45a049";
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (showAddForm) {
-              e.currentTarget.style.backgroundColor = "#f44336";
-            } else {
-              e.currentTarget.style.backgroundColor = "#4caf50";
-            }
-          }}
+          className={`add-btn ${showAddForm ? 'cancel-mode' : 'add-mode'}`}
         >
           {showAddForm ? "Cancel" : "+ Add New City"}
         </button>
       </div>
 
-      <h1 className="cities-title">Cities Database</h1>
+      <h1 className="page-title">Cities Database</h1>
 
       {error && (
         <div className='error-container'>
@@ -589,18 +499,7 @@ export default function Cities() {
             </h3>
             <button
               onClick={clearSelectedCity}
-                style={{
-                  padding: "6px 12px",
-                  background: "#d32f2f",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  fontSize: "13px",
-                  transition: "background-color 0.2s"
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#b71c1c"}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#d32f2f"}
+                className="btn btn-secondary btn-small"
               >
                 Clear
               </button>
@@ -645,16 +544,7 @@ export default function Cities() {
           <p className='empty-text'>No city found.</p>
           <button
             onClick={() => setShowAddForm(true)}
-            style={{
-              padding: "10px 20px",
-              background: "#4caf50",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-              fontSize: "14px",
-              fontWeight: "bold"
-            }}
+            className="btn btn-primary"
           >Add Your First City
           </button>
         </div>
