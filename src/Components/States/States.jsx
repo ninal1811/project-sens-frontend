@@ -252,7 +252,7 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities }) {
     );
 }
 
-function AddStateForm({ onAdd, onCancel }) {
+function AddStateForm({ onAdd, onCancel, countries = [] }) {
     const [formData, setFormData] = useState({
         name: '',
         state_code: '',
@@ -272,10 +272,8 @@ function AddStateForm({ onAdd, onCancel }) {
         } else if (formData.state_code.length < 2 || formData.state_code.length > 3) {
             newErrors.state_code = 'State code must be 2-3 characters';
         }
-        if (!formData.country_code.trim()) {
-            newErrors.country_code = 'Country code is required';
-        } else if (formData.country_code.length !== 3) {
-            newErrors.country_code = 'Country code must be exactly 3 characters';
+        if (!formData.country_code) {
+            newErrors.country_code = 'Please select a country';
         }
         
         setErrors(newErrors);
@@ -362,12 +360,10 @@ function AddStateForm({ onAdd, onCancel }) {
                 </div>
                 
                 <div>
-                    <input
-                        type="text"
-                        placeholder="Country Code * (e.g., USA)"
+                    <select
                         value={formData.country_code}
                         onChange={(e) => {
-                            setFormData({...formData, country_code: e.target.value.toUpperCase()});
+                            setFormData({...formData, country_code: e.target.value});
                             setErrors({...errors, country_code: null});
                         }}
                         style={{
@@ -380,9 +376,15 @@ function AddStateForm({ onAdd, onCancel }) {
                             fontSize: "14px",
                             boxSizing: "border-box"
                         }}
-                        maxLength="3"
                         disabled={isSubmitting}
-                    />
+                    >
+                        <option value="">Select Country *</option>
+                        {countries.map(c => (
+                            <option key={c._id} value={c._id}>
+                                {c.name} ({c._id})
+                            </option>
+                        ))}
+                    </select>
                     {errors.country_code && ( <p className='error-text'>{errors.country_code}</p> )}
                 </div>
                 
@@ -438,6 +440,7 @@ export default function States() {
     const [showAddForm, setShowAddForm] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [countries, setCountries] = useState([]);
     
     const baseURL = import.meta.env.VITE_API_URL;
 
@@ -469,7 +472,6 @@ export default function States() {
                     list = Object.values(data.states);
                 } else if (data.States && typeof data.States === 'object') {
                     list = Object.values(data.States);
-
                 }
             }
 
@@ -486,7 +488,14 @@ export default function States() {
 
     useEffect(() => {
         fetchStates();
-    }, [fetchStates]);
+        axios.get(`${baseURL}/countries`)
+            .then(({ data }) => {
+                const raw = data?.countries ?? {};
+                const list = Array.isArray(raw) ? raw : Object.values(raw);
+                setCountries(list.sort((a, b) => (a.name || '').localeCompare(b.name || '')));
+            })
+            .catch((err) => console.error("Failed to fetch countries:", err));
+    }, [fetchStates, baseURL]);
 
     const fetchStateDetails = useCallback(async (stateCode, countryCode) => {
         try {
@@ -733,7 +742,7 @@ export default function States() {
                 </div>
             )}
 
-            {showAddForm && ( <AddStateForm onAdd={addState} onCancel={() => setShowAddForm(false)}/> )}
+            {showAddForm && ( <AddStateForm onAdd={addState} onCancel={() => setShowAddForm(false)} countries={countries}/> )}
             
             <div className="search-section">
                 <div className="search-container">
@@ -877,4 +886,4 @@ export default function States() {
             )}
         </div>
     );
-} 
+}
