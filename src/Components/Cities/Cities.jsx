@@ -83,7 +83,7 @@ function CityCard({ cityData, onDelete }) {
   );
 }
 
-function AddCityForm({ onAdd, onCancel }) {
+function AddCityForm({ onAdd, onCancel, countries = [], states = [] }) {
   const [formData, setFormData] = useState({
     city: '',
     state_code: '',
@@ -93,21 +93,21 @@ function AddCityForm({ onAdd, onCancel }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
 
+  const filteredStates = formData.country_code
+    ? states.filter(s => s.country_code === formData.country_code)
+    : states;
+
   const validateForm = () => {
     const newErrors = {};
 
     if (!formData.city.trim()) {
       newErrors.city = 'City name is required';
     }
-    if (!formData.state_code.trim()) {
-      newErrors.state_code = 'State code is required';
-    } else if (formData.state_code.length < 2 || formData.state_code.length > 3) {
-        newErrors.state_code = 'State code must be 2-3 characters';
+    if (!formData.state_code) {
+      newErrors.state_code = 'Please select a state';
     }
-    if (!formData.country_code.trim()) {
-        newErrors.country_code = 'Country code is required';
-    } else if (formData.country_code.length !== 3) {
-        newErrors.country_code = 'Country code must be exactly 3 characters';
+    if (!formData.country_code) {
+      newErrors.country_code = 'Please select a country';
     }
 
     setErrors(newErrors);
@@ -123,8 +123,8 @@ function AddCityForm({ onAdd, onCancel }) {
     try {
       await onAdd({
         city: formData.city.trim(),
-        state_code: formData.state_code.toUpperCase(),
-        country_code: formData.country_code.toUpperCase(),
+        state_code: formData.state_code,
+        country_code: formData.country_code,
         rec_restaurant: formData.rec_restaurant.trim()
       });
 
@@ -171,12 +171,39 @@ function AddCityForm({ onAdd, onCancel }) {
         </div>
 
         <div>
-          <input
-            type="text"
-            placeholder="State Code * (e.g., CA)"
+          <select
+            value={formData.country_code}
+            onChange={(e) => {
+              setFormData({...formData, country_code: e.target.value, state_code: ''});
+              setErrors({...errors, country_code: null, state_code: null});
+            }}
+            style={{
+              width: "100%",
+              padding: "10px",
+              borderRadius: "4px",
+              border: `1px solid ${errors.country_code ? '#f44336' : '#333'}`,
+              backgroundColor: "#1a1a1a",
+              color: "#ffffff",
+              fontSize: "14px",
+              boxSizing: "border-box"
+            }}
+            disabled={isSubmitting}
+          >
+            <option value="">Select Country *</option>
+            {countries.map(c => (
+              <option key={c._id} value={c._id}>
+                {c.name} ({c._id})
+              </option>
+            ))}
+          </select>
+          {errors.country_code && ( <p className='error-text'>{errors.country_code}</p> )}
+        </div>
+
+        <div>
+          <select
             value={formData.state_code}
             onChange={(e) => {
-              setFormData({...formData, state_code: e.target.value.toUpperCase()});
+              setFormData({...formData, state_code: e.target.value});
               setErrors({...errors, state_code: null});
             }}
             style={{
@@ -189,35 +216,16 @@ function AddCityForm({ onAdd, onCancel }) {
               fontSize: "14px",
               boxSizing: "border-box"
             }}
-            maxLength="3"
-            disabled={isSubmitting}
-          />
+            disabled={isSubmitting || !formData.country_code}
+          >
+            <option value="">{formData.country_code ? 'Select State *' : 'Select a country first'}</option>
+            {filteredStates.map(s => (
+              <option key={s.state_code} value={s.state_code}>
+                {s.name} ({s.state_code})
+              </option>
+            ))}
+          </select>
           {errors.state_code && ( <p className='error-text'>{errors.state_code}</p> )}
-        </div>
-
-        <div>
-          <input
-            type="text"
-            placeholder="Country Code * (e.g., USA)"
-            value={formData.country_code}
-            onChange={(e) => {
-              setFormData({...formData, country_code: e.target.value.toUpperCase()});
-              setErrors({...errors, country_code: null});
-            }}
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: `1px solid ${errors.country_code ? '#f44336' : '#333'}`,
-              backgroundColor: "#1a1a1a",
-              color: "#ffffff",
-              fontSize: "14px",
-              boxSizing: "border-box"
-            }}
-            maxLength="3"
-            disabled={isSubmitting}
-          />
-          {errors.country_code && ( <p className='error-text'>{errors.country_code}</p> )}
         </div>
 
         <div>
@@ -294,6 +302,8 @@ export default function Cities() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
 
   const baseURL = import.meta.env.VITE_API_URL;
 
@@ -340,7 +350,21 @@ export default function Cities() {
 
   useEffect(() => {
     fetchCities();
-  }, [fetchCities]);
+    axios.get(`${baseURL}/countries`)
+      .then(({ data }) => {
+        const raw = data?.countries ?? {};
+        const list = Array.isArray(raw) ? raw : Object.values(raw);
+        setCountries(list.sort((a, b) => (a.name || '').localeCompare(b.name || '')));
+      })
+      .catch((err) => console.error("Failed to fetch countries:", err));
+    axios.get(`${baseURL}/states/read`)
+      .then(({ data }) => {
+        const raw = data?.states ?? data?.States ?? [];
+        const list = Array.isArray(raw) ? raw : Object.values(raw);
+        setStates(list.sort((a, b) => (a.name || '').localeCompare(b.name || '')));
+      })
+      .catch((err) => console.error("Failed to fetch states:", err));
+  }, [fetchCities, baseURL]);
 
   const fetchCityDetails = useCallback(async (cityName) => {
     try {
@@ -396,8 +420,8 @@ export default function Cities() {
             alert('City deleted successfully!');
             await fetchCities();
             
-            if (selectedCity && selectedCity.state_code === city.state_code && 
-                selectedCity.country_code === city.country_code) {
+            if (selectedCity && selectedCity.state_code === cityData.state_code && 
+                selectedCity.country_code === cityData.country_code) {
                 setSelectedCity(null);
             }
         }
@@ -527,7 +551,7 @@ export default function Cities() {
         </div>
       )}
 
-      {showAddForm && ( <AddCityForm onAdd={addCity} onCancel={() => setShowAddForm(false)}/> )}
+      {showAddForm && ( <AddCityForm onAdd={addCity} onCancel={() => setShowAddForm(false)} countries={countries} states={states}/> )}
 
       <div className="search-section">
         <div className="search-container">
