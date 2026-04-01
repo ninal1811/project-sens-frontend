@@ -1,21 +1,13 @@
 import React from "react";
-import "./Common.css"; // 👈 reuse your shared styles
+import "./Common.css"; 
+import "./Login.css"; 
 
 function Login() {
   return (
     <div className="page-container">
-      <h1 className="page-title">Login</h1>
+      <h1 className="page-title login-header">Login</h1>
 
-      <div
-        style={{
-          maxWidth: "400px",
-          margin: "0 auto",
-          padding: "20px",
-          border: "1px solid #333",
-          borderRadius: "8px",
-          backgroundColor: "#1a1a1a",
-        }}
-      >
+      <div className="login-card"> 
         <form className="add-form">
           <div className="form-group">
             <input
