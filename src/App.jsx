@@ -5,6 +5,7 @@ import Countries from './Components/Countries/Countries'
 import Cities from './Components/Cities/Cities'
 import MapView from './Components/MapView'
 import NavBar from './Components/NavBar'
+import Login from './Components/Login/'
 
 function Home() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path='/States' element={<States />} />
       <Route path='/Countries' element={<Countries />} />
       <Route path='/Cities' element={<Cities />} />
+      <Route path='/Login' element={<Login />} />
     </Routes>
   )
 }
