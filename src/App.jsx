@@ -1,11 +1,11 @@
 import './App.css'
-import { Routes, Route } from 'react-router'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import States from './Components/States/States'
 import Countries from './Components/Countries/Countries'
 import Cities from './Components/Cities/Cities'
 import MapView from './Components/MapView'
 import NavBar from './Components/NavBar'
-import Login from './Components/Login/'
+import Login from './Components/Login'
 
 function Home() {
   return (
