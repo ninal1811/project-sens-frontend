@@ -187,3 +187,20 @@
 .city-popup-name {
   font-weight: 700;
 }
+
+.popup-fav-btn {
+  display: inline-block;
+  margin-top: 0.6rem;
+  padding: 0.3rem 0.75rem;
+  background: #fff8e1;
+  border: 1px solid #f0c040;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  color: #333;
+  transition: background 0.15s;
+}
+
+.popup-fav-btn:hover {
+  background: #ffe082;
+}

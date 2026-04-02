@@ -12,6 +12,7 @@ export default function Navbar() {
     { label: "Countries", to: "/Countries" },
     { label: "States", to: "/States" },
     { label: "Cities", to: "/Cities" },
+    { label: "Favorites", to: "/Favorites" },
     { label: "Login", to: "/Login" },
   ];
 

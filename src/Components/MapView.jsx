@@ -1,6 +1,7 @@
 // import statements
 import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON, useMap, useMapEvents, CircleMarker, Popup } from "react-leaflet";
 // contains boundary conditions to see outlines of countries and states
 import countriesData from "../data/countries.json";
@@ -9,6 +10,7 @@ import statesData from "../data/states.json";
 import citiesCoords from "../data/cities.json";
 import Legend from "./Legend";
 import InfoPanel from "./InfoPanel";
+import { useFavorites } from "./useFavorites";
 import './MapView.css';
 import { COUNTRY_IMAGE_URLS, STATE_IMAGE_URLS, CITY_IMAGE_URLS } from '../constants/imgUrls';
 
@@ -43,9 +45,49 @@ function ClickDebug() {
   return null;
 }
 
+// Adds a favorite button into an open Leaflet popup
+function useFavoritePopupButton({ isFavorited, toggleFavorite, navigate }) {
+  const attachButton = useCallback((map) => {
+    map.on("popupopen", (e) => {
+      const container = e.popup.getElement();
+      if (!container) return;
+ 
+      // Avoid double-injecting
+      if (container.querySelector(".popup-fav-btn")) return;
+ 
+      const favDataEl = container.querySelector("[data-fav]");
+      if (!favDataEl) return;
+ 
+      let item;
+      try { item = JSON.parse(favDataEl.dataset.fav); } catch { return; }
+ 
+      const btn = document.createElement("button");
+      btn.className = "popup-fav-btn";
+      btn.title = "Save to favorites";
+      btn.textContent = isFavorited(item.id) ? "⭐ Saved" : "☆ Save";
+ 
+      btn.addEventListener("click", () => {
+        const success = toggleFavorite(item);
+        if (!success) {
+          // If not logged in -> send to login, come back here after
+          navigate("/Login", { state: { from: "/Favorites" } });
+          return;
+        }
+        btn.textContent = isFavorited(item.id) ? "☆ Save" : "⭐ Saved";
+      });
+ 
+      favDataEl.appendChild(btn);
+    });
+  }, [isFavorited, toggleFavorite, navigate]);
+ 
+  return attachButton;
+}
+
 // receives list of cities, click handler, and state codes
-function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendStatesIds}) {
+function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendStatesIds, attachFavButton}) {
   const map = useMap();
+
+  useEffect(() => { attachFavButton(map); }, [map, attachFavButton]);
 
   const getStateCode = useCallback((feature) => {
     return feature?.properties?.state_code || null;
@@ -87,6 +129,12 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
 
         const _stateCities = visibleCities.filter(city => city.state_code === stateCode);
         const stateImg = STATE_IMAGE_URLS[stateCode];
+        const favItem = JSON.stringify({
+          id: stateCode, type: "state",
+          name: `${backendMatch.name} (${backendMatch.state_code})`,
+          subtitle: backendMatch.country_code,
+          image: stateImg?.image || ""
+        });
           const html = `
             <div class="state-popup-container">
               ${stateImg ? `
@@ -97,6 +145,7 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
               <div class="state-popup-name">
                 ${backendMatch.name} (${backendMatch.state_code})
               </div>
+              <div data-fav='${favItem}'></div>
             </div>
 `;
         layer.bindPopup(html).openPopup();
@@ -112,8 +161,11 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
 }
 
 // map logic component
-function MapController({ visibleCities, onCountryClick, backendCountriesRef, backendIds, showStates, selectedCountry, onStateClick, backendStatesRef, backendStatesIds, onBackToCountries }) {
+function MapController({ visibleCities, onCountryClick, backendCountriesRef, backendIds, showStates, 
+  selectedCountry, onStateClick, backendStatesRef, backendStatesIds, onBackToCountries, attachFavButton }) {
   const map = useMap();
+
+  useEffect(() => { attachFavButton(map); }, [map, attachFavButton]);
 
   useEffect(() => {
     const overlayPane = map.getPane('overlayPane')
@@ -188,6 +240,14 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
         const natImg = backendMatch.image_url || (typeof imgs === 'object' ? imgs.nat_dish : imgs) || '';
         const pop1Img = typeof imgs === 'object' ? imgs.pop_dish_1 : '';
         const pop2Img = typeof imgs === 'object' ? imgs.pop_dish_2 : '';
+
+        const favItem = JSON.stringify({
+          id: backendMatch._id, type: "country",
+          name: backendMatch.name,
+          subtitle: `Capital: ${backendMatch.capital}`,
+          image: natImg
+        });
+
         const html = `
           <div class="popup-container">
             ${natImg ? `
@@ -208,6 +268,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
               </div>` : ''}
             <div class="popup-country-name">${backendMatch.name}</div>
             <div><b>Capital:</b> ${backendMatch.capital.charAt(0).toUpperCase() + backendMatch.capital.slice(1)}</div>
+            <div data-fav='${favItem}'></div>
           </div>
         `;
         layer.bindPopup(html).openPopup();
@@ -221,7 +282,14 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
       <GeoJSON data={countriesData} style={styleFeature} onEachFeature={onEachFeature} />
 
       {showStates && selectedCountry && (
-        <StatesLayer visibleCities={visibleCities} onStateClick={onStateClick} backendStatesRef={backendStatesRef} backendStatesIds={backendStatesIds} countryCode={selectedCountry._id}/>
+        <StatesLayer 
+          visibleCities={visibleCities} 
+          onStateClick={onStateClick} 
+          backendStatesRef={backendStatesRef} 
+          backendStatesIds={backendStatesIds} 
+          countryCode={selectedCountry._id}
+          attachFavButton={attachFavButton}
+          />
       )}
 
       {visibleCities.map((city) => {
@@ -232,6 +300,13 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
         
         // DEBUG
         console.log('CITY:', city.city, 'hasCityImg:', !!cityImg, 'cityImg:', cityImg);
+
+        const favItem = JSON.stringify({
+          id: city.city, type: "city",
+          name: city.city,
+          subtitle: city.state || city.country_code || "",
+          image: cityImg?.image || ""
+        });
 
         return (
           <CircleMarker
@@ -262,6 +337,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
               <div className="city-popup-name">{city.city}</div>
               {city.state && <div><b>State:</b> {city.state}</div>}
               {city.rec_restaurant && <div><b>Recommended Restaurant:</b> {city.rec_restaurant}</div>}
+              <div data-fav={favItem}></div>
             </div>
           </Popup>
           </CircleMarker>
@@ -286,6 +362,10 @@ export default function MapView() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
+
+  const navigate = useNavigate();
+  const { isFavorited, toggleFavorite } = useFavorites();
+  const attachFavButton = useFavoritePopupButton({ isFavorited, toggleFavorite, navigate });
 
   useEffect(() => {
     axios.get(`${BASE_URL}/countries`)
@@ -578,6 +658,7 @@ export default function MapView() {
             backendStatesRef={backendStatesRef}
             backendStatesIds={backendStatesIds}
             onBackToCountries={handleBackToCountries}
+            attachFavButton={attachFavButton}
           />
         </MapContainer>
       </div>
