@@ -76,6 +76,13 @@
   border-left: 3px solid #4caf50;
 }
 
+.state-item-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  cursor: pointer;
+}
+
 .city-item:hover {
   background-color: #2a2a2a;
   transform: translateX(5px);

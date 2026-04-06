@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback, use } from 'react'
-import { Link } from 'react-router'
+import { useState, useEffect, useCallback } from 'react'
+import { Link, useNavigate } from 'react-router'
 import axios from 'axios'
 import '../Common.css';
 import './Countries.css';
@@ -15,6 +15,7 @@ function CountryCard({ countryData, onViewStates }) {
   const [isLoadingStates, setIsLoadingStates] = useState(false);
   const [statesLoaded, setStatesLoaded] = useState(false);
   const { _id, name, capital, nat_dish, pop_dish_1, pop_dish_2 } = countryData || {};
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadStates = async () => {
@@ -40,6 +41,10 @@ function CountryCard({ countryData, onViewStates }) {
     setStatesLoaded(false);
     setStates([]);
   }, [_id]);
+
+  const handleStateClick = (state) => {
+    navigate('/States', { state: { selectedState: state } });
+  };
 
   return (
     <li className="card">
@@ -96,8 +101,10 @@ function CountryCard({ countryData, onViewStates }) {
             ) : states && states.length > 0 ? (
               <div className='states-list'>
                 {states.map((state, idx) => (
-                  <div key={idx} className='state-item'>
-                    <span className='state-name'>{capitalizeCountryName(state.name || state)}</span>
+                  <div key={idx} className='states-item-link' onClick={() => handleStateClick(state)}>
+                    <div className='state-item'>
+                      <span className='state-name'>{capitalizeCountryName(state.name || state)}</span>
+                    </div>
                   </div>
                 ))}
               </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import axios from 'axios';
 import '../Common.css';
 import './States.css'
@@ -23,6 +23,12 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities }) {
     const [isLoadingCities, setIsLoadingCities] = useState(false);
     const [citiesLoaded, setCitiesLoaded] = useState(false);
     const { country_code, state_code, name } = stateData || {};
+    const navigate = useNavigate();
+
+    const handleCityClick = (city) => {
+        console.log("navigating to cities:", city);
+        navigate('/Cities', { state: { selectedCity: city }});
+    };
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -207,8 +213,10 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities }) {
                         ) : cities && cities.length > 0 ? (
                             <div className='cities-list'>
                                 {cities.map((city, idx) => (
-                                    <div key={idx} className='city-item'>
-                                        <span className='city-name'>{capitalizeStateName(city.name || city)}</span>
+                                    <div key={idx} className='city-item-link' onClick={() => handleCityClick(city)}>
+                                        <div className='city-item'>
+                                            <span className='city-name'>{capitalizeStateName(city.name || city)}</span>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -367,7 +375,7 @@ export default function States() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [countries, setCountries] = useState([]);
-    
+    const location = useLocation();
     const baseURL = import.meta.env.VITE_API_URL;
 
     const sortStatesAlphabetically = (statesArray) => {
@@ -411,6 +419,33 @@ export default function States() {
             setIsLoading(false);
         }
     }, [baseURL]);
+
+    useEffect(() => {
+        const stateFromNavigation = location.state?.selectedState;
+        if (stateFromNavigation) {
+            console.log("State received from navigation:", stateFromNavigation);
+            if (results && results.length > 0) {
+                const fullStateData = results.find(
+                    state => state.name === stateFromNavigation.name || 
+                    state.state_code === stateFromNavigation.state_code
+                );
+                if (fullStateData) {
+                    setSelectedState(fullStateData);
+                } else {
+                    setSelectedState(stateFromNavigation);
+                }
+            } else {
+                setSelectedState(stateFromNavigation);
+            }
+            
+            setTimeout(() => {
+                const selectedElement = document.querySelector('.selected-state-container');
+                if (selectedElement) {
+                    selectedElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 500);
+        }
+    }, [location.state?.selectedState, results]);
 
     useEffect(() => {
         fetchStates();

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import axios from 'axios'
 import '../Common.css';
 import './Cities.css'
@@ -240,6 +240,7 @@ export default function Cities() {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
 
+  const location = useLocation();
   const baseURL = import.meta.env.VITE_API_URL;
 
   const sortCitiesAlphabetically = (citiesArray) => {
@@ -282,6 +283,33 @@ export default function Cities() {
       setIsLoading(false);
     }
   }, [baseURL]);
+
+  useEffect(() => {
+    const cityFromNavigation = location.state?.selectedCity;
+    if (cityFromNavigation) {
+      console.log("City received from navigation:", cityFromNavigation);
+      if (results && results.length > 0) {
+        const fullCityData = results.find(
+          city => city.city === cityFromNavigation.name || 
+          city.city === cityFromNavigation.city
+        );
+        if (fullCityData) {
+          setSelectedCity(fullCityData);
+        } else {
+          setSelectedCity(cityFromNavigation);
+        }
+      } else {
+        setSelectedCity(cityFromNavigation);
+      }
+      
+      setTimeout(() => {
+        const selectedElement = document.querySelector('.selected-city-container');
+        if (selectedElement) {
+          selectedElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 500);
+    }
+  }, [location.state?.selectedCity, results]);
 
   useEffect(() => {
     fetchCities();
@@ -513,6 +541,12 @@ export default function Cities() {
                 <strong className='detail-label'>State Code:</strong> 
                 {selectedCity.state_code}
               </p>
+              {selectedCity.rec_restaurant && (
+                <p className='detail-item'>
+                  <strong className='detail-label'>Recommended Restaurant:</strong> 
+                  {selectedCity.rec_restaurant}
+                </p>
+              )}
             </div>
           </div>
         )}
