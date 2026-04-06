@@ -1,66 +1,181 @@
-  .country-list {
-    padding-left: 0;
-    list-style: none;
-    margin: 0;
+.states-section {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 2px solid #333;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-10px);
   }
-  
-  .country-card {
-    margin-bottom: 1rem;
-    border: 1px solid #333;
-    border-radius: 4px;
-    background-color: #1a1a1a;
+  to {
+      opacity: 1;
+      transform: translateY(0);
   }
-  
-  .country-toggle-btn {
-    width: 100%;
-    text-align: left;
-    padding: 0.75rem 1rem;
-    cursor: pointer;
-    border: none;
-    background-color: #2d2d2d;
-    color: #ffffff;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 500;
-    transition: background-color 0.2s;
-  }
-  
-  .country-toggle-btn:hover {
-    background-color: #3d3d3d;
-  }
-  
-  .country-toggle-btn.open {
-    border-radius: 4px 4px 0 0;
-  }
-  
-  .country-toggle-label {
-    text-transform: capitalize;
-  }
-  
-  .country-expand-icon {
-    color: #888;
-  }
-  
-  .country-details {
-    padding: 0.75rem 1rem;
-    border-top: 1px solid #333;
-    background-color: #242424;
-    border-radius: 0 0 4px 4px;
-  }
-  
-  .country-detail-text {
-    margin: 8px 0;
-    color: #e0e0e0;
-  }
-  
-  .country-detail-label {
-    color: #4caf50;
-    min-width: 100px;
-    display: inline-block;
-  }
-  
-  .country-capitalize {
-    text-transform: capitalize;
-  }
+}
+
+.states-header {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #333;
+}
+
+.states-title {
+  color: #4caf50;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.states-count {
+  font-size: 0.85rem;
+  color: #888;
+  font-weight: normal;
+}
+
+.states-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.states-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.states-list::-webkit-scrollbar-track {
+  background: #2a2a2a;
+  border-radius: 3px;
+}
+
+.states-list::-webkit-scrollbar-thumb {
+  background: #4caf50;
+  border-radius: 3px;
+}
+
+.states-list::-webkit-scrollbar-thumb:hover {
+  background: #45a049;
+}
+
+.state-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background-color: #252525;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  border-left: 3px solid #4caf50;
+}
+
+.city-item:hover {
+  background-color: #2a2a2a;
+  transform: translateX(5px);
+}
+
+.state-name {
+  color: #e0e0e0;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.states-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  gap: 10px;
+}
+
+.small-spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #333;
+  border-top-color: #4caf50;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.states-loading p {
+  color: #888;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.no-states {
+  text-align: center;
+  padding: 30px;
+  color: #888;
+  font-style: italic;
+}
+
+.no-states p {
+  margin: 0;
+}
+
+.country-info-section {
+  margin-bottom: 15px;
+}
+
+.country-toggle-btn {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border: none;
+  background-color: #2d2d2d;
+  color: #ffffff;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.country-toggle-btn:hover {
+  background-color: #3d3d3d;
+}
+
+.country-toggle-btn.open {
+  border-radius: 4px 4px 0 0;
+}
+
+.country-toggle-label {
+  text-transform: capitalize;
+}
+
+.country-expand-icon {
+  color: #888;
+}
+
+.country-details {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #333;
+  background-color: #242424;
+  border-radius: 0 0 4px 4px;
+}
+
+.country-detail-text {
+  margin: 8px 0;
+  color: #e0e0e0;
+}
+
+.country-detail-label {
+  color: #4caf50;
+  min-width: 100px;
+  display: inline-block;
+}
+
+.country-capitalize {
+  text-transform: capitalize;
+}

@@ -145,8 +145,8 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities }) {
     }
 
     return (
-        <li className='state-card'>
-            <div className='state-card-header'>
+        <li className='card'>
+            <div className='card-header'>
                 <button
                     type="button"
                     onClick={() => setOpen((prev) => !prev)}
@@ -737,7 +737,7 @@ export default function States() {
             {displayData && displayData.length > 0 && !selectedState && (
                 <>
                     <div className='stats-display'></div>
-                    <ul className='state-list'>
+                    <ul className='list'>
                         {displayData.map((stateObj, idx) => (
                             <StateCard
                                 stateData={stateObj}

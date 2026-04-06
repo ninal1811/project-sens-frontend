@@ -1,47 +1,112 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, use } from 'react'
 import { Link } from 'react-router'
 import axios from 'axios'
 import '../Common.css';
 import './Countries.css';
 
-function CountryCard({ countryData }) {
+function capitalizeCountryName(name) {
+  if (!name) return '';
+  return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+};
+
+function CountryCard({ countryData, onViewStates }) {
   const [open, setOpen] = useState(false);
+  const [states, setStates] = useState([]);
+  const [isLoadingStates, setIsLoadingStates] = useState(false);
+  const [statesLoaded, setStatesLoaded] = useState(false);
   const { _id, name, capital, nat_dish, pop_dish_1, pop_dish_2 } = countryData || {};
 
+  useEffect(() => {
+    const loadStates = async () => {
+      if (open && !statesLoaded && !isLoadingStates) {
+        setIsLoadingStates(true);
+        try {
+          const statesData = await onViewStates(_id);
+          setStates(statesData || []);
+          setStatesLoaded(true);
+        } catch (error) {
+          console.error("Failed to load states:", error);
+          setStates([]);
+          setStatesLoaded(true);
+        } finally {
+          setIsLoadingStates(false);
+        }
+      }
+    };
+    loadStates();
+  }, [open, statesLoaded, isLoadingStates, _id, onViewStates]);
+
+  useEffect(() => {
+    setStatesLoaded(false);
+    setStates([]);
+  }, [_id]);
+
   return (
-    <li className="country-card">
-      <button
-        type="button"
-        onClick={() => setOpen((prev) => !prev)}
-        className={`country-toggle-btn ${open ? 'open' : ''}`}
-      >
-        <span className="country-toggle-label">
-          {name ?? "Unnamed country"} {_id ? `(${_id})` : ""}
-        </span>
-        <span className="country-expand-icon">{open ? '▾' : '▸'} </span>
-      </button>
+    <li className="card">
+      <div className='card-header'>
+        <button
+          type="button"
+          onClick={() => setOpen((prev) => !prev)}
+          className={`country-toggle-btn ${open ? 'open' : ''}`}
+        >
+          <span className="country-toggle-label">
+            {name ?? "Unnamed country"} {_id ? `(${_id})` : ""}
+          </span>
+          <span className="country-expand-icon">{open ? '▾' : '▸'} </span>
+        </button>
+      </div>
+
       {open && (
         <div className="country-details">
-        <p className="country-detail-text">
-          <strong className="country-detail-label">Code:</strong> {_id ?? '—'}
-        </p>
-        <p className="country-detail-text">
-          <strong className="country-detail-label">Name:</strong>{' '}
-          <span className="country-capitalize">{name ?? '—'}</span>
-        </p>
-        <p className="country-detail-text">
-          <strong className="country-detail-label">Capital:</strong>{' '}
-          <span className="country-capitalize">{capital ?? '—'}</span>
-        </p>
-        <p className="country-detail-text">
-          <strong className="country-detail-label">National Dish:</strong> {nat_dish ?? '—'}
-        </p>
-        <p className="country-detail-text">
-          <strong className="country-detail-label">Popular Dish 1:</strong> {pop_dish_1 ?? '—'}
-        </p>
-        <p className="country-detail-text">
-          <strong className="country-detail-label">Popular Dish 2:</strong> {pop_dish_2 ?? '—'}
-        </p>
+          <div className='country-info-section'>
+            <p className="country-detail-text">
+              <strong className="country-detail-label">Code:</strong> {_id ?? '—'}
+            </p>
+            <p className="country-detail-text">
+              <strong className="country-detail-label">Name:</strong>{' '}
+              <span className="country-capitalize">{name ?? '—'}</span>
+            </p>
+            <p className="country-detail-text">
+              <strong className="country-detail-label">Capital:</strong>{' '}
+              <span className="country-capitalize">{capital ?? '—'}</span>
+            </p>
+            <p className="country-detail-text">
+              <strong className="country-detail-label">National Dish:</strong> {nat_dish ?? '—'}
+            </p>
+            <p className="country-detail-text">
+              <strong className="country-detail-label">Popular Dish 1:</strong> {pop_dish_1 ?? '—'}
+            </p>
+            <p className="country-detail-text">
+              <strong className="country-detail-label">Popular Dish 2:</strong> {pop_dish_2 ?? '—'}
+            </p>
+          </div>
+          <div className='states-section'>
+            <div className='states-header'>
+              <h4 className='states-title'>
+                States in {capitalizeCountryName(name)}
+                {states.length > 0 && <span className='state-count'>({states.length})</span>}
+              </h4>
+            </div>
+
+            {isLoadingStates ? (
+              <div className='states-loading'>
+                <div className='small-spinner'></div>
+                <p>Loading states...</p>
+              </div>
+            ) : states && states.length > 0 ? (
+              <div className='states-list'>
+                {states.map((state, idx) => (
+                  <div key={idx} className='state-item'>
+                    <span className='state-name'>{capitalizeCountryName(state.name || state)}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className='no-states'>
+                <p>No states found for this country.</p>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </li>
@@ -54,6 +119,7 @@ export default function Countries() {
   const [searchResults, setSearchResults] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState(null);
   const [error, setError] = useState(null);
 
   const baseURL = import.meta.env.VITE_API_URL;
@@ -87,6 +153,54 @@ export default function Countries() {
   useEffect(() => {
     fetchCountries();
   }, [fetchCountries]);
+
+  const fetchStatesByCountry = useCallback(async (_id) => {
+    try {
+      console.log(`Fetching details for: ${_id}`);
+      const response = await axios.get(`${baseURL}/states/country/${_id}`);
+      console.log("States response:", response.data);
+      
+      if (!response.data) {
+          console.error("No data received from states");
+          return [];
+      }
+
+      let statesArray = [];
+      if (response.data.success && response.data.states) {
+        statesArray = response.data.states;
+        console.log("Found states in response.data.states:", statesArray);
+      } else if (response.data.states && Array.isArray(response.data.states)) {
+        statesArray = response.data.states;
+      } else if (response.data.States && typeof response.data.States === 'object') {
+        statesArray = Object.values(response.data.States);
+      } else if (Array.isArray(response.data)) {
+        statesArray = response.data;
+      } else if (typeof response.data === 'object') {
+        statesArray = Object.values(response.data).filter(item => item && typeof item === 'object' && (item.name || item.state_name));
+      }
+      console.log("Extracted states array:", statesArray);
+      console.log("Number of states found:", statesArray.length);
+      
+      const formattedStates = statesArray.map(state => {
+          if (state && typeof state === 'object') {
+              const stateName = state.city || state.name || state.state_name || 'Unnamed State';
+              return {
+                  name: stateName,
+                  ...state
+              };
+          } else if (typeof state === 'string') {
+              return { name: state };
+          }
+          return null;
+      }).filter(state => state !== null);
+      
+      console.log("Formatted states:", formattedStates);
+      return formattedStates;    
+    } catch (err) {
+        console.error("Failed to fetch states for country:", err);
+        return [];
+    }
+  }, [baseURL]);
 
   const searchCountries = useCallback((query) => {
     if (query.length < 2) {
@@ -136,6 +250,10 @@ export default function Countries() {
     setSearchQuery("");
     setSearchResults(null);
   };
+
+  const clearSelectedCountry = () => {
+    setSelectedCountry(null);
+  }
 
   const displayData = searchResults || (results ? sortCountriesAlphabetically(results) : null);
 
@@ -191,12 +309,13 @@ export default function Countries() {
         </div>
       )}
 
-      {displayData && displayData.length > 0 && (
-        <ul className="country-list">
+      {displayData && displayData.length > 0 && !selectedCountry && (
+        <ul className="list">
           {displayData.map((countryObj, idx) => (
             <CountryCard
               countryData={countryObj}
               key={`${countryObj?._id ?? "no-code"}-${idx}`}
+              onViewStates={fetchStatesByCountry}
             />
           ))}
         </ul>

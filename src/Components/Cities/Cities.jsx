@@ -28,8 +28,8 @@ function CityCard({ cityData, onDelete }) {
   };
 
   return (
-    <li className="city-card">
-      <div className='city-card-header'>
+    <li className="card">
+      <div className='card-header'>
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
@@ -527,7 +527,7 @@ export default function Cities() {
       {displayData && displayData.length > 0 && !selectedCity && (
         <>
           <div className='stats-display'></div>
-          <ul className="city-list">
+          <ul className="list">
             {displayData.map((cityObj, idx) => (
               <CityCard
                 cityData={cityObj}
