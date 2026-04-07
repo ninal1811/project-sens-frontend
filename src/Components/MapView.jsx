@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON, useMap, useMapEvents, CircleMarker, Popup } from "react-leaflet";
+import L from "leaflet";
 // contains boundary conditions to see outlines of countries and states
 import countriesData from "../data/countries.json";
 import statesData from "../data/states.json";
@@ -421,7 +422,27 @@ export default function MapView() {
     setSearchQuery("");
     setShowSearchResults(false);
   }, []);
-  
+  const handleBackToCountry = useCallback(() => {
+    setSelectedState(null);
+    if (selectedCountry) {
+      const cities = Object.values(allCitiesRef.current).filter(
+        c => c.country_code === selectedCountry._id
+      );
+      setVisibleCities(cities);
+
+      const iso3 = selectedCountry._id;
+      const countryFeature = countriesData.features.find(
+        f => f.properties?.["ISO3166-1-Alpha-3"] === iso3
+      );
+      if (countryFeature && mapRef.current) {
+        const layer = L.geoJSON(countryFeature);
+        mapRef.current.fitBounds(layer.getBounds(), { padding: [40, 40] });
+      }
+    }
+    setSearchQuery("");
+    setShowSearchResults(false);
+  }, [selectedCountry]);
+
   // same idea - when a state is clicked, filters so it looks at cities just belonging to that state
   const handleBackToCountries = useCallback (() => {
     setShowStates(false);
@@ -625,6 +646,7 @@ export default function MapView() {
           selectedState={selectedState}
           showStates={showStates}
           onBackToCountries={handleBackToCountries}
+          onBackToCountry={handleBackToCountry}
         />
       </div>
       

@@ -1,6 +1,5 @@
 import { STATE_IMAGE_URLS } from '../constants/imgUrls';
-
-export default function InfoPanel({ selectedCountry, selectedState, showStates, onBackToCountries }) {
+export default function InfoPanel({ selectedCountry, selectedState, showStates, onBackToCountries, onBackToCountry }) {
   if (!selectedCountry) {
     return (
       <div className="info-empty">
@@ -10,12 +9,10 @@ export default function InfoPanel({ selectedCountry, selectedState, showStates, 
       </div>
     );
   }
-
   const stateImg = selectedState ? STATE_IMAGE_URLS[selectedState.state_code] : null;
-
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div style={{ display: "flex", gap: "10px", alignItems: "center", marginBottom: "12px" }}>
         {showStates && (
           <button 
             onClick={onBackToCountries}
@@ -28,11 +25,28 @@ export default function InfoPanel({ selectedCountry, selectedState, showStates, 
               cursor: "pointer",
               fontWeight: "bold",
               fontSize: "16px",
-              marginBottom: "12px",
               boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
             }}
           >
             ← Back to World
+          </button>
+        )}
+        {selectedState && onBackToCountry && (
+          <button 
+            onClick={onBackToCountry}
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "#ff9800",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontWeight: "bold",
+              fontSize: "16px",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
+            }}
+          >
+            ← Back to {selectedCountry.name}
           </button>
         )}
       </div>
