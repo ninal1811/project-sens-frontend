@@ -9,7 +9,7 @@ function capitalizeStateName(name) {
     return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
 
-function StateCard({ stateData, onDelete, onUpdate, onViewCities }) {
+function StateCard({ stateData, onDelete, onUpdate, onViewCities, countries = [] }) {
     const [open, setOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editForm, setEditForm] = useState({
@@ -120,15 +120,19 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities }) {
                         maxLength="3"
                         disabled={isUpdating}
                     />
-                    <input
-                        type="text"
-                        placeholder="Country Code * (e.g., USA)"
+                    <select
                         value={editForm.country_code}
-                        onChange={(e) => setEditForm({...editForm, country_code: e.target.value.toUpperCase()})}
+                        onChange={(e) => setEditForm({...editForm, country_code: e.target.value})}
                         className='edit-input'
-                        maxLength="3"
                         disabled={isUpdating}
-                    />
+                    >
+                        <option value="">Select Country *</option>
+                        {countries.map(c => (
+                            <option key={c._id} value={c._id}>
+                                {c.name} ({c._id})
+                            </option>
+                        ))}
+                    </select>
                     <div className='form-actions'>
                         <button
                             onClick={handleSave}
@@ -780,6 +784,7 @@ export default function States() {
                                 onDelete={deleteState}
                                 onUpdate={updateState}
                                 onViewCities={fetchCitiesByState}
+                                countries={countries}
                             />
                         ))}
                     </ul>
