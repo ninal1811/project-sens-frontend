@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router";
 import "./NavBar.css";
 
-export default function Navbar() {
+export default function Navbar({ searchQuery, onSearch, searchResults, showSearchResults, onSelectResult, onClearSearch }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
   const location = useLocation();
@@ -28,6 +28,46 @@ export default function Navbar() {
               Project<span className="navbar-logo-accent">Sens</span>
             </span>
           </Link>
+
+          {/* Search bar — only show on Explore page */}
+          {location.pathname === "/" && onSearch && (
+            <div className="navbar-search-wrapper">
+              <div className="navbar-search-input-row">
+                <span className="navbar-search-icon">🔍</span>
+                <input
+                  type="text"
+                  placeholder="Search countries, states, cities..."
+                  value={searchQuery}
+                  onChange={(e) => onSearch(e.target.value)}
+                  className="navbar-search-input"
+                />
+                {searchQuery && (
+                  <button className="navbar-search-clear" onClick={onClearSearch}>✕</button>
+                )}
+              </div>
+              {showSearchResults && searchResults?.length > 0 && (
+                <div className="navbar-search-dropdown">
+                  {searchResults.map((result) => (
+                    <div
+                      key={result.id}
+                      className="navbar-search-result"
+                      onClick={() => onSelectResult(result)}
+                    >
+                      <span className="navbar-search-result-name">{result.name}</span>
+                      <span className="navbar-search-result-type">
+                        {result.type === "country" && "Country"}
+                        {result.type === "state" && `${result.countryName} · State`}
+                        {result.type === "city" && "City"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {showSearchResults && searchResults?.length === 0 && searchQuery?.length >= 2 && (
+                <div className="navbar-search-no-results">No results for "{searchQuery}"</div>
+              )}
+            </div>
+          )}
 
           {/* Tagline */}
           <span className="navbar-tagline">Explore food culture, worldwide</span>

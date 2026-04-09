@@ -10,9 +10,9 @@ import statesData from "../data/states.json";
 // city marker data: lat and long coordinates
 import citiesCoords from "../data/cities.json";
 import Legend from "./Legend";
-import InfoPanel from "./InfoPanel";
 import { useFavorites } from "./useFavorites";
 import './MapView.css';
+import NavBar from './NavBar';
 import { COUNTRY_IMAGE_URLS, STATE_IMAGE_URLS, CITY_IMAGE_URLS } from '../constants/imgUrls';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
@@ -149,7 +149,11 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
               <div data-fav='${favItem}'></div>
             </div>
 `;
-        layer.bindPopup(html).openPopup();
+        layer.bindPopup(html, {
+          offset: L.point(0, -10),
+          autoPanPaddingTopLeft: L.point(0, 80),
+          autoPanPaddingBottomRight: L.point(0, 20),
+        }).openPopup();
       }
     });
 
@@ -272,7 +276,11 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
             <div data-fav='${favItem}'></div>
           </div>
         `;
-        layer.bindPopup(html).openPopup();
+        layer.bindPopup(html, {
+          offset: L.point(0, -10),
+          autoPanPaddingTopLeft: L.point(0, 80),
+          autoPanPaddingBottomRight: L.point(0, 20),
+        }).openPopup();
       }
     });
   }, [backendCountriesRef, getIso3, map, onCountryClick]);
@@ -321,7 +329,11 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
               weight: 2                                       // Border thickness
             }}
           >
-            <Popup>
+            <Popup 
+              offset={[0, -10]}
+              autoPanPaddingTopLeft={[0, 80]}
+              autoPanPaddingBottomRight={[0, 10]}
+            >
             <div className="city-popup-container">
               {cityImg && (
                 <div className="city-popup-image-container">
@@ -591,65 +603,18 @@ export default function MapView() {
 
   return (
     <div className="mapview-root">
-      <div className="search-container">
-          <div className="search-input-wrapper">
-            <input
-              type="text"
-              placeholder="Search countries, states, or cities..."
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="search-input"
-            />
-            {searchQuery && (
-              <button 
-                onClick={() => {
-                  setSearchQuery("");
-                  setSearchResults([]);
-                  setShowSearchResults(false);
-                }}
-                className="search-clear-btn"
-              >
-                Clear
-              </button>
-            )}
-          </div>
-          
-          {showSearchResults && searchResults.length > 0 && (
-            <div className="search-dropdown">
-              {searchResults.map((result) => (
-                <div
-                  key={result.id}
-                  onClick={() => handleSelectState(result)}
-                  className="search-result-item"
-                >
-                  <div className="search-result-name">{result.name}</div>
-                  <div className="search-result-type">
-                    {result.type === "country" && "Country"}
-                    {result.type === "state" && `${result.countryName} (State)`}
-                    {result.type === "city" && "City"}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-          
-          {showSearchResults && searchResults.length === 0 && searchQuery.length >= 2 && (
-            <div className="search-no-results">
-              No states found matching "{searchQuery}"
-            </div>
-          )}
-        </div>
-
-      <div className="info-panel-container">
-        <InfoPanel
-          selectedCountry={selectedCountry}
-          selectedState={selectedState}
-          showStates={showStates}
-          onBackToCountries={handleBackToCountries}
-          onBackToCountry={handleBackToCountry}
-        />
-      </div>
-      
+      <NavBar
+      searchQuery={searchQuery}
+      onSearch={handleSearch}
+      searchResults={searchResults}
+      showSearchResults={showSearchResults}
+      onSelectResult={handleSelectState}
+      onClearSearch={() => {
+        setSearchQuery("");
+        setSearchResults([]);
+        setShowSearchResults(false);
+      }}
+      />
       <Legend showStates={showStates} />
       <div className="map-wrapper">
         <MapContainer

@@ -4,10 +4,7 @@
   margin: 0;
   padding: 0;
   text-align: center;
-}
-
-.home-root {
-  padding-top: 70px; /* clears the fixed navbar */
+  padding-top: 70px;
 }
 
 .about-overlay {

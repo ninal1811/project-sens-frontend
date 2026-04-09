@@ -62,6 +62,113 @@
   border-left: 1px solid rgba(255,255,255,0.1);
 }
 
+/* ── Search ── */
+.navbar-search-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 300px;
+  margin: 0 0.5rem;
+}
+.navbar-search-input-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.navbar-search-input-row:focus-within {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(59,158,255,0.45);
+  box-shadow: 0 0 0 3px rgba(59,158,255,0.08);
+}
+.navbar-search-icon {
+  font-size: 0.78rem;
+  opacity: 0.45;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.navbar-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: #fff;
+  min-width: 0;
+}
+.navbar-search-input::placeholder {
+  color: rgba(255,255,255,0.28);
+}
+.navbar-search-clear {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.35);
+  cursor: pointer;
+  font-size: 0.72rem;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.navbar-search-clear:hover { color: rgba(255,255,255,0.8); }
+
+/* Dropdown */
+.navbar-search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #16161a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  z-index: 9999;
+  overflow: hidden;
+}
+.navbar-search-result {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.12s;
+}
+.navbar-search-result:last-child { border-bottom: none; }
+.navbar-search-result:hover { background: rgba(59,158,255,0.1); }
+.navbar-search-result-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #fff;
+}
+.navbar-search-result-type {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  color: #555;
+  font-weight: 400;
+}
+.navbar-search-no-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  padding: 12px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  color: #555;
+  background: #16161a;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+}
+
 /* ── Nav links ── */
 .navbar-links {
   display: flex;

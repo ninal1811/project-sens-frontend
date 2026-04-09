@@ -8,24 +8,15 @@ import NavBar from './Components/NavBar'
 import Login from './Components/Login'
 import Favorites from './Components/Favorites'
 
-function Home() {
-  return (
-    <div className='home-root'>
-      <NavBar />
-      <MapView />
-    </div>
-  )
-}
-
 function App() {
   return (
     <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/States' element={<States />} />
-      <Route path='/Countries' element={<Countries />} />
-      <Route path='/Cities' element={<Cities />} />
-      <Route path='/Login' element={<Login />} />
-      <Route path='/Favorites' element={<Favorites />} />
+      <Route path='/' element={<MapView />} />
+      <Route path='/States' element={<><NavBar /><States /></>} />
+      <Route path='/Countries' element={<><NavBar /><Countries /></>} />
+      <Route path='/Cities' element={<><NavBar /><Cities /></>} />
+      <Route path='/Login' element={<><NavBar /><Login /></>} />
+      <Route path='/Favorites' element={<><NavBar /><Favorites /></>} />
       <Route path='*' element={<Navigate to="/" replace />} />
     </Routes>
   )
