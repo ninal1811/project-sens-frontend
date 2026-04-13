@@ -46,7 +46,6 @@ function CityCard({ cityData, onDelete }) {
           disabled={isDeleting}
           className="btn-delete"
           title="Delete city"
-          
           >
             {isDeleting ? "..." : "×"}
         </button>

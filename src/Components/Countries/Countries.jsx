@@ -9,13 +9,27 @@ function capitalizeCountryName(name) {
   return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
 
-function CountryCard({ countryData, onViewStates }) {
+function CountryCard({ countryData, onDelete, onViewStates }) {
   const [open, setOpen] = useState(false);
   const [states, setStates] = useState([]);
   const [isLoadingStates, setIsLoadingStates] = useState(false);
   const [statesLoaded, setStatesLoaded] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const { _id, name, capital, nat_dish, pop_dish_1, pop_dish_2 } = countryData || {};
   const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    if (window.confirm(`Are you sure you want to delete ${name}?`)) {
+      setIsDeleting(true);
+      try {
+          await onDelete(countryData);
+      } catch (error) {
+          console.error("Delete failed:", error);
+      } finally {
+          setIsDeleting(false);
+      }
+    }
+  };
 
   useEffect(() => {
     const loadStates = async () => {
@@ -58,6 +72,14 @@ function CountryCard({ countryData, onViewStates }) {
             {name ?? "Unnamed country"} {_id ? `(${_id})` : ""}
           </span>
           <span className="country-expand-icon">{open ? '▾' : '▸'} </span>
+        </button>
+        <button
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="btn-delete"
+          title="Delete country"
+          >
+            {isDeleting ? "..." : "×"}
         </button>
       </div>
 
@@ -209,6 +231,27 @@ export default function Countries() {
     }
   }, [baseURL]);
 
+  const deleteCountry = async (countryData) => {
+    try {
+        const response = await axios.delete(`${baseURL}/countries/${countryData.name}`);
+
+        if (response.status === 200) {
+            alert('Country deleted successfully!');
+            await fetchCountries();
+            
+            if (selectedCountry && selectedCountry.capital === countryData.capital && 
+                selectedCountry.country_code === countryData.country_code) {
+                setSelectedCountry(null);
+            }
+        }
+    } catch (err) {
+        console.error("Failed to delete country:", err);
+        const errorMessage = err.response?.data?.message || err.response?.data?.error || 'Failed to delete city. Please try again.';
+        alert(errorMessage);
+        throw err;
+    }
+  };
+
   const searchCountries = useCallback((query) => {
     if (query.length < 2) {
       setSearchResults(null);
@@ -317,15 +360,19 @@ export default function Countries() {
       )}
 
       {displayData && displayData.length > 0 && !selectedCountry && (
+        <>
+        <div className='stats-display'></div>
         <ul className="list">
           {displayData.map((countryObj, idx) => (
             <CountryCard
               countryData={countryObj}
               key={`${countryObj?._id ?? "no-code"}-${idx}`}
+              onDelete={deleteCountry}
               onViewStates={fetchStatesByCountry}
             />
           ))}
         </ul>
+        </>
       )}
 
       {!isLoading && displayData?.length === 0 && !searchQuery && (
