@@ -142,6 +142,173 @@ function CountryCard({ countryData, onDelete, onViewStates }) {
   );
 }
 
+function AddCountryForm({ onAdd, onCancel }) {
+  const [formData, setFormData] = useState({
+    _id: '',
+    name: '',
+    capital: '',
+    nat_dish: '',
+    pop_dish_1: '',
+    pop_dish_2: ''
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData._id.trim()) {
+      newErrors._id = 'Country code is required (e.g., USA)';
+    } else if (formData._id.length !== 3) {
+      newErrors._id = 'Country code must be 3 characters';
+    }
+    if (!formData.name.trim()) {
+      newErrors.name = 'Country name is required';
+    }
+    if (!formData.capital.trim()) {
+      newErrors.capital = 'Country capital is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) { return; }
+
+    setIsSubmitting(true);
+    try {
+      await onAdd({
+        _id: formData._id.trim().toUpperCase(),
+        name: formData.name.trim(),
+        capital: formData.capital.trim(),
+        nat_dish: formData.nat_dish.trim(),
+        pop_dish_1: formData.pop_dish_1.trim(),
+        pop_dish_2: formData.pop_dish_2.trim()
+      });
+
+      setFormData({
+        _id: '',
+        name: '',
+        capital: '',
+        nat_dish: '',
+        pop_dish_1: '',
+        pop_dish_2: ''
+      })
+      setErrors({});
+    } catch (error) {
+      console.error("Add failed:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (field) => (e) => { 
+    setFormData({...formData, [field]: e.target.value});
+    if (errors[field]) {
+      setErrors({...errors, [field]: null});
+    }
+  };
+
+  return (
+    <div className='add-form-container'>
+      <h3 className='add-form-title'>Add New Country</h3>
+      <form onSubmit={handleSubmit} className='add-form'>
+        <div>
+          <input
+            value={formData._id}
+            placeholder="Country Code *"
+            onChange={handleChange('_id')}
+            className={`form-input ${errors._id ? 'error' : ''}`}
+            disabled={isSubmitting}
+            maxLength={3}
+          />
+          {errors._id && ( <p className='error-text'>{errors._id}</p> )}
+        </div>
+
+        <div>
+          <input 
+            type='text' 
+            placeholder='Country Name *'
+            value={capitalizeCountryName(formData.name)}
+            onChange={handleChange('name')}
+            className={`form-input ${errors.name ? 'error' : ''}`}
+            disabled={isSubmitting}
+          />
+          {errors.name && ( <p className='error-text'>{errors.name}</p> )}
+        </div>
+
+        <div>
+          <input
+            type='text'
+            placeholder="Country Captial *"
+            value={formData.capital}
+            onChange={handleChange('capital')}
+            className={`form-input ${errors.capital ? 'error' : ''}`}
+            disabled={isSubmitting}
+          />
+          {errors.capital && ( <p className='error-text'>{errors.capital}</p> )}
+        </div>
+
+        <div>
+          <input
+            type="text"
+            placeholder="National Dish"
+            value={formData.nat_dish}
+            onChange={handleChange('nat_dish')}
+            className={`form-input`}
+            disabled={isSubmitting}
+          />
+        </div>
+
+        <div>
+          <input
+            type="text"
+            placeholder="Popular Dish 1"
+            value={formData.pop_dish_1}
+            onChange={handleChange('pop_dish_1')}
+            className={`form-input`}
+            disabled={isSubmitting}
+          />
+        </div>
+
+        <div>
+          <input
+            type="text"
+            placeholder="Popular Dish 2"
+            value={formData.pop_dish_2}
+            onChange={handleChange('pop_dish_2')}
+            className={`form-input`}
+            disabled={isSubmitting}
+          />
+        </div>
+
+        <div className='form-actions'>
+          <button type='submit' 
+            disabled={isSubmitting}
+            className="btn btn-primary"
+          >
+            {isSubmitting ? "Adding..." : "Add Country"}
+          </button>
+          {onCancel && (
+            <button
+              type="button"
+              onClick={onCancel}
+              disabled={isSubmitting}
+              className="btn btn-secondary"
+            >
+              Cancel
+            </button>
+          )}
+        </div>
+      </form>
+    </div>
+  )
+}
+
 export default function Countries() {
   const [results, setResults] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -150,6 +317,7 @@ export default function Countries() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [error, setError] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   const baseURL = import.meta.env.VITE_API_URL;
 
@@ -230,6 +398,39 @@ export default function Countries() {
         return [];
     }
   }, [baseURL]);
+
+  const addCountry = async (countryData) => {
+    console.log('sending to url:', `${baseURL}/countries/add`);
+    console.log('with data', {
+      _id: countryData._id,
+      name: countryData.name,
+      capital: countryData.capital,
+      nat_dish: countryData.nat_dish,
+      pop_dish_1: countryData.pop_dish_1,
+      pop_dish_2: countryData.pop_dish_2
+    });
+
+    try {
+      const response = await axios.post(`${baseURL}/countries/add`, {
+        _id: countryData._id,
+        name: countryData.name,
+        capital: countryData.capital,
+        nat_dish: countryData.nat_dish,
+        pop_dish_1: countryData.pop_dish_1,
+        pop_dish_2: countryData.pop_dish_2
+      });
+      if (response.status === 200 || response.status === 201) {
+        alert('Country added successfully!');
+        setShowAddForm(false);
+        await fetchCountries();
+      }
+    } catch (err) {
+      console.error("Failed to add country:", err);
+      const errorMessage = err.response?.data?.message || err.response?.data?.error || 'Failed to add country. Please try again.';
+      alert(errorMessage);
+      throw err;
+    }
+  };
 
   const deleteCountry = async (countryData) => {
     try {
@@ -313,6 +514,11 @@ export default function Countries() {
         <Link to="/" className="nav-btn">← Back to Home</Link>
         <Link to="/States" className="nav-btn">View States</Link>
         <Link to="/Cities" className="nav-btn">View Cities</Link>
+        <button onClick={() => setShowAddForm(!showAddForm)}
+          className={`add-btn ${showAddForm ? 'cancel-mode' : 'add-mode'}`}
+        >
+          {showAddForm ? "Cancel" : "+ Add New Country"}
+        </button>
       </div>
 
       <h1 className="page-title">Countries Database</h1>
@@ -323,6 +529,8 @@ export default function Countries() {
           <button onClick={fetchCountries} className="error-inline-btn">Retry</button>
         </div>
       )}
+
+      {showAddForm && ( <AddCountryForm onAdd={addCountry} onCancel={() => setShowAddForm(false)}/> )}
 
       <div className="search-section">
         <div className="search-container">
