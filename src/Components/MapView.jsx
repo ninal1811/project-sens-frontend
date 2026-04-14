@@ -13,29 +13,10 @@ import Legend from "./Legend";
 import { useFavorites } from "./useFavorites";
 import './MapView.css';
 import NavBar from './NavBar';
+import { getDietaryIcons } from '../constants/dietaryIcons';
 import { COUNTRY_IMAGE_URLS, STATE_IMAGE_URLS, CITY_IMAGE_URLS } from '../constants/imgUrls';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
-
-// Helper function to get dietary icons
-const getDietaryIcons = (dietaryArray) => {
-  if (!dietaryArray) return '';
-  
-  const iconMap = {
-    vegetarian: '🌱',
-    vegan: '🥬',
-    meat: '🥩',
-    seafood: '🐟'
-  };
-  
-  // If array, show all icons
-  if (Array.isArray(dietaryArray)) {
-    return dietaryArray.map(d => iconMap[d] || '').join(' ');
-  }
-  
-  // If single value, show one icon
-  return iconMap[dietaryArray] || '';
-};
 // logs latitude and longitude data whenever you click on a new area on the map
 function ClickDebug() {
   useMapEvents({

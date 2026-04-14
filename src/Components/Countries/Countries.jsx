@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router'
 import axios from 'axios'
 import '../Common.css';
 import './Countries.css';
+import { getDietaryIcons } from '../../constants/dietaryIcons';
 
 function capitalizeCountryName(name) {
   if (!name) return '';
@@ -15,7 +16,7 @@ function CountryCard({ countryData, onDelete, onViewStates }) {
   const [isLoadingStates, setIsLoadingStates] = useState(false);
   const [statesLoaded, setStatesLoaded] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const { _id, name, capital, nat_dish, pop_dish_1, pop_dish_2 } = countryData || {};
+  const { _id, name, capital, nat_dish, pop_dish_1, pop_dish_2, nat_dish_dietary, pop_dish_1_dietary, pop_dish_2_dietary } = countryData || {};
   const navigate = useNavigate();
 
   const handleDelete = async () => {
@@ -98,13 +99,13 @@ function CountryCard({ countryData, onDelete, onViewStates }) {
               <span className="country-capitalize">{capital ?? '—'}</span>
             </p>
             <p className="country-detail-text">
-              <strong className="country-detail-label">National Dish:</strong> {nat_dish ?? '—'}
+              <strong className="country-detail-label">National Dish:</strong> {nat_dish ?? '—'} {getDietaryIcons(nat_dish_dietary)}
             </p>
             <p className="country-detail-text">
-              <strong className="country-detail-label">Popular Dish 1:</strong> {pop_dish_1 ?? '—'}
+              <strong className="country-detail-label">Popular Dish 1:</strong> {pop_dish_1 ?? '—'} {getDietaryIcons(pop_dish_1_dietary)}
             </p>
             <p className="country-detail-text">
-              <strong className="country-detail-label">Popular Dish 2:</strong> {pop_dish_2 ?? '—'}
+              <strong className="country-detail-label">Popular Dish 2:</strong> {pop_dish_2 ?? '—'} {getDietaryIcons(pop_dish_2_dietary)}
             </p>
           </div>
           <div className='states-section'>
