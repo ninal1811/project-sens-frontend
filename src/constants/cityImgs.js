@@ -158,5 +158,106 @@ export const CITY_IMAGE_URLS = {
   Khammam: {
     restaurant_name: "Sri Krishna Vilas",
     image: "https://content.jdmagicbox.com/v2/comp/khammam/e5/9999p8742.8742.221219002255.f4e5/catalogue/lord-krishna-temple-gandhi-nagar-khammam-temples-hj5QmtDokt.jpg"
+  },
+  // japan
+  Hokkaido: {
+    restaurant_name: "Picante Soup Curry",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2d/d2/07/66/caption.jpg?w=1200&h=1200&s=1"
+  },
+  Miyagi: {
+    restaurant_name: "Kaku",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKg7B9J8qdy0wdZjDr5B5YKjbsBJGkd6TjLw&s"
+  },
+  Tokyo: {
+    restaurant_name: "Tsukiji Unitora Nakadori",
+    image: "https://media-cdn.tripadvisor.com/media/photo-s/1b/32/44/57/photo1jpg.jpg"
+  },
+  Aichi: {
+    restaurant_name: "Shirakawa Meiekiten",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/c0/86/c1/caption.jpg?w=1200&h=1200&s=1"
+  },
+  Osaka: {
+    restaurant_name: "Sushi Tani",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/31/ea/b9/ea/caption.jpg?w=1000&h=1000&s=1"
+  },
+  Hiroshima: {
+    restaurant_name: "Taiko Udon Nakamachi Shop",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/52/bc/d2/vegetarian-options-are.jpg?w=900&h=-1&s=1"
+  },
+  Kagawa: {
+    restaurant_name: "Sanuki-Udon Enya",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/14/f3/cc/d7/caption.jpg?w=400&h=300&s=1"
+  },
+  Fukuoka: {
+    restaurant_name: "Musashi Kuroge Wagyu",
+    image: "https://i.autoreserve.com/thumb/800x800/restaurant_image/image/061/994/169/61994169/fc121613-c2ec-438d-bcc4-16995478acbe.jpeg?format=webp"
+  },
+  // korea
+  Seoul: {
+    restaurant_name: "Myeongdong JangIn Dakgalbi Restaurants",
+    image: "https://eys6lgfo9088.edge.naverncp.com/3Tiyl0qd2g/data/store/store/579749_aHWa2HfwGcGY8r3RlgvJ5zJmlJO1U7IO.jpg?type=w&w=1024&quality=80&extopt=0"
+  },
+  Daegu: {
+    restaurant_name: "Dutum (두툼참숯초벌구이)",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/26/bb/40/8f/store-front.jpg?w=900&h=500&s=1"
+  },
+  Busan: {
+    restaurant_name: "Mipo-jib Haeundae",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvCCFKeMPhOgRcAvpxdhqHdzru0PzQPKbxQQ&s"
+  },
+  Jeju: {
+    restaurant_name: "Baro Jokbal Bossam",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdBn5LQm8xVu7GmfZO_iwsrN2--gxIa6rc8A&s"
+  },
+  // china
+  Beijing: {
+    restaurant_name: "Siji Mingfu Roasted Duck Restaurant",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/a3/ec/a7/caption.jpg?w=1000&h=1000&s=1"
+  },
+  Fujian: {
+    restaurant_name: "Backstreet Laohua",
+    image: "https://d2kihw5e8drjh5.cloudfront.net/eyJidWNrZXQiOiJ1dGEtaW1hZ2VzIiwia2V5IjoicGxhY2VfaW1nL0dHbGdsM19pVHdlU3hQemFlbTR0OUEiLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjY0MCwiaGVpZ2h0Ijo2NDAsImZpdCI6Imluc2lkZSJ9LCJyb3RhdGUiOm51bGwsInRvRm9ybWF0IjogIndlYnAifX0="
+  },
+  Chongqing: {
+    restaurant_name: "Chongqing Guodao Hot Pot",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/00/fa/b8/chongqing-liuyishou-hot.jpg?w=900&h=500&s=1"
+  },
+  Guangzhou: {
+    restaurant_name: "Minji Food",
+    image: "ge-resize/format=webp,w=720/https:/images.mindtrip.ai/restaurants/42b7/5f26/2481/48bc/2e49/6d76/904d/2cbf"
+  },
+  Xinjiang: {
+    restaurant_name: "Ma Fenghua Xinjiang Big Plate Chicken (马风花大盘鸡·新疆菜)",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsgL9dcYAMfplNntBL04_-y52jJQxldBiSQw&s"
+  },
+  // the phillipines
+  'Manila City': {
+    restaurant_name: "Aristocrat",
+    image: "https://image-worker.mindtrip.ai/image-resize/format=webp,w=720/https:/images.mindtrip.ai/restaurants/214c/2854/13f9/1d97/b35a/8855/eb6a/c965"
+  },
+  'Cebu City': {
+    restaurant_name: "House of Lechon",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg5V4nlIA50fN9uzakVdcxEeZPe13scfCF5A&s"
+  },
+  'Davao City': {
+    restaurant_name: "Rekado Filipino Comfort Cuisine",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjO0JeCWOmXdB6VlEADiSiu3vnfsdvjEwBhw&s"
+  },
+  // mexico
+  'Mexico City': {
+    restaurant_name: "El Cardenal",
+    image: "https://static.wixstatic.com/media/677e62_ca3ae6dca2584c0ebefdfbc0e4eb7ad2~mv2.jpg/v1/fill/w_640,h_640,al_b,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/677e62_ca3ae6dca2584c0ebefdfbc0e4eb7ad2~mv2.jpg"
+  },
+  Puebla: {
+    restaurant_name: "El Mural de los Poblanos",
+    image: "https://media-cdn.tripadvisor.com/media/photo-s/09/da/ee/4c/el-mural-de-los-poblanos.jpg"
+  },
+  Guadelajara: {
+    restaurant_name: "La Chata",
+    image: "https://s3-media0.fl.yelpcdn.com/bphoto/9FDFnSirINExCeWScYlbXA/348s.jpg"
+  },
+  'Oaxaca de Juárez': {
+    restaurant_name: "Los Danzantes Oaxaca",
+    image: "https://axwwgrkdco.cloudimg.io/v7/__gmpics3__/c029a5e46f9146f6a25605006483ca4c.jpeg"
   }
   };

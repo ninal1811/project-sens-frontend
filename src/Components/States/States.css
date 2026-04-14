@@ -242,3 +242,27 @@
         border-radius: 0 0 4px 4px;
     }
 }
+
+.selected-cities-block {
+    margin-top: 10px;
+  }
+  
+  .selected-cities-label {
+    color: #aaa;
+  }
+  
+  .selected-cities-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  
+  .selected-city-pill {
+    padding: 4px 12px;
+    background-color: #1a1a1a;
+    border-radius: 16px;
+    font-size: 13px;
+    color: #ccc;
+    border: 1px solid #333;
+  }
