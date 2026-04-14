@@ -137,18 +137,20 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
           image: stateImg?.image || ""
         });
           const html = `
-            <div class="state-popup-container">
-              ${stateImg ? `
-                <div class="popup-image-container">
-                  <img src="${stateImg.image}" class="popup-image" />
-                  <div class="popup-dish-label">${stateImg.food_name}</div>
-                </div>` : ''}
-              <div class="state-popup-name">
-                ${backendMatch.name} (${backendMatch.state_code})
-              </div>
-              <div data-fav='${favItem}'></div>
+          <div class="state-popup-container">
+            ${stateImg ? `
+              <div class="popup-image-container">
+                <img src="${stateImg.image}" class="popup-image" />
+                <div class="popup-dish-label">
+                  ${backendMatch.food_name} ${getDietaryIcons(backendMatch.food_dietary)}
+                </div>
+              </div>` : ''}
+            <div class="popup-dish-label">
+              ${backendMatch.food_name} ${getDietaryIcons(backendMatch.food_dietary)}
             </div>
-`;
+            <div data-fav='${favItem}'></div>
+          </div>
+        `;
         layer.bindPopup(html, {
           offset: L.point(0, -10),
           autoPanPaddingTopLeft: L.point(0, 80),

@@ -148,8 +148,11 @@ function AddCountryForm({ onAdd, onCancel }) {
     name: '',
     capital: '',
     nat_dish: '',
+    nat_dish_dietary: [],
     pop_dish_1: '',
-    pop_dish_2: ''
+    pop_dish_1_dietary: [],
+    pop_dish_2: '',
+    pop_dish_2_dietary: []
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -263,7 +266,65 @@ function AddCountryForm({ onAdd, onCancel }) {
             disabled={isSubmitting}
           />
         </div>
-
+        <div className="dietary-checkboxes">
+          <label className="dietary-label">National Dish Dietary:</label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.nat_dish_dietary.includes('vegetarian')}
+              onChange={(e) => {
+                const newDietary = e.target.checked
+                  ? [...formData.nat_dish_dietary, 'vegetarian']
+                  : formData.nat_dish_dietary.filter(d => d !== 'vegetarian');
+                setFormData({...formData, nat_dish_dietary: newDietary});
+              }}
+              disabled={isSubmitting}
+            />
+            🌱 Vegetarian
+          </label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.nat_dish_dietary.includes('meat')}
+              onChange={(e) => {
+                const newDietary = e.target.checked
+                  ? [...formData.nat_dish_dietary, 'meat']
+                  : formData.nat_dish_dietary.filter(d => d !== 'meat');
+                setFormData({...formData, nat_dish_dietary: newDietary});
+              }}
+              disabled={isSubmitting}
+            />
+            🥩 Meat
+          </label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.nat_dish_dietary.includes('seafood')}
+              onChange={(e) => {
+                const newDietary = e.target.checked
+                  ? [...formData.nat_dish_dietary, 'seafood']
+                  : formData.nat_dish_dietary.filter(d => d !== 'seafood');
+                setFormData({...formData, nat_dish_dietary: newDietary});
+              }}
+              disabled={isSubmitting}
+            />
+            🐟 Seafood
+          </label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.nat_dish_dietary.includes('vegan')}
+              onChange={(e) => {
+                const newDietary = e.target.checked
+                  ? [...formData.nat_dish_dietary, 'vegan']
+                  : formData.nat_dish_dietary.filter(d => d !== 'vegan');
+                setFormData({...formData, nat_dish_dietary: newDietary});
+              }}
+              disabled={isSubmitting}
+            />
+            🥬 Vegan
+          </label>
+        </div>
         <div>
           <input
             type="text"
@@ -274,7 +335,66 @@ function AddCountryForm({ onAdd, onCancel }) {
             disabled={isSubmitting}
           />
         </div>
-
+        {/* Popular Dish 1 Dietary Checkboxes */}
+        <div className="dietary-checkboxes">
+          <label className="dietary-label">Popular Dish 1 Dietary:</label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.pop_dish_1_dietary.includes('vegetarian')}
+              onChange={(e) => {
+                const newDietary = e.target.checked
+                  ? [...formData.pop_dish_1_dietary, 'vegetarian']
+                  : formData.pop_dish_1_dietary.filter(d => d !== 'vegetarian');
+                setFormData({...formData, pop_dish_1_dietary: newDietary});
+              }}
+              disabled={isSubmitting}
+            />
+            🌱 Vegetarian
+          </label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.pop_dish_1_dietary.includes('meat')}
+              onChange={(e) => {
+                const newDietary = e.target.checked
+                  ? [...formData.pop_dish_1_dietary, 'meat']
+                  : formData.pop_dish_1_dietary.filter(d => d !== 'meat');
+                setFormData({...formData, pop_dish_1_dietary: newDietary});
+              }}
+              disabled={isSubmitting}
+            />
+            🥩 Meat
+          </label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.pop_dish_1_dietary.includes('seafood')}
+              onChange={(e) => {
+                const newDietary = e.target.checked
+                  ? [...formData.pop_dish_1_dietary, 'seafood']
+                  : formData.pop_dish_1_dietary.filter(d => d !== 'seafood');
+                setFormData({...formData, pop_dish_1_dietary: newDietary});
+              }}
+              disabled={isSubmitting}
+            />
+            🐟 Seafood
+          </label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.pop_dish_1_dietary.includes('vegan')}
+              onChange={(e) => {
+                const newDietary = e.target.checked
+                  ? [...formData.pop_dish_1_dietary, 'vegan']
+                  : formData.pop_dish_1_dietary.filter(d => d !== 'vegan');
+                setFormData({...formData, pop_dish_1_dietary: newDietary});
+              }}
+              disabled={isSubmitting}
+            />
+            🥬 Vegan
+          </label>
+        </div>       
         <div>
           <input
             type="text"
@@ -285,7 +405,66 @@ function AddCountryForm({ onAdd, onCancel }) {
             disabled={isSubmitting}
           />
         </div>
-
+        {/* Popular Dish 2 Dietary Checkboxes */}
+        <div className="dietary-checkboxes">
+          <label className="dietary-label">Popular Dish 2 Dietary:</label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.pop_dish_2_dietary.includes('vegetarian')}
+              onChange={(e) => {
+                const newDietary = e.target.checked
+                  ? [...formData.pop_dish_2_dietary, 'vegetarian']
+                  : formData.pop_dish_2_dietary.filter(d => d !== 'vegetarian');
+                setFormData({...formData, pop_dish_2_dietary: newDietary});
+              }}
+              disabled={isSubmitting}
+            />
+            🌱 Vegetarian
+          </label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.pop_dish_2_dietary.includes('meat')}
+              onChange={(e) => {
+                const newDietary = e.target.checked
+                  ? [...formData.pop_dish_2_dietary, 'meat']
+                  : formData.pop_dish_2_dietary.filter(d => d !== 'meat');
+                setFormData({...formData, pop_dish_2_dietary: newDietary});
+              }}
+              disabled={isSubmitting}
+            />
+            🥩 Meat
+          </label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.pop_dish_2_dietary.includes('seafood')}
+              onChange={(e) => {
+                const newDietary = e.target.checked
+                  ? [...formData.pop_dish_2_dietary, 'seafood']
+                  : formData.pop_dish_2_dietary.filter(d => d !== 'seafood');
+                setFormData({...formData, pop_dish_2_dietary: newDietary});
+              }}
+              disabled={isSubmitting}
+            />
+            🐟 Seafood
+          </label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.pop_dish_2_dietary.includes('vegan')}
+              onChange={(e) => {
+                const newDietary = e.target.checked
+                  ? [...formData.pop_dish_2_dietary, 'vegan']
+                  : formData.pop_dish_2_dietary.filter(d => d !== 'vegan');
+                setFormData({...formData, pop_dish_2_dietary: newDietary});
+              }}
+              disabled={isSubmitting}
+            />
+            🥬 Vegan
+          </label>
+        </div>
         <div className='form-actions'>
           <button type='submit' 
             disabled={isSubmitting}
@@ -402,7 +581,7 @@ export default function Countries() {
   const addCountry = async (countryData) => {
     console.log('sending to url:', `${baseURL}/countries/add`);
     console.log('with data', {
-      _id: countryData._id,
+      country_code: countryData._id,
       name: countryData.name,
       capital: countryData.capital,
       nat_dish: countryData.nat_dish,
@@ -412,7 +591,7 @@ export default function Countries() {
 
     try {
       const response = await axios.post(`${baseURL}/countries/add`, {
-        _id: countryData._id,
+        country_code: countryData._id,  // ← Change _id to country_code
         name: countryData.name,
         capital: countryData.capital,
         nat_dish: countryData.nat_dish,
