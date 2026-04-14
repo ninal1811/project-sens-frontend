@@ -6,7 +6,12 @@
     gap: 1rem;
     flex-wrap: wrap;
   }
-  
+  .legend {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
   .dietary-label {
     font-weight: 600;
   }

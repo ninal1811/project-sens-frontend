@@ -80,13 +80,13 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
   const styleState = useCallback((feature) => {
     const stateCode = getStateCode(feature);
     const isInBackend = stateCode && backendStatesIds.has(stateCode);
-
+  
     return {
-      weight: 1,
-      color: "#999",
-      opacity: 0.8,
-      fillOpacity: isInBackend ? 0.6 : 0.25,
-      fillColor: isInBackend ? "#0d47a1" : "#000000",
+      weight: 1.2,
+      color: "#14532d",              // Dark forest green borders
+      opacity: 0.9,
+      fillOpacity: 0.8,
+      fillColor: isInBackend ? "#15803d" : "#bbf7d0", // Dark vs light green
     };
   }, [backendStatesIds, getStateCode]);
   
@@ -148,7 +148,6 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
 
 }
 
-// map logic component
 function MapController({ visibleCities, onCountryClick, backendCountriesRef, backendIds, showStates, 
   selectedCountry, onStateClick, backendStatesRef, backendStatesIds, onBackToCountries, attachFavButton }) {
   const map = useMap();
@@ -207,10 +206,10 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
     const isInBackend = iso3 && backendIds.has(iso3);
 
     return {
-      weight: 1,
-      color: "#444",
-      fillOpacity: isInBackend ? 0.45 : 0.08,
-      fillColor: isInBackend ? "#1e90ff" : "#999",
+      weight: 1.5,
+      color: "#1e3a1e",              // Dark green borders
+      fillOpacity: 0.85,
+      fillColor: isInBackend ? "#166534" : "#a3c585",
     };
   }, [backendIds, getIso3]);
 
@@ -267,6 +266,11 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
       }
     });
   }, [backendCountriesRef, getIso3, map, onCountryClick]);
+
+  const WORLD_BOUNDS = [
+    [-90, -180],
+    [90, 180],
+  ];
 
   // when a country is clicked, it looks at the country code, finds the matching backend data, and shows a popup of the dish info and image
   return (
@@ -339,10 +343,19 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
           </CircleMarker>
         );  
       })}
+
+      {/* LABELS LAYER - MUST BE LAST TO APPEAR ON TOP */}
+      <TileLayer
+        attribution='&copy; <a href="https://carto.com/">CARTO</a>'
+        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}@2x.png"
+        noWrap={true}
+        bounds={WORLD_BOUNDS}
+        pane="shadowPane"
+        className="white-labels"
+      />
     </>
   );
 }
-
 export default function MapView() {
   const [backendCountries, setBackendCountries] = useState({});
   const [selectedCountry, setSelectedCountry] = useState(null);
@@ -601,19 +614,22 @@ export default function MapView() {
       <Legend showStates={showStates} />
       <div className="map-wrapper">
         <MapContainer
-          ref={mapRef}
-          center={[20, 0]}
-          zoom={2}
+          rref={mapRef}
+          center={[25, 15]}  // Slightly adjusted center
+          zoom={2.5}         // Less zoomed in = see more
+          minZoom={2}
           maxBounds={WORLD_BOUNDS}
           maxBoundsViscosity={1.0}
           scrollWheelZoom={true}
           doubleClickZoom={false}
           className="map-container">
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://carto.com/">CARTO</a>'
+            url="https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png"
             noWrap={true}
             bounds={WORLD_BOUNDS}
+            zIndex={9999}
+            className="country-labels"
           />
           <ClickDebug />
           <MapController
