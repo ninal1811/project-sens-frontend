@@ -737,25 +737,14 @@ export default function States() {
                             {selectedState.state_code}
                         </p>
                         {selectedState.cities && selectedState.cities.length > 0 && (
-                            <div style={{ marginTop: "10px" }}>
-                                <strong style={{ color: "#aaa" }}>Cities ({selectedState.cities.length}):</strong>
-                                <div style={{ 
-                                    display: "flex", 
-                                    flexWrap: "wrap", 
-                                    gap: "8px", 
-                                    marginTop: "10px" 
-                                }}>
+                            <div className="selected-cities-block">
+                                <strong className="selected-cities-label">
+                                    Cities ({selectedState.cities.length}):</strong>
+                                <div className="selected-cities-list">
                                     {selectedState.cities.map((city, idx) => (
                                         <span
                                             key={idx}
-                                            style={{
-                                                padding: "4px 12px",
-                                                backgroundColor: "#1a1a1a",
-                                                borderRadius: "16px",
-                                                fontSize: "13px",
-                                                color: "#ccc",
-                                                border: "1px solid #333"
-                                            }}
+                                            className="selected-city-pill"
                                         >
                                             {city.name || city}
                                         </span>
