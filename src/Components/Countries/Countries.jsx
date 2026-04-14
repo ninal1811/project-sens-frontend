@@ -626,7 +626,7 @@ export default function Countries() {
 
   const deleteCountry = async (countryData) => {
     try {
-        const response = await axios.delete(`${baseURL}/countries/${countryData.name}`);
+        const response = await axios.delete(`${baseURL}/countries/${countryData._id}`);
 
         if (response.status === 200) {
             alert('Country deleted successfully!');
