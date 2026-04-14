@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router'
 import axios from 'axios'
 import '../Common.css';
 import './Cities.css'
+import { CITY_IMAGE_URLS } from '../../constants/imgUrls';
 
 function capitalizeCityName(city) {
   if (!city) return '';
@@ -65,6 +66,15 @@ function CityCard({ cityData, onDelete }) {
        <p className="city-detail-text">
          <strong className="city-detail-label">Restaurant:</strong> {rec_restaurant ?? "—"}
        </p>
+       {CITY_IMAGE_URLS[city] && (
+         <div style={{ textAlign: "center", marginTop: "12px" }}>
+           <img 
+             src={CITY_IMAGE_URLS[city].image} 
+             alt={CITY_IMAGE_URLS[city].restaurant_name || rec_restaurant}
+             style={{ maxWidth: "250px", width: "100%", borderRadius: "6px" }}
+           />
+         </div>
+       )}
         </div>
       )}
     </li>
@@ -545,6 +555,15 @@ export default function Cities() {
                   <strong className='detail-label'>Recommended Restaurant:</strong> 
                   {selectedCity.rec_restaurant}
                 </p>
+              )}
+              {CITY_IMAGE_URLS[selectedCity.city] && (
+                <div style={{ textAlign: "center", marginTop: "12px" }}>
+                  <img 
+                    src={CITY_IMAGE_URLS[selectedCity.city].image} 
+                    alt={CITY_IMAGE_URLS[selectedCity.city].restaurant_name || selectedCity.rec_restaurant}
+                    style={{ maxWidth: "250px", width: "100%", borderRadius: "6px" }}
+                  />
+                </div>
               )}
             </div>
           </div>
