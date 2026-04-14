@@ -190,8 +190,11 @@ function AddCountryForm({ onAdd, onCancel }) {
         name: formData.name.trim(),
         capital: formData.capital.trim(),
         nat_dish: formData.nat_dish.trim(),
+        nat_dish_dietary: formData.nat_dish_dietary,
         pop_dish_1: formData.pop_dish_1.trim(),
-        pop_dish_2: formData.pop_dish_2.trim()
+        pop_dish_1_dietary: formData.pop_dish_1_dietary,
+        pop_dish_2: formData.pop_dish_2.trim(),
+        pop_dish_2_dietary: formData.pop_dish_2_dietary
       });
 
       setFormData({
@@ -199,8 +202,11 @@ function AddCountryForm({ onAdd, onCancel }) {
         name: '',
         capital: '',
         nat_dish: '',
+        nat_dish_dietary: [],
         pop_dish_1: '',
-        pop_dish_2: ''
+        pop_dish_1_dietary: [],
+        pop_dish_2: '',
+        pop_dish_2_dietary: []
       })
       setErrors({});
     } catch (error) {
@@ -586,8 +592,11 @@ export default function Countries() {
       name: countryData.name,
       capital: countryData.capital,
       nat_dish: countryData.nat_dish,
+      nat_dish_dietary: countryData.nat_dish_dietary || [],
       pop_dish_1: countryData.pop_dish_1,
-      pop_dish_2: countryData.pop_dish_2
+      pop_dish_1_dietary: countryData.pop_dish_1_dietary || [],
+      pop_dish_2: countryData.pop_dish_2,
+      pop_dish_2_dietary: countryData.pop_dish_2_dietary || []
     });
 
     try {
@@ -596,8 +605,11 @@ export default function Countries() {
         name: countryData.name,
         capital: countryData.capital,
         nat_dish: countryData.nat_dish,
+        nat_dish_dietary: countryData.nat_dish_dietary || [],
         pop_dish_1: countryData.pop_dish_1,
-        pop_dish_2: countryData.pop_dish_2
+        pop_dish_1_dietary: countryData.pop_dish_1_dietary || [],
+        pop_dish_2: countryData.pop_dish_2,
+        pop_dish_2_dietary: countryData.pop_dish_2_dietary || []
       });
       if (response.status === 200 || response.status === 201) {
         alert('Country added successfully!');
