@@ -36,8 +36,6 @@ export default function Legend({ showStates }) {
         <span>🥩 Meat</span>
         <span>🐟 Seafood</span>
         <span>🥬 Vegan</span>
-        <span>🌾 Gluten-Free</span>
-        <span>🥜 Contains Nuts</span>
       </div>
     </div>
   );
