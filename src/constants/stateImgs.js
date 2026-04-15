@@ -148,7 +148,7 @@ export const STATE_IMAGE_URLS = {
     },
     'GON': {
       food_name: 'Taguella Bread',
-      image: 'https://img.taste.com.au/_2cqyKzb/taste/2016/11/lamb-mechoui-with-green-couscous-24578-1.jpeg'
+      image: 'https://aladdindesertcamp.com/wp-content/uploads/2025/03/9386085696_6de0ff46ec_b.webp'
     },
     'LSH': {
       food_name: 'Sahrawi Tea',
