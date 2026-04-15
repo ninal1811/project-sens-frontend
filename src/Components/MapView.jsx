@@ -123,12 +123,14 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
               <div class="popup-image-container">
                 <img src="${stateImg.image}" class="popup-image" />
                 <div class="popup-dish-label">
-                  ${backendMatch.food_name} ${getDietaryIcons(backendMatch.food_dietary)}
+                  ${backendMatch.food_name || 'Regional Cuisine'} ${getDietaryIcons(backendMatch.food_dietary || [])}
                 </div>
+              </div>` : backendMatch.food_name ? `
+              <div class="popup-dish-label">
+                <strong>Popular Food:</strong> ${backendMatch.food_name} ${getDietaryIcons(backendMatch.food_dietary || [])}
               </div>` : ''}
-            <div class="popup-dish-label">
-              ${backendMatch.food_name} ${getDietaryIcons(backendMatch.food_dietary)}
-            </div>
+            <div class="popup-state-name">${backendMatch.name}</div>
+            <div><strong>State Code:</strong> ${backendMatch.state_code}</div>
             <div data-fav='${favItem}'></div>
           </div>
         `;
