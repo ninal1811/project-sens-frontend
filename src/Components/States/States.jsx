@@ -240,7 +240,9 @@ function AddStateForm({ onAdd, onCancel, countries = [] }) {
     const [formData, setFormData] = useState({
         name: '',
         state_code: '',
-        country_code: ''
+        country_code: '',
+        food_name: '',           
+        food_dietary: []
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
@@ -274,13 +276,17 @@ function AddStateForm({ onAdd, onCancel, countries = [] }) {
             await onAdd({
                 name: formData.name.trim(),
                 state_code: formData.state_code.toUpperCase(),
-                country_code: formData.country_code.toUpperCase()
+                country_code: formData.country_code.toUpperCase(),
+                food_name: formData.food_name.trim(),
+                food_dietary: formData.food_dietary
             });
             
             setFormData({
                 name: '',
                 state_code: '',
-                country_code: ''
+                country_code: '',
+                food_name: '',
+                food_dietary: []
             });
             setErrors({});
         } catch (error) {
@@ -343,6 +349,79 @@ function AddStateForm({ onAdd, onCancel, countries = [] }) {
                         ))}
                     </select>
                     {errors.country_code && ( <p className='error-text'>{errors.country_code}</p> )}
+                </div>
+
+                {/* Food Name Input */}
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Popular Food (e.g., Clam Chowder)"
+                        value={formData.food_name}
+                        onChange={(e) => setFormData({...formData, food_name: e.target.value})}
+                        className="form-input"
+                        disabled={isSubmitting}
+                    />
+                </div>
+
+                {/* Dietary Checkboxes */}
+                <div className="dietary-checkboxes">
+                    <label className="dietary-label">Dietary Options:</label>
+                    <label className="checkbox-label">
+                        <input
+                            type="checkbox"
+                            checked={formData.food_dietary.includes('vegetarian')}
+                            onChange={(e) => {
+                                const dietary = e.target.checked
+                                    ? [...formData.food_dietary, 'vegetarian']
+                                    : formData.food_dietary.filter(d => d !== 'vegetarian');
+                                setFormData({ ...formData, food_dietary: dietary });
+                            }}
+                            disabled={isSubmitting}
+                        />
+                        🌱 Vegetarian
+                    </label>
+                    <label className="checkbox-label">
+                        <input
+                            type="checkbox"
+                            checked={formData.food_dietary.includes('meat')}
+                            onChange={(e) => {
+                                const dietary = e.target.checked
+                                    ? [...formData.food_dietary, 'meat']
+                                    : formData.food_dietary.filter(d => d !== 'meat');
+                                setFormData({ ...formData, food_dietary: dietary });
+                            }}
+                            disabled={isSubmitting}
+                        />
+                        🥩 Meat
+                    </label>
+                    <label className="checkbox-label">
+                        <input
+                            type="checkbox"
+                            checked={formData.food_dietary.includes('seafood')}
+                            onChange={(e) => {
+                                const dietary = e.target.checked
+                                    ? [...formData.food_dietary, 'seafood']
+                                    : formData.food_dietary.filter(d => d !== 'seafood');
+                                setFormData({ ...formData, food_dietary: dietary });
+                            }}
+                            disabled={isSubmitting}
+                        />
+                        🐟 Seafood
+                    </label>
+                    <label className="checkbox-label">
+                        <input
+                            type="checkbox"
+                            checked={formData.food_dietary.includes('vegan')}
+                            onChange={(e) => {
+                                const dietary = e.target.checked
+                                    ? [...formData.food_dietary, 'vegan']
+                                    : formData.food_dietary.filter(d => d !== 'vegan');
+                                setFormData({ ...formData, food_dietary: dietary });
+                            }}
+                            disabled={isSubmitting}
+                        />
+                        🥬 Vegan
+                    </label>
                 </div>
                 
                 <div className='form-actions'>
@@ -532,7 +611,9 @@ export default function States() {
             const response = await axios.post(`${baseURL}/states/add`, {
                 name: stateData.name,
                 state_code: stateData.state_code,
-                country_code: stateData.country_code
+                country_code: stateData.country_code,
+                food_name: stateData.food_name || '',
+                food_dietary: stateData.food_dietary || []
             });
 
             if (response.status === 200 || response.status === 201) {
