@@ -3,13 +3,13 @@ import './Legend.css';
 export default function Legend({ showStates }) {
   return (
     <div className="legend-container">
-      <div className="legend-title">Legend:</div>
+      <span className="legend-title">Legend</span>
+      <div className="legend-divider" />
 
       <div className="legend-item">
         <div className="legend-box legend-box-country" />
-        <span>Country in database</span>
+        <span>Country</span>
       </div>
-
       <div className="legend-item">
         <div className="legend-box legend-box-no-data" />
         <span>No data</span>
@@ -19,7 +19,7 @@ export default function Legend({ showStates }) {
         <>
           <div className="legend-item">
             <div className="legend-box legend-box-state" />
-            <span>State in database</span>
+            <span>State</span>
           </div>
 
           <div className="legend-item">
@@ -29,13 +29,15 @@ export default function Legend({ showStates }) {
         </>
       )}
 
+      <div className="legend-divider" />
+
       {/* Dietary Icons */}
-      <div className="dietary-icons-section">
-        <span className="dietary-label">Dietary:</span>
-        <span>🌱 Vegetarian</span>
-        <span>🥩 Meat</span>
-        <span>🐟 Seafood</span>
-        <span>🥬 Vegan</span>
+      <div className="legend-dietary">
+        <span className="dietary-label">Dietary</span>
+        <span className="dietary-item">🌱 Veg</span>
+        <span className="dietary-item">🥩 Meat</span>
+        <span className="dietary-item">🐟 Seafood</span>
+        <span className="dietary-item">🥬 Vegan</span>
       </div>
     </div>
   );
