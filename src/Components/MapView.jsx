@@ -149,7 +149,7 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
 }
 
 function MapController({ visibleCities, onCountryClick, backendCountriesRef, backendIds, showStates, 
-  selectedCountry, onStateClick, backendStatesRef, backendStatesIds, onBackToCountries, attachFavButton }) {
+  selectedCountry, onStateClick, backendStatesRef, backendStatesIds, onBackToCountries, attachFavButton, allCitiesRef }) {
   const map = useMap();
 
   useEffect(() => { attachFavButton(map); }, [map, attachFavButton]);
@@ -227,6 +227,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
         const natImg = backendMatch.image_url || (typeof imgs === 'object' ? imgs.nat_dish : imgs) || '';
         const pop1Img = typeof imgs === 'object' ? imgs.pop_dish_1 : '';
         const pop2Img = typeof imgs === 'object' ? imgs.pop_dish_2 : '';
+        const cityCount = Object.values(allCitiesRef.current).filter(c => c.country_code === iso3).length;
 
         const favItem = JSON.stringify({
           id: backendMatch._id, type: "country",
@@ -255,6 +256,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
               </div>` : ''}
             <div class="popup-country-name">${backendMatch.name}</div>
             <div><b>Capital:</b> ${backendMatch.capital.charAt(0).toUpperCase() + backendMatch.capital.slice(1)}</div>
+            ${cityCount > 0 ? `<div class="popup-city-count">🏙️ ${cityCount} ${cityCount === 1 ? 'city' : 'cities'} available</div>` : ''}
             <div data-fav='${favItem}'></div>
           </div>
         `;
@@ -265,7 +267,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
         }).openPopup();
       }
     });
-  }, [backendCountriesRef, getIso3, map, onCountryClick]);
+  }, [backendCountriesRef, getIso3, map, onCountryClick, allCitiesRef]);
 
   const WORLD_BOUNDS = [
     [-90, -180],
@@ -371,6 +373,7 @@ export default function MapView() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const [showEscHint, setShowEscHint] = useState(false); 
 
   const navigate = useNavigate();
   const { isFavorited, toggleFavorite } = useFavorites();
@@ -592,6 +595,14 @@ export default function MapView() {
     };
   }, [showStates, handleBackToCountries]);
 
+  useEffect(() => {
+    if (showStates) {
+      setShowEscHint(true);
+      const timer = setTimeout(() => setShowEscHint(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showStates]);
+
   const WORLD_BOUNDS = [
     [-90, -180],
     [90, 180],
@@ -648,6 +659,9 @@ export default function MapView() {
           />
         </MapContainer>
       </div>
+      {showEscHint && (
+        <div className="esc-hint">Press ESC to return to world view</div>
+      )}
     </div>
   );
 }
