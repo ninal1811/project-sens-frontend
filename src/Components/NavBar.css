@@ -208,6 +208,29 @@
   border-bottom: 3px solid #10b981;
 }
 
+/* ── Logout button ── */
+.navbar-logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff !important;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-logout-btn:hover {
+  color: #10b981 !important;
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
 /* ── Hamburger (mobile) ── */
 .navbar-hamburger {
   display: none;
@@ -286,6 +309,7 @@
   transform: scale(1.05);
   box-shadow: 0 6px 20px rgba(163, 197, 133, 0.5);
 }
+
 /* Popup Styling */
 .leaflet-popup-content-wrapper {
   border-radius: 12px !important;

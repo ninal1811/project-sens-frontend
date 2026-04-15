@@ -1,11 +1,56 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
 import "./NavBar.css";
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
 export default function Navbar({ searchQuery, onSearch, searchResults, showSearchResults, onSelectResult, onClearSearch }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => sessionStorage.getItem("loggedIn") === "true");
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // Check login status on mount and when location changes
+  useEffect(() => {
+    console.log('NavBar useEffect triggered, pathname:', location.pathname);
+    checkLoginStatus();
+  }, [location.pathname]);
+
+  async function checkLoginStatus() {
+    const sessionStoreLoggedIn = sessionStorage.getItem("loggedIn") === "true";
+    try {
+      const response = await fetch(`${API_URL}/auth/session`, {
+        credentials: 'include'
+      });
+      const data = await response.json();
+      // If the API confirms logged in, trust it. If it says no,
+      // fall back to sessionStorage (backend cookie may not persist cross-origin).
+      setIsLoggedIn(data.loggedIn || sessionStoreLoggedIn);
+    } catch (error) {
+      console.error('Session check failed:', error);
+      setIsLoggedIn(sessionStoreLoggedIn);
+    }
+  }
+
+  async function handleLogout() {
+    try {
+      await fetch(`${API_URL}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+      
+      // Clear session storage
+      sessionStorage.removeItem('loggedIn');
+      sessionStorage.removeItem('email');
+      
+      setIsLoggedIn(false);
+      setMenuOpen(false);
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  }
 
   const links = [
     { label: "Explore", to: "/" },
@@ -13,8 +58,9 @@ export default function Navbar({ searchQuery, onSearch, searchResults, showSearc
     { label: "States", to: "/States" },
     { label: "Cities", to: "/Cities" },
     { label: "Favorites", to: "/Favorites" },
-    { label: "Login", to: "/Login" },
   ];
+
+  console.log('NavBar rendering, isLoggedIn:', isLoggedIn);
 
   return (
     <>
@@ -84,6 +130,24 @@ export default function Navbar({ searchQuery, onSearch, searchResults, showSearc
                 {label}
               </Link>
             ))}
+
+            {/* Login/Logout */}
+            {isLoggedIn ? (
+              <button
+                className="navbar-link navbar-logout-btn"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className={`navbar-link ${location.pathname === "/login" ? "active" : ""}`}
+                onClick={() => setMenuOpen(false)}
+              >
+                Login
+              </Link>
+            )}
 
             {/* Learn More button */}
             <button

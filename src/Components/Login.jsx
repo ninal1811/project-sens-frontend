@@ -47,7 +47,9 @@ function Login() {
       if (response.ok && data.success) {
         sessionStorage.setItem("loggedIn", "true");
         sessionStorage.setItem("email", email);
-        navigate(from, { replace: true });
+        
+        // Force full page reload to update navbar
+        window.location.href = from || '/';
       } else {
         setError(data.error || 'Invalid email or password');
       }
