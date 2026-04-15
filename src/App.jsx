@@ -7,6 +7,7 @@ import MapView from './Components/MapView'
 import NavBar from './Components/NavBar'
 import Login from './Components/Login'
 import Favorites from './Components/Favorites'
+import Register from './Components/Register';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route path='/Cities' element={<><NavBar /><Cities /></>} />
       <Route path='/Login' element={<><NavBar /><Login /></>} />
       <Route path='/Favorites' element={<><NavBar /><Favorites /></>} />
+      <Route path="/Register" element={<><NavBar /><Register /></>} />
       <Route path='*' element={<Navigate to="/" replace />} />
     </Routes>
   )
