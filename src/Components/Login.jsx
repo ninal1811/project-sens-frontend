@@ -48,8 +48,9 @@ function Login() {
         sessionStorage.setItem("loggedIn", "true");
         sessionStorage.setItem("email", email);
 
-        // Force full page reload to update navbar
-        window.location.href = from || '/';
+        // Force full page reload to update navbar, respecting the app's base URL
+        const base = import.meta.env.BASE_URL || '/';
+        window.location.href = base + (from === '/' ? '' : from.replace(/^\//, ''));
       } else {
         setError(data.error || 'Invalid email or password');
       }
