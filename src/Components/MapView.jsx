@@ -145,7 +145,7 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
   }, [backendStatesRef, getStateCode, map, onStateClick, visibleCities]);
 
   return (
-    <GeoJSON key="states-layer" data={statesData} style={styleState} onEachFeature={onEachState} bubblingMouseEvents={false}/>
+    <GeoJSON key={`states-${backendStatesIds.size}`} data={statesData} style={styleState} onEachFeature={onEachState} bubblingMouseEvents={false}/>
   );
 
 }
@@ -279,7 +279,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
   // when a country is clicked, it looks at the country code, finds the matching backend data, and shows a popup of the dish info and image
   return (
     <>
-      <GeoJSON data={countriesData} style={styleFeature} onEachFeature={onEachFeature} />
+      <GeoJSON key={backendIds.size} data={countriesData} style={styleFeature} onEachFeature={onEachFeature} />
 
       {showStates && selectedCountry && (
         <StatesLayer 

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import "./Common.css"; 
-import "./Login.css"; 
+import "./Common.css";
+import "./Login.css";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
@@ -25,13 +25,13 @@ function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
- 
+
     const validationError = validate();
     if (validationError) {
       setError(validationError);
       return;
     }
- 
+
     setLoading(true);
 
     try {
@@ -47,7 +47,7 @@ function Login() {
       if (response.ok && data.success) {
         sessionStorage.setItem("loggedIn", "true");
         sessionStorage.setItem("email", email);
-        
+
         // Force full page reload to update navbar
         window.location.href = from || '/';
       } else {
@@ -62,59 +62,65 @@ function Login() {
   }
 
   return (
-    <div className="page-container">
-      <h1 className="page-title login-header">Welcome to Project Sens</h1>
-      
-      <p className="login-description">
-        Sign in to explore culinary recommendations around the world
-      </p>
+    <div className="login-page-wrapper">
+      <div className="login-card">
+        <div className="login-card-header">
+          <div className="login-logo">
+            🌍 Project <span className="login-logo-accent">Sens</span>
+          </div>
+          <p className="login-tagline">Explore culinary culture around the world</p>
+        </div>
 
-      <div className="login-card"> 
-        <form className="add-form" onSubmit={handleSubmit} noValidate>
-          {error && (
-            <div className="login-error" role="alert">
-              {error}
+        <div className="login-card-body">
+          <h2 className="login-welcome">Welcome back</h2>
+
+          <form className="add-form" onSubmit={handleSubmit} noValidate>
+            {error && (
+              <div className="login-error" role="alert">
+                {error}
+              </div>
+            )}
+
+            <div className="form-group">
+              <input
+                type="email"
+                placeholder="Email"
+                className={`form-input ${error && !email.trim() ? "error" : ""}`}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+                disabled={loading}
+              />
             </div>
-          )}
 
-          <div className="form-group">
-            <input
-              type="email"
-              placeholder="Email"
-              className={`form-input ${error && !email.trim() ? "input-error" : ""}`}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete="email"
-              disabled={loading}
-            />
-          </div>
+            <div className="form-group">
+              <input
+                type="password"
+                placeholder="Password"
+                className={`form-input ${error && !password ? "error" : ""}`}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+                disabled={loading}
+              />
+            </div>
 
-          <div className="form-group">
-            <input
-              type="password"
-              placeholder="Password"
-              className={`form-input ${error && !password ? "input-error" : ""}`}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete="current-password"
-              disabled={loading}
-            />
-          </div>
+            <div className="form-actions login-submit-row">
+              <button className="btn login-btn-signin" type="submit" disabled={loading}>
+                {loading ? "Signing in…" : "Sign In"}
+              </button>
+            </div>
 
-          <div className="form-actions">
-            <button className="btn btn-primary" type="submit" disabled={loading}>
-              {loading ? "Signing in…" : "Sign In"}
-            </button>
-          </div>
+            <p className="login-demo-text">
+              Demo: foodie@example.com / password123<br />
+              Dev: dev@projectsens.com / devpass123
+            </p>
 
-          <p className="login-demo-text">
-            Demo: foodie@example.com / password123
-          </p>
-
-          <p className="login-register-link">
-            Don't have an account? <Link to="/register">Create one</Link>
-          </p>
-        </form>
+            <p className="login-register-link">
+              Don't have an account? <Link to="/register">Create one</Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );
