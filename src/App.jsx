@@ -8,6 +8,7 @@ import NavBar from './Components/NavBar'
 import Login from './Components/Login'
 import Favorites from './Components/Favorites'
 import Register from './Components/Register';
+import Logs from './Components/Logs';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path='/Login' element={<><NavBar /><Login /></>} />
       <Route path='/Favorites' element={<><NavBar /><Favorites /></>} />
       <Route path="/Register" element={<><NavBar /><Register /></>} />
+      <Route path='/Logs' element={<><NavBar /><Logs /></>} />
       <Route path='*' element={<Navigate to="/" replace />} />
     </Routes>
   )

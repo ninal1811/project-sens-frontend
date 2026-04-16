@@ -3,12 +3,14 @@ import { Link, useLocation, useNavigate } from "react-router";
 import "./NavBar.css";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+const DEVELOPER_EMAIL = import.meta.env.VITE_DEVELOPER_EMAIL;
 
 export default function Navbar({ searchQuery, onSearch, searchResults, showSearchResults, onSelectResult, onClearSearch }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(() => sessionStorage.getItem("loggedIn") === "true");
   const location = useLocation();
+  const isDeveloper = isLoggedIn && !!DEVELOPER_EMAIL && sessionStorage.getItem('email') === DEVELOPER_EMAIL;
   const navigate = useNavigate();
 
   // Check login status on mount and when location changes
@@ -130,6 +132,17 @@ export default function Navbar({ searchQuery, onSearch, searchResults, showSearc
                 {label}
               </Link>
             ))}
+
+            {/* Developer-only: Logs */}
+            {isDeveloper && (
+              <Link
+                to="/Logs"
+                className={`navbar-link navbar-dev-link ${location.pathname === "/Logs" ? "active" : ""}`}
+                onClick={() => setMenuOpen(false)}
+              >
+                Logs
+              </Link>
+            )}
 
             {/* Login/Logout */}
             {isLoggedIn ? (

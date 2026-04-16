@@ -3,13 +3,14 @@ import { Link, useLocation, useNavigate } from "react-router";
 import axios from 'axios';
 import '../Common.css';
 import './States.css'
+import { useAuth } from '../../hooks/useAuth';
 
 function capitalizeStateName(name) {
     if (!name) return '';
     return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
 
-function StateCard({ stateData, onDelete, onUpdate, onViewCities, countries = [] }) {
+function StateCard({ stateData, onDelete, onUpdate, onViewCities, countries = [], canModify }) {
     const [open, setOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editForm, setEditForm] = useState({
@@ -169,23 +170,27 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities, countries = []
                     </span>
                     <span className='expand-icon'>{open ? "▾" : "▸"}</span>
                 </button>
-                <button
-                    onClick={handleEdit}
-                    className='btn-edit'
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#1976d2"}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#2196f3"}
-                    title="Edit state"
-                >
-                    ✎
-                </button>
-                <button
-                    onClick={handleDelete}
-                    disabled={isDeleting}
-                    className="btn-delete"
-                    title="Delete state"
-                >
-                    {isDeleting ? "..." : "×"}
-                </button>
+                {canModify && (
+                  <button
+                      onClick={handleEdit}
+                      className='btn-edit'
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#1976d2"}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#2196f3"}
+                      title="Edit state"
+                  >
+                      ✎
+                  </button>
+                )}
+                {canModify && (
+                  <button
+                      onClick={handleDelete}
+                      disabled={isDeleting}
+                      className="btn-delete"
+                      title="Delete state"
+                  >
+                      {isDeleting ? "..." : "×"}
+                  </button>
+                )}
             </div>
             
             {open && (
@@ -458,7 +463,9 @@ export default function States() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [countries, setCountries] = useState([]);
+    const { isLoggedIn, isDeveloper, userEmail } = useAuth();
     const location = useLocation();
+    const navigate = useNavigate();
     const baseURL = import.meta.env.VITE_API_URL;
 
     const sortStatesAlphabetically = (statesArray) => {
@@ -613,7 +620,8 @@ export default function States() {
                 state_code: stateData.state_code,
                 country_code: stateData.country_code,
                 food_name: stateData.food_name || '',
-                food_dietary: stateData.food_dietary || []
+                food_dietary: stateData.food_dietary || [],
+                created_by: userEmail
             });
 
             if (response.status === 200 || response.status === 201) {
@@ -747,8 +755,14 @@ export default function States() {
                 <Link to="/" className="nav-btn">← Back to Home</Link>
                 <Link to="/Countries" className="nav-btn">View Countries</Link>
                 <Link to="/Cities" className="nav-btn">View Cities</Link>
-                <button 
-                    onClick={() => setShowAddForm(!showAddForm)}
+                <button
+                    onClick={() => {
+                        if (!isLoggedIn) {
+                            navigate('/Login', { state: { from: '/States' } });
+                            return;
+                        }
+                        setShowAddForm(!showAddForm);
+                    }}
                     className={`add-btn ${showAddForm ? 'cancel-mode' : 'add-mode'}`}
                 >
                     {showAddForm ? "Cancel" : "+ Add New State"}
@@ -855,6 +869,7 @@ export default function States() {
                                 onUpdate={updateState}
                                 onViewCities={fetchCitiesByState}
                                 countries={countries}
+                                canModify={isDeveloper || stateObj?.created_by === userEmail}
                             />
                         ))}
                     </ul>

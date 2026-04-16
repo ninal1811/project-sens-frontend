@@ -4,13 +4,14 @@ import axios from 'axios'
 import '../Common.css';
 import './Countries.css';
 import { getDietaryIcons } from '../../constants/dietaryIcons';
+import { useAuth } from '../../hooks/useAuth';
 
 function capitalizeCountryName(name) {
   if (!name) return '';
   return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
 
-function CountryCard({ countryData, onDelete, onViewStates }) {
+function CountryCard({ countryData, onDelete, onViewStates, canDelete }) {
   const [open, setOpen] = useState(false);
   const [states, setStates] = useState([]);
   const [isLoadingStates, setIsLoadingStates] = useState(false);
@@ -74,14 +75,16 @@ function CountryCard({ countryData, onDelete, onViewStates }) {
           </span>
           <span className="country-expand-icon">{open ? '▾' : '▸'} </span>
         </button>
-        <button
-          onClick={handleDelete}
-          disabled={isDeleting}
-          className="btn-delete"
-          title="Delete country"
+        {canDelete && (
+          <button
+            onClick={handleDelete}
+            disabled={isDeleting}
+            className="btn-delete"
+            title="Delete country"
           >
             {isDeleting ? "..." : "×"}
-        </button>
+          </button>
+        )}
       </div>
 
       {open && (
@@ -505,6 +508,8 @@ export default function Countries() {
   const [error, setError] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
 
+  const { isLoggedIn, isDeveloper, userEmail } = useAuth();
+  const navigate = useNavigate();
   const baseURL = import.meta.env.VITE_API_URL;
 
   const sortCountriesAlphabetically = (countriesArray) => {
@@ -586,22 +591,9 @@ export default function Countries() {
   }, [baseURL]);
 
   const addCountry = async (countryData) => {
-    console.log('sending to url:', `${baseURL}/countries/add`);
-    console.log('with data', {
-      country_code: countryData._id,
-      name: countryData.name,
-      capital: countryData.capital,
-      nat_dish: countryData.nat_dish,
-      nat_dish_dietary: countryData.nat_dish_dietary || [],
-      pop_dish_1: countryData.pop_dish_1,
-      pop_dish_1_dietary: countryData.pop_dish_1_dietary || [],
-      pop_dish_2: countryData.pop_dish_2,
-      pop_dish_2_dietary: countryData.pop_dish_2_dietary || []
-    });
-
     try {
       const response = await axios.post(`${baseURL}/countries/add`, {
-        country_code: countryData._id,  // ← Change _id to country_code
+        country_code: countryData._id,
         name: countryData.name,
         capital: countryData.capital,
         nat_dish: countryData.nat_dish,
@@ -609,7 +601,8 @@ export default function Countries() {
         pop_dish_1: countryData.pop_dish_1,
         pop_dish_1_dietary: countryData.pop_dish_1_dietary || [],
         pop_dish_2: countryData.pop_dish_2,
-        pop_dish_2_dietary: countryData.pop_dish_2_dietary || []
+        pop_dish_2_dietary: countryData.pop_dish_2_dietary || [],
+        created_by: userEmail
       });
       if (response.status === 200 || response.status === 201) {
         alert('Country added successfully!');
@@ -706,7 +699,14 @@ export default function Countries() {
         <Link to="/" className="nav-btn">← Back to Home</Link>
         <Link to="/States" className="nav-btn">View States</Link>
         <Link to="/Cities" className="nav-btn">View Cities</Link>
-        <button onClick={() => setShowAddForm(!showAddForm)}
+        <button
+          onClick={() => {
+            if (!isLoggedIn) {
+              navigate('/Login', { state: { from: '/Countries' } });
+              return;
+            }
+            setShowAddForm(!showAddForm);
+          }}
           className={`add-btn ${showAddForm ? 'cancel-mode' : 'add-mode'}`}
         >
           {showAddForm ? "Cancel" : "+ Add New Country"}
@@ -769,6 +769,7 @@ export default function Countries() {
               key={`${countryObj?._id ?? "no-code"}-${idx}`}
               onDelete={deleteCountry}
               onViewStates={fetchStatesByCountry}
+              canDelete={isDeveloper || countryObj?.created_by === userEmail}
             />
           ))}
         </ul>

@@ -1,16 +1,17 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Link, useLocation } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import axios from 'axios'
 import '../Common.css';
 import './Cities.css'
 import { CITY_IMAGE_URLS } from '../../constants/imgUrls';
+import { useAuth } from '../../hooks/useAuth';
 
 function capitalizeCityName(city) {
   if (!city) return '';
   return city.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
 
-function CityCard({ cityData, onDelete }) {
+function CityCard({ cityData, onDelete, canDelete }) {
   const [open, setOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const { city, state_code, country_code, rec_restaurant } = cityData || {};
@@ -42,14 +43,16 @@ function CityCard({ cityData, onDelete }) {
           </span>
           <span className="city-expand-icon">{open ? "▾" : "▸"}</span>
         </button>
-        <button
-          onClick={handleDelete}
-          disabled={isDeleting}
-          className="btn-delete"
-          title="Delete city"
+        {canDelete && (
+          <button
+            onClick={handleDelete}
+            disabled={isDeleting}
+            className="btn-delete"
+            title="Delete city"
           >
             {isDeleting ? "..." : "×"}
-        </button>
+          </button>
+        )}
       </div>
 
       {open && (
@@ -248,7 +251,9 @@ export default function Cities() {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
 
+  const { isLoggedIn, isDeveloper, userEmail } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const baseURL = import.meta.env.VITE_API_URL;
 
   const sortCitiesAlphabetically = (citiesArray) => {
@@ -355,20 +360,13 @@ export default function Cities() {
   }, [baseURL]);
 
   const addCity = async (cityData) => {
-    console.log('sending to url:', `${baseURL}/cities/add`);
-    console.log('with data', {
-      city: cityData.city,
-      state_code: cityData.state_code,
-      country_code: cityData.country_code,
-      rec_restaurant: cityData.rec_restaurant
-    });
-
     try {
       const response = await axios.post(`${baseURL}/cities/add`, {
         city: cityData.city,
         state_code: cityData.state_code,
         country_code: cityData.country_code,
-        rec_restaurant: cityData.rec_restaurant
+        rec_restaurant: cityData.rec_restaurant,
+        created_by: userEmail
       });
       if (response.status === 200 || response.status === 201) {
         alert('City added successfully!');
@@ -481,7 +479,14 @@ export default function Cities() {
         <Link to="/" className="nav-btn">← Back to Home</Link>
         <Link to="/Countries" className="nav-btn">View Countries</Link>
         <Link to="/States" className="nav-btn">View States</Link>
-        <button onClick={() => setShowAddForm(!showAddForm)}
+        <button
+          onClick={() => {
+            if (!isLoggedIn) {
+              navigate('/Login', { state: { from: '/Cities' } });
+              return;
+            }
+            setShowAddForm(!showAddForm);
+          }}
           className={`add-btn ${showAddForm ? 'cancel-mode' : 'add-mode'}`}
         >
           {showAddForm ? "Cancel" : "+ Add New City"}
@@ -583,6 +588,7 @@ export default function Cities() {
                 cityData={cityObj}
                 key={`${cityObj?.city ?? "no-city"}-${idx}`}
                 onDelete={deleteCity}
+                canDelete={isDeveloper || cityObj?.created_by === userEmail}
               />
             ))}
           </ul>
