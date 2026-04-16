@@ -7,19 +7,19 @@ export default function Legend({ showStates }) {
       <div className="legend-divider" />
 
       <div className="legend-item">
-        <div className="legend-box legend-box-country" />
-        <span>Country</span>
+        <div className="legend-box" style={{ backgroundColor: '#166534' }} />
+        <span>Country in database</span>
       </div>
       <div className="legend-item">
-        <div className="legend-box legend-box-no-data" />
+        <div className="legend-box" style={{ backgroundColor: '#a3c585' }} />
         <span>No data</span>
       </div>
 
       {showStates && (
         <>
           <div className="legend-item">
-            <div className="legend-box legend-box-state" />
-            <span>State</span>
+            <div className="legend-box" style={{ backgroundColor: '#15803d' }} />
+            <span>State in database</span>
           </div>
 
           <div className="legend-item">

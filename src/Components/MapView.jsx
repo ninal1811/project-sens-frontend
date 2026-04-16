@@ -244,7 +244,11 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
               <div class="popup-image-container">
                 <img src="${natImg}" class="popup-image" />
                 <div class="popup-dish-label">National Dish: ${backendMatch.nat_dish} ${getDietaryIcons(backendMatch.nat_dish_dietary)}</div>
+              </div>` : backendMatch.nat_dish ? `
+              <div class="popup-dish-label">
+                <strong>National Dish:</strong> ${backendMatch.nat_dish} ${getDietaryIcons(backendMatch.nat_dish_dietary || [])}
               </div>` : ''}
+            
             ${(pop1Img || pop2Img) ? `
               <div class="popup-dishes-grid">
                 ${pop1Img ? `<div class="popup-dish-item">
@@ -255,7 +259,12 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
                   <img src="${pop2Img}" class="popup-image" />
                   <div class="popup-dish-label">Popular Dish: ${backendMatch.pop_dish_2} ${getDietaryIcons(backendMatch.pop_dish_2_dietary)}</div>
                 </div>` : ''}
+              </div>` : (backendMatch.pop_dish_1 || backendMatch.pop_dish_2) ? `
+              <div class="popup-dish-label">
+                ${backendMatch.pop_dish_1 ? `<div><strong>Popular Dish 1:</strong> ${backendMatch.pop_dish_1} ${getDietaryIcons(backendMatch.pop_dish_1_dietary || [])}</div>` : ''}
+                ${backendMatch.pop_dish_2 ? `<div><strong>Popular Dish 2:</strong> ${backendMatch.pop_dish_2} ${getDietaryIcons(backendMatch.pop_dish_2_dietary || [])}</div>` : ''}
               </div>` : ''}
+            
             <div class="popup-country-name">${backendMatch.name}</div>
             <div><b>Capital:</b> ${backendMatch.capital.charAt(0).toUpperCase() + backendMatch.capital.slice(1)}</div>
             ${cityCount > 0 ? `<div class="popup-city-count">🏙️ ${cityCount} ${cityCount === 1 ? 'city' : 'cities'} available</div>` : ''}
@@ -382,14 +391,22 @@ export default function MapView() {
   const attachFavButton = useFavoritePopupButton({ isFavorited, toggleFavorite, navigate });
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/countries`)
-      .then(({ data }) => {
-        const countries = data?.countries || {};
-        setBackendCountries(countries);
-        backendCountriesRef.current = countries;
-      })
-      .catch((err) => console.error("Error fetching countries:", err));
-
+    const fetchCountries = () => {
+      axios.get(`${BASE_URL}/countries`)
+        .then(({ data }) => {
+          const countries = data?.countries || {};
+          setBackendCountries(countries);
+          backendCountriesRef.current = countries;
+          console.log("Countries loaded:", Object.keys(countries).length);
+        })
+        .catch((err) => console.error("Error fetching countries:", err));
+    };
+  
+    fetchCountries();
+  
+    // Poll for updates every 5 seconds when on map page
+    const interval = setInterval(fetchCountries, 5000);
+  
     axios.get(`${BASE_URL}/states/read`)
       .then(({ data }) => {
         const raw = data?.states ?? data?.States ?? [];
@@ -402,10 +419,12 @@ export default function MapView() {
         backendStatesRef.current = statesMap;
       })
       .catch((err) => console.error("Error fetching states: ", err));
-
+  
     axios.get(`${BASE_URL}/cities/read`)
       .then(({ data }) => { allCitiesRef.current = data?.Cities || {}; })
       .catch((err) => console.error("Error fetching cities:", err));
+  
+    return () => clearInterval(interval);
   }, []);
 
   const backendIds = useMemo(() => new Set(Object.keys(backendCountries)), [backendCountries]);
