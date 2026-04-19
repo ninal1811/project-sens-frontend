@@ -7,24 +7,24 @@ export default function Legend({ showStates }) {
       <div className="legend-divider" />
 
       <div className="legend-item">
-        <div className="legend-box" style={{ backgroundColor: '#166534' }} />
+        <div className="legend-box legend-box-country"/>
         <span>Country in database</span>
       </div>
       <div className="legend-item">
-        <div className="legend-box" style={{ backgroundColor: '#a3c585' }} />
+        <div className="legend-box legend-box-no-data" />
         <span>No data</span>
       </div>
 
       {showStates && (
         <>
           <div className="legend-item">
-            <div className="legend-box" style={{ backgroundColor: '#15803d' }} />
+            <div className="legend-box legend-box-state" />
             <span>State in database</span>
           </div>
 
           <div className="legend-item">
             <div className="legend-box legend-box-city" />
-            <span>City</span>
+            <span>City in database</span>
           </div>
         </>
       )}
@@ -32,12 +32,12 @@ export default function Legend({ showStates }) {
       <div className="legend-divider" />
 
       {/* Dietary Icons */}
-      <div className="legend-dietary">
-        <span className="dietary-label">Dietary</span>
-        <span className="dietary-item">🌱 Veg</span>
-        <span className="dietary-item">🥩 Meat</span>
-        <span className="dietary-item">🐟 Seafood</span>
-        <span className="dietary-item">🥬 Vegan</span>
+      <div className="legend-item">
+        <span className="legend-title">Dietary</span>
+        <span>🌱 Veg</span>
+        <span>🥩 Meat</span>
+        <span>🐟 Seafood</span>
+        <span>🥬 Vegan</span>
       </div>
     </div>
   );

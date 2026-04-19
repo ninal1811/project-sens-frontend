@@ -46,22 +46,22 @@
 }
 
 .legend-box-country {
-  background: #1e90ff;
+  background: #166534;
   opacity: 0.85;
 }
 
 .legend-box-no-data {
-  background: #666;
+  background: #a3c585;
   opacity: 0.6;
 }
 
 .legend-box-state {
-  background: #0d47a1;
+  background: #15803d;
   border: 1px solid rgba(255,255,255,0.15);
 }
 
 .legend-box-city {
-  background: #ff9900;
+  background: #ff0000;
   border-radius: 50%;
 }
 
