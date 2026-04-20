@@ -639,7 +639,7 @@ export default function States() {
 
     const updateState = async (oldState, newStateData) => {
         try {
-            const response = await axios.put(`${baseURL}/states/${oldState.state_code}/${oldState.country_code}`, {
+            const response = await axios.post(`${baseURL}/states/add`, {
                 name: newStateData.name,
                 state_code: newStateData.state_code,
                 country_code: newStateData.country_code
