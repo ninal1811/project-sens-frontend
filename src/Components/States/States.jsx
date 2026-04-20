@@ -5,7 +5,7 @@ import '../Common.css';
 import './States.css'
 import { useAuth } from '../../hooks/useAuth';
 
-function capitalizeStateName(name) {
+function capitalizeName(name) {
     if (!name) return '';
     return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
@@ -52,7 +52,7 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities, countries = []
 
         setIsUpdating(true);
         try {
-            const _updateData = { ...editForm, name: capitalizeStateName(editForm.name) }
+            const _updateData = { ...editForm, name: capitalizeName(editForm.name) }
             await onUpdate(stateData, editForm);
             setIsEditing(false);
         } catch (error) {
@@ -107,7 +107,7 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities, countries = []
                     <input
                         type="text"
                         placeholder="State Name *"
-                        value={capitalizeStateName(editForm.name)}
+                        value={capitalizeName(editForm.name)}
                         onChange={(e) => setEditForm({...editForm, name: e.target.value})}
                         className='edit-input'
                         disabled={isUpdating}
@@ -197,7 +197,7 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities, countries = []
                 <div className='card-details'>
                     <div className='state-info-section'>
                         <p className='detail-text'>
-                            <strong className='detail-text'>Full Name:</strong> {capitalizeStateName(name)}
+                            <strong className='detail-text'>Full Name:</strong> {capitalizeName(name)}
                         </p>
                         <p className='detail-text'>
                             <strong className='detail-text'>State Code:</strong> {state_code}
@@ -209,7 +209,7 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities, countries = []
                     <div className='cities-section'>
                         <div className='cities-header'>
                             <h4 className='cities-title'>
-                                Cities in {capitalizeStateName(name)}
+                                Cities in {capitalizeName(name)}
                                 {cities.length > 0 && <span className='city-count'>({cities.length})</span>}
                             </h4>
                         </div>
@@ -224,7 +224,7 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities, countries = []
                                 {cities.map((city, idx) => (
                                     <div key={idx} className='city-item-link' onClick={() => handleCityClick(city)}>
                                         <div className='city-item'>
-                                            <span className='city-name'>{capitalizeStateName(city.name || city)}</span>
+                                            <span className='city-name'>{capitalizeName(city.name || city)}</span>
                                         </div>
                                     </div>
                                 ))}
@@ -309,7 +309,7 @@ function AddStateForm({ onAdd, onCancel, countries = [] }) {
                     <input
                         type="text"
                         placeholder="State Name *"
-                        value={capitalizeStateName(formData.name)}
+                        value={capitalizeName(formData.name)}
                         onChange={(e) => {
                             setFormData({...formData, name: e.target.value});
                             setErrors({...errors, name: null});
@@ -361,7 +361,7 @@ function AddStateForm({ onAdd, onCancel, countries = [] }) {
                     <input
                         type="text"
                         placeholder="Popular Food (e.g., Clam Chowder)"
-                        value={formData.food_name}
+                        value={capitalizeName(formData.food_name)}
                         onChange={(e) => setFormData({...formData, food_name: e.target.value})}
                         className="form-input"
                         disabled={isSubmitting}
@@ -813,7 +813,7 @@ export default function States() {
                 <div className='selected-state-container'>
                     <div className='selected-header'>
                         <h3 className='selected-title'>
-                            Selected State: {capitalizeStateName(selectedState.name)}
+                            Selected State: {capitalizeName(selectedState.name)}
                         </h3>
                         <button
                             onClick={clearSelectedState}

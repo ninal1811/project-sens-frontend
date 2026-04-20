@@ -6,7 +6,7 @@ import './Countries.css';
 import { getDietaryIcons } from '../../constants/dietaryIcons';
 import { useAuth } from '../../hooks/useAuth';
 
-function capitalizeCountryName(name) {
+function capitalizeName(name) {
   if (!name) return '';
   return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
@@ -102,19 +102,19 @@ function CountryCard({ countryData, onDelete, onViewStates, canDelete }) {
               <span className="country-capitalize">{capital ?? '—'}</span>
             </p>
             <p className="country-detail-text">
-              <strong className="country-detail-label">National Dish:</strong> {nat_dish ?? '—'} {getDietaryIcons(nat_dish_dietary)}
+              <strong className="country-detail-label">National Dish:</strong> {capitalizeName(nat_dish) ?? '—'} {getDietaryIcons(nat_dish_dietary)}
             </p>
             <p className="country-detail-text">
-              <strong className="country-detail-label">Popular Dish 1:</strong> {pop_dish_1 ?? '—'} {getDietaryIcons(pop_dish_1_dietary)}
+              <strong className="country-detail-label">Popular Dish 1:</strong> {capitalizeName(pop_dish_1) ?? '—'} {getDietaryIcons(pop_dish_1_dietary)}
             </p>
             <p className="country-detail-text">
-              <strong className="country-detail-label">Popular Dish 2:</strong> {pop_dish_2 ?? '—'} {getDietaryIcons(pop_dish_2_dietary)}
+              <strong className="country-detail-label">Popular Dish 2:</strong> {capitalizeName(pop_dish_2) ?? '—'} {getDietaryIcons(pop_dish_2_dietary)}
             </p>
           </div>
           <div className='states-section'>
             <div className='states-header'>
               <h4 className='states-title'>
-                States in {capitalizeCountryName(name)}
+                States in {capitalizeName(name)}
                 {states.length > 0 && <span className='state-count'>({states.length})</span>}
               </h4>
             </div>
@@ -129,7 +129,7 @@ function CountryCard({ countryData, onDelete, onViewStates, canDelete }) {
                 {states.map((state, idx) => (
                   <div key={idx} className='states-item-link' onClick={() => handleStateClick(state)}>
                     <div className='state-item'>
-                      <span className='state-name'>{capitalizeCountryName(state.name || state)}</span>
+                      <span className='state-name'>{capitalizeName(state.name || state)}</span>
                     </div>
                   </div>
                 ))}
@@ -232,7 +232,7 @@ function AddCountryForm({ onAdd, onCancel }) {
       <form onSubmit={handleSubmit} className='add-form'>
         <div>
           <input
-            value={formData._id}
+            value={formData._id.toUpperCase()}
             placeholder="Country Code *"
             onChange={handleChange('_id')}
             className={`form-input ${errors._id ? 'error' : ''}`}
@@ -246,7 +246,7 @@ function AddCountryForm({ onAdd, onCancel }) {
           <input 
             type='text' 
             placeholder='Country Name *'
-            value={capitalizeCountryName(formData.name)}
+            value={capitalizeName(formData.name)}
             onChange={handleChange('name')}
             className={`form-input ${errors.name ? 'error' : ''}`}
             disabled={isSubmitting}
@@ -258,7 +258,7 @@ function AddCountryForm({ onAdd, onCancel }) {
           <input
             type='text'
             placeholder="Country Captial *"
-            value={formData.capital}
+            value={capitalizeName(formData.capital)}
             onChange={handleChange('capital')}
             className={`form-input ${errors.capital ? 'error' : ''}`}
             disabled={isSubmitting}
@@ -270,7 +270,7 @@ function AddCountryForm({ onAdd, onCancel }) {
           <input
             type="text"
             placeholder="National Dish"
-            value={formData.nat_dish}
+            value={capitalizeName(formData.nat_dish)}
             onChange={handleChange('nat_dish')}
             className={`form-input`}
             disabled={isSubmitting}
@@ -339,7 +339,7 @@ function AddCountryForm({ onAdd, onCancel }) {
           <input
             type="text"
             placeholder="Popular Dish 1"
-            value={formData.pop_dish_1}
+            value={capitalizeName(formData.pop_dish_1)}
             onChange={handleChange('pop_dish_1')}
             className={`form-input`}
             disabled={isSubmitting}
@@ -409,7 +409,7 @@ function AddCountryForm({ onAdd, onCancel }) {
           <input
             type="text"
             placeholder="Popular Dish 2"
-            value={formData.pop_dish_2}
+            value={capitalizeName(formData.pop_dish_2)}
             onChange={handleChange('pop_dish_2')}
             className={`form-input`}
             disabled={isSubmitting}

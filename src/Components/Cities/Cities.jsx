@@ -6,7 +6,7 @@ import './Cities.css'
 import { CITY_IMAGE_URLS } from '../../constants/imgUrls';
 import { useAuth } from '../../hooks/useAuth';
 
-function capitalizeCityName(city) {
+function capitalizeName(city) {
   if (!city) return '';
   return city.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
@@ -150,7 +150,7 @@ function AddCityForm({ onAdd, onCancel, countries = [], states = [] }) {
           <input 
             type='text' 
             placeholder='City Name *'
-            value={capitalizeCityName(formData.city)}
+            value={capitalizeName(formData.city)}
             onChange={(e) => {
               setFormData({...formData, city: e.target.value});
               setErrors({...errors, city: null});
@@ -205,7 +205,7 @@ function AddCityForm({ onAdd, onCancel, countries = [], states = [] }) {
           <input
             type="text"
             placeholder="Recommended Restaurant *"
-            value={formData.rec_restaurant}
+            value={capitalizeName(formData.rec_restaurant)}
             onChange={(e) => {
               setFormData({...formData, rec_restaurant: e.target.value.trim()});
               setErrors({...errors, rec_restaurant: null});
@@ -536,7 +536,7 @@ export default function Cities() {
         <div className='selected-city-container'>
           <div className='selected-header'>
             <h3 className='selected-title'>
-              Selected City: {capitalizeCityName(selectedCity.city)}
+              Selected City: {capitalizeName(selectedCity.city)}
             </h3>
             <button
               onClick={clearSelectedCity}

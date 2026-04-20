@@ -71,6 +71,10 @@
   margin-top: 12px;
 }
 
+img {
+  width: 100%;
+}
+
 .city-image {
   max-width: 250px;
   width: 100%;
