@@ -5,6 +5,7 @@ import '../Common.css';
 import './Cities.css'
 import { CITY_IMAGE_URLS } from '../../constants/imgUrls';
 import { useAuth } from '../../hooks/useAuth';
+import ScrollToTop from '../ScrollToTop';
 
 function capitalizeName(city) {
   if (!city) return '';
@@ -609,6 +610,7 @@ export default function Cities() {
           </button>
         </div>
       )}
+      <ScrollToTop />
       </div>
   );
 }

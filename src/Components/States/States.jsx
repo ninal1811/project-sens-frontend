@@ -4,6 +4,7 @@ import axios from 'axios';
 import '../Common.css';
 import './States.css'
 import { useAuth } from '../../hooks/useAuth';
+import ScrollToTop from '../ScrollToTop';
 
 function capitalizeName(name) {
     if (!name) return '';
@@ -886,6 +887,7 @@ export default function States() {
                     </button>
                 </div>
             )}
+            <ScrollToTop />
         </div>
     );
 }

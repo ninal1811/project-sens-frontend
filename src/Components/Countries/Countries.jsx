@@ -5,6 +5,7 @@ import '../Common.css';
 import './Countries.css';
 import { getDietaryIcons } from '../../constants/dietaryIcons';
 import { useAuth } from '../../hooks/useAuth';
+import ScrollToTop from '../ScrollToTop';
 
 function capitalizeName(name) {
   if (!name) return '';
@@ -951,6 +952,7 @@ export default function Countries() {
           <p>No countries found.</p>
         </div>
       )}
+      <ScrollToTop />
     </div>
   );
 }
