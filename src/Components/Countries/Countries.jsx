@@ -882,7 +882,7 @@ export default function Countries() {
         </button>
       </div>
 
-      <h1 className="page-title">Countries Database</h1>
+      <h1 className="page-title">Countries Database {results && results.length > 0 && <span style={{ fontSize: "16px", color: "#888", fontWeight: "normal" }}>({results.length} countries)</span>}</h1>
 
       {error && (
         <div className="error-container">

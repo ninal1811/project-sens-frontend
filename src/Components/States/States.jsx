@@ -769,7 +769,7 @@ export default function States() {
                 </button>
             </div>
 
-            <h1 className='page-title'>States Database</h1>
+            <h1 className='page-title'>States Database {results && results.length > 0 && <span style={{ fontSize: "16px", color: "#888", fontWeight: "normal" }}>({results.length} states)</span>}</h1>
 
             {error && (
                 <div className='error-container'>

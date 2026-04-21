@@ -69,13 +69,15 @@ function CityCard({ cityData, onDelete, canDelete }) {
        <p className="city-detail-text">
          <strong className="city-detail-label">Restaurant:</strong> {rec_restaurant ?? "—"}
        </p>
-       {CITY_IMAGE_URLS[city] && (
+       {CITY_IMAGE_URLS[city] ? (
          <div className="city-image-wrapper">
            <img 
              src={CITY_IMAGE_URLS[city].image} 
              alt={CITY_IMAGE_URLS[city].restaurant_name || rec_restaurant}
            />
          </div>
+       ) : (
+         <p style={{ fontSize: "13px", color: "#666", fontStyle: "italic", marginTop: "12px" }}>No restaurant photo available</p>
        )}
         </div>
       )}
@@ -493,7 +495,7 @@ export default function Cities() {
         </button>
       </div>
 
-      <h1 className="page-title">Cities Database</h1>
+      <h1 className="page-title">Cities Database {results && results.length > 0 && <span style={{ fontSize: "16px", color: "#888", fontWeight: "normal" }}>({results.length} cities)</span>}</h1>
 
       {error && (
         <div className='error-container'>
@@ -560,13 +562,15 @@ export default function Cities() {
                   {selectedCity.rec_restaurant}
                 </p>
               )}
-              {CITY_IMAGE_URLS[selectedCity.city] && (
+              {CITY_IMAGE_URLS[selectedCity.city] ? (
                 <div className="city-image-wrapper">
                   <img 
                     src={CITY_IMAGE_URLS[selectedCity.city].image} 
                     alt={CITY_IMAGE_URLS[selectedCity.city].restaurant_name || selectedCity.rec_restaurant}
                   />
                 </div>
+              ) : (
+                <p style={{ fontSize: "13px", color: "#666", fontStyle: "italic", marginTop: "12px" }}>No restaurant photo available</p>
               )}
             </div>
           </div>
