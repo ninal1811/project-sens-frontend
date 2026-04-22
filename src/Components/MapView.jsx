@@ -31,34 +31,54 @@ function ClickDebug() {
 function useFavoritePopupButton({ isFavorited, toggleFavorite, navigate }) {
   const attachButton = useCallback((map) => {
     map.on("popupopen", (e) => {
+      const attachBtn = (container) => {
+        container.querySelector(".popup-fav-btn")?.remove();
+  
+        const favDataEl = container.querySelector("[data-fav]");
+        if (!favDataEl) return;
+  
+        let item;
+        try { item = JSON.parse(favDataEl.dataset.fav); } catch { return; }
+
+        let currentlyFavorited = isFavorited(item.id);
+  
+        const btn = document.createElement("button");
+        btn.className = "popup-fav-btn";
+        btn.title = "Save to favorites";
+        btn.textContent = currentlyFavorited ? "⭐ Saved" : "☆ Save";
+  
+        btn.addEventListener("click", () => {
+          const success = toggleFavorite(item);
+          if (!success) {
+            // If not logged in -> send to login, come back here after
+            navigate("/Login", { state: { from: "/Favorites" } });
+            return;
+          }
+          currentlyFavorited = !currentlyFavorited;
+          btn.textContent = currentlyFavorited ? "⭐ Saved" : "☆ Save";
+        });
+  
+        favDataEl.appendChild(btn);
+        return true;
+      };
+
       const container = e.popup.getElement();
       if (!container) return;
- 
-      // Avoid double-injecting
-      if (container.querySelector(".popup-fav-btn")) return;
- 
-      const favDataEl = container.querySelector("[data-fav]");
-      if (!favDataEl) return;
- 
-      let item;
-      try { item = JSON.parse(favDataEl.dataset.fav); } catch { return; }
- 
-      const btn = document.createElement("button");
-      btn.className = "popup-fav-btn";
-      btn.title = "Save to favorites";
-      btn.textContent = isFavorited(item.id) ? "⭐ Saved" : "☆ Save";
- 
-      btn.addEventListener("click", () => {
-        const success = toggleFavorite(item);
-        if (!success) {
-          // If not logged in -> send to login, come back here after
-          navigate("/Login", { state: { from: "/Favorites" } });
-          return;
+
+      // Try immediately for countries/states (already have DOM)
+      if (attachBtn(container)) return;
+
+      // For cities: watch for React to finish rendering into the popup
+      const observer = new MutationObserver(() => {
+        if (attachBtn(container)) {
+          observer.disconnect();
         }
-        btn.textContent = isFavorited(item.id) ? "☆ Save" : "⭐ Saved";
       });
- 
-      favDataEl.appendChild(btn);
+
+      observer.observe(container, { childList: true, subtree: true });
+
+      // Safety cleanup when popup closes
+      map.once("popupclose", () => observer.disconnect());
     });
   }, [isFavorited, toggleFavorite, navigate]);
  
