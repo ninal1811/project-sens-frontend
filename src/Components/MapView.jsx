@@ -28,6 +28,11 @@ function ClickDebug() {
   return null;
 }
 
+function capitalizeName(name) {
+  if (!name) return '';
+  return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+};
+
 // Adds a favorite button into an open Leaflet popup
 function useFavoritePopupButton({ isFavorited, toggleFavorite, navigate }) {
   const attachButton = useCallback((map) => {
@@ -264,7 +269,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
             ${natImg ? `
               <div class="popup-image-container">
                 <img src="${natImg}" class="popup-image" />
-                <div class="popup-dish-label">National Dish: ${backendMatch.nat_dish} ${getDietaryIcons(backendMatch.nat_dish_dietary)}</div>
+                <div class="popup-dish-label">National Dish: ${capitalizeName(backendMatch.nat_dish)} ${getDietaryIcons(backendMatch.nat_dish_dietary)}</div>
               </div>` : backendMatch.nat_dish ? `
               <div class="popup-dish-label">
                 <strong>National Dish:</strong> ${backendMatch.nat_dish} ${getDietaryIcons(backendMatch.nat_dish_dietary || [])}
@@ -274,11 +279,11 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
               <div class="popup-dishes-grid">
                 ${pop1Img ? `<div class="popup-dish-item">
                   <img src="${pop1Img}" class="popup-image" />
-                  <div class="popup-dish-label">Popular Dish: ${backendMatch.pop_dish_1} ${getDietaryIcons(backendMatch.pop_dish_1_dietary)}</div>
+                  <div class="popup-dish-label">Popular Dish: ${capitalizeName(backendMatch.pop_dish_1)} ${getDietaryIcons(backendMatch.pop_dish_1_dietary)}</div>
                 </div>` : ''}
                 ${pop2Img ? `<div class="popup-dish-item">
                   <img src="${pop2Img}" class="popup-image" />
-                  <div class="popup-dish-label">Popular Dish: ${backendMatch.pop_dish_2} ${getDietaryIcons(backendMatch.pop_dish_2_dietary)}</div>
+                  <div class="popup-dish-label">Popular Dish: ${capitalizeName(backendMatch.pop_dish_2)} ${getDietaryIcons(backendMatch.pop_dish_2_dietary)}</div>
                 </div>` : ''}
               </div>` : (backendMatch.pop_dish_1 || backendMatch.pop_dish_2) ? `
               <div class="popup-dish-label">
@@ -287,7 +292,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
               </div>` : ''}
             
             <div class="popup-country-name">${backendMatch.name}</div>
-            <div><b>Capital:</b> ${backendMatch.capital.charAt(0).toUpperCase() + backendMatch.capital.slice(1)}</div>
+            <div><b>Capital:</b> ${capitalizeName(backendMatch.capital)}</div>
             ${cityCount > 0 ? `<div class="popup-city-count">🏙️ ${cityCount} ${cityCount === 1 ? 'city' : 'cities'} available</div>` : ''}
             <div data-fav='${favItem}'></div>
           </div>

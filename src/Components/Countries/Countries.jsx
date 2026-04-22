@@ -5,13 +5,14 @@ import '../Common.css';
 import './Countries.css';
 import { getDietaryIcons } from '../../constants/dietaryIcons';
 import { useAuth } from '../../hooks/useAuth';
+import ScrollToTop from '../ScrollToTop';
 
-function capitalizeCountryName(name) {
+function capitalizeName(name) {
   if (!name) return '';
   return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
 
-function CountryCard({ countryData, onDelete, onViewStates, canDelete }) {
+function CountryCard({ countryData, onDelete, onUpdate, onViewStates, canDelete, canModify }) {
   const [open, setOpen] = useState(false);
   const [states, setStates] = useState([]);
   const [isLoadingStates, setIsLoadingStates] = useState(false);
@@ -19,6 +20,63 @@ function CountryCard({ countryData, onDelete, onViewStates, canDelete }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const { _id, name, capital, nat_dish, pop_dish_1, pop_dish_2, nat_dish_dietary, pop_dish_1_dietary, pop_dish_2_dietary } = countryData || {};
   const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [editForm, setEditForm] = useState({
+    _id: countryData?._id || '',
+    name: countryData?.name || '',
+    capital: countryData?.capital || '',
+    nat_dish: countryData?.nat_dish || '',
+    nat_dish_dietary: countryData?.nat_dish_dietary || [],
+    pop_dish_1: countryData?.pop_dish_1 || '',
+    pop_dish_1_dietary: countryData?.pop_dish_1_dietary || [],
+    pop_dish_2: countryData?.pop_dish_2 || '',
+    pop_dish_2_dietary: countryData?.pop_dish_2_dietary || []
+  });
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+  
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditForm({
+      _id: countryData?._id || '',
+      name: countryData?.name || '',
+      capital: countryData?.capital || '',
+      nat_dish: countryData?.nat_dish || '',
+      nat_dish_dietary: countryData?.nat_dish_dietary || [],
+      pop_dish_1: countryData?.pop_dish_1 || '',
+      pop_dish_1_dietary: countryData?.pop_dish_1_dietary || [],
+      pop_dish_2: countryData?.pop_dish_2 || '',
+      pop_dish_2_dietary: countryData?.pop_dish_2_dietary || []
+    });
+  };
+  
+  const handleSave = async () => {
+    if (!editForm._id || !editForm.name || !editForm.capital) {
+      alert('Please fill in all required fields');
+      return;
+    }
+  
+    setIsUpdating(true);
+    try {
+      await onUpdate(countryData, {
+        ...editForm,
+        _id: editForm._id.toUpperCase(),
+        name: capitalizeName(editForm.name),
+        capital: capitalizeName(editForm.capital),
+        nat_dish: capitalizeName(editForm.nat_dish),
+        pop_dish_1: capitalizeName(editForm.pop_dish_1),
+        pop_dish_2: capitalizeName(editForm.pop_dish_2)
+      });
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Update failed:", error);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
   const handleDelete = async () => {
     if (window.confirm(`Are you sure you want to delete ${name}?`)) {
@@ -62,6 +120,78 @@ function CountryCard({ countryData, onDelete, onViewStates, canDelete }) {
     navigate('/States', { state: { selectedState: state } });
   };
 
+  if (isEditing) {
+    return (
+      <li className="edit-card">
+        <div className="edit-form">
+          <input
+            type="text"
+            placeholder="Country Code *"
+            value={editForm._id}
+            onChange={(e) => setEditForm({ ...editForm, _id: e.target.value.toUpperCase() })}
+            className="edit-input"
+            maxLength={3}
+            disabled={isUpdating}
+          />
+  
+          <input
+            type="text"
+            placeholder="Country Name *"
+            value={capitalizeName(editForm.name)}
+            onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+            className="edit-input"
+            disabled={isUpdating}
+          />
+  
+          <input
+            type="text"
+            placeholder="Country Capital *"
+            value={capitalizeName(editForm.capital)}
+            onChange={(e) => setEditForm({ ...editForm, capital: e.target.value })}
+            className="edit-input"
+            disabled={isUpdating}
+          />
+  
+          <input
+            type="text"
+            placeholder="National Dish"
+            value={capitalizeName(editForm.nat_dish)}
+            onChange={(e) => setEditForm({ ...editForm, nat_dish: e.target.value })}
+            className="edit-input"
+            disabled={isUpdating}
+          />
+  
+          <input
+            type="text"
+            placeholder="Popular Dish 1"
+            value={capitalizeName(editForm.pop_dish_1)}
+            onChange={(e) => setEditForm({ ...editForm, pop_dish_1: e.target.value })}
+            className="edit-input"
+            disabled={isUpdating}
+          />
+  
+          <input
+            type="text"
+            placeholder="Popular Dish 2"
+            value={capitalizeName(editForm.pop_dish_2)}
+            onChange={(e) => setEditForm({ ...editForm, pop_dish_2: e.target.value })}
+            className="edit-input"
+            disabled={isUpdating}
+          />
+  
+          <div className="form-actions">
+            <button onClick={handleSave} disabled={isUpdating} className="btn btn-primary btn-small">
+              {isUpdating ? "Saving..." : "Save"}
+            </button>
+            <button onClick={handleCancel} disabled={isUpdating} className="btn btn-secondary btn-small">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </li>
+    );
+  }
+
   return (
     <li className="card">
       <div className='card-header'>
@@ -75,7 +205,17 @@ function CountryCard({ countryData, onDelete, onViewStates, canDelete }) {
           </span>
           <span className="country-expand-icon">{open ? '▾' : '▸'} </span>
         </button>
-        {canDelete && (
+        {canModify && (
+          <button
+            onClick={handleEdit}
+            className="btn-edit"
+            title="Edit country"
+          >
+            ✎
+          </button>
+        )}
+
+        {canModify && (
           <button
             onClick={handleDelete}
             disabled={isDeleting}
@@ -102,19 +242,19 @@ function CountryCard({ countryData, onDelete, onViewStates, canDelete }) {
               <span className="country-capitalize">{capital ?? '—'}</span>
             </p>
             <p className="country-detail-text">
-              <strong className="country-detail-label">National Dish:</strong> {nat_dish ?? '—'} {getDietaryIcons(nat_dish_dietary)}
+              <strong className="country-detail-label">National Dish:</strong> {capitalizeName(nat_dish) ?? '—'} {getDietaryIcons(nat_dish_dietary)}
             </p>
             <p className="country-detail-text">
-              <strong className="country-detail-label">Popular Dish 1:</strong> {pop_dish_1 ?? '—'} {getDietaryIcons(pop_dish_1_dietary)}
+              <strong className="country-detail-label">Popular Dish 1:</strong> {capitalizeName(pop_dish_1) ?? '—'} {getDietaryIcons(pop_dish_1_dietary)}
             </p>
             <p className="country-detail-text">
-              <strong className="country-detail-label">Popular Dish 2:</strong> {pop_dish_2 ?? '—'} {getDietaryIcons(pop_dish_2_dietary)}
+              <strong className="country-detail-label">Popular Dish 2:</strong> {capitalizeName(pop_dish_2) ?? '—'} {getDietaryIcons(pop_dish_2_dietary)}
             </p>
           </div>
           <div className='states-section'>
             <div className='states-header'>
               <h4 className='states-title'>
-                States in {capitalizeCountryName(name)}
+                States in {capitalizeName(name)}
                 {states.length > 0 && <span className='state-count'>({states.length})</span>}
               </h4>
             </div>
@@ -129,7 +269,7 @@ function CountryCard({ countryData, onDelete, onViewStates, canDelete }) {
                 {states.map((state, idx) => (
                   <div key={idx} className='states-item-link' onClick={() => handleStateClick(state)}>
                     <div className='state-item'>
-                      <span className='state-name'>{capitalizeCountryName(state.name || state)}</span>
+                      <span className='state-name'>{capitalizeName(state.name || state)}</span>
                     </div>
                   </div>
                 ))}
@@ -232,7 +372,7 @@ function AddCountryForm({ onAdd, onCancel }) {
       <form onSubmit={handleSubmit} className='add-form'>
         <div>
           <input
-            value={formData._id}
+            value={formData._id.toUpperCase()}
             placeholder="Country Code *"
             onChange={handleChange('_id')}
             className={`form-input ${errors._id ? 'error' : ''}`}
@@ -246,7 +386,7 @@ function AddCountryForm({ onAdd, onCancel }) {
           <input 
             type='text' 
             placeholder='Country Name *'
-            value={capitalizeCountryName(formData.name)}
+            value={capitalizeName(formData.name)}
             onChange={handleChange('name')}
             className={`form-input ${errors.name ? 'error' : ''}`}
             disabled={isSubmitting}
@@ -258,7 +398,7 @@ function AddCountryForm({ onAdd, onCancel }) {
           <input
             type='text'
             placeholder="Country Captial *"
-            value={formData.capital}
+            value={capitalizeName(formData.capital)}
             onChange={handleChange('capital')}
             className={`form-input ${errors.capital ? 'error' : ''}`}
             disabled={isSubmitting}
@@ -270,7 +410,7 @@ function AddCountryForm({ onAdd, onCancel }) {
           <input
             type="text"
             placeholder="National Dish"
-            value={formData.nat_dish}
+            value={capitalizeName(formData.nat_dish)}
             onChange={handleChange('nat_dish')}
             className={`form-input`}
             disabled={isSubmitting}
@@ -339,7 +479,7 @@ function AddCountryForm({ onAdd, onCancel }) {
           <input
             type="text"
             placeholder="Popular Dish 1"
-            value={formData.pop_dish_1}
+            value={capitalizeName(formData.pop_dish_1)}
             onChange={handleChange('pop_dish_1')}
             className={`form-input`}
             disabled={isSubmitting}
@@ -409,7 +549,7 @@ function AddCountryForm({ onAdd, onCancel }) {
           <input
             type="text"
             placeholder="Popular Dish 2"
-            value={formData.pop_dish_2}
+            value={capitalizeName(formData.pop_dish_2)}
             onChange={handleChange('pop_dish_2')}
             className={`form-input`}
             disabled={isSubmitting}
@@ -638,6 +778,36 @@ export default function Countries() {
     }
   };
 
+  const updateCountry = async (oldCountry, newCountryData) => {
+    try {
+      const response = await axios.post(`${baseURL}/countries/add`, {
+        country_code: newCountryData._id,
+        name: newCountryData.name,
+        capital: newCountryData.capital,
+        nat_dish: newCountryData.nat_dish,
+        nat_dish_dietary: newCountryData.nat_dish_dietary || [],
+        pop_dish_1: newCountryData.pop_dish_1,
+        pop_dish_1_dietary: newCountryData.pop_dish_1_dietary || [],
+        pop_dish_2: newCountryData.pop_dish_2,
+        pop_dish_2_dietary: newCountryData.pop_dish_2_dietary || [],
+        created_by: userEmail
+      });
+  
+      if (response.status === 200) {
+        alert('Country updated successfully!');
+        await fetchCountries();
+      }
+    } catch (err) {
+      console.error("Failed to update country:", err);
+      const errorMessage =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        'Failed to update country. Please try again.';
+      alert(errorMessage);
+      throw err;
+    }
+  };
+
   const searchCountries = useCallback((query) => {
     if (query.length < 2) {
       setSearchResults(null);
@@ -713,7 +883,7 @@ export default function Countries() {
         </button>
       </div>
 
-      <h1 className="page-title">Countries Database</h1>
+      <h1 className="page-title">Countries Database {results && results.length > 0 && <span style={{ fontSize: "16px", color: "#888", fontWeight: "normal" }}>({results.length} countries)</span>}</h1>
 
       {error && (
         <div className="error-container">
@@ -768,8 +938,9 @@ export default function Countries() {
               countryData={countryObj}
               key={`${countryObj?._id ?? "no-code"}-${idx}`}
               onDelete={deleteCountry}
+              onUpdate={updateCountry}
               onViewStates={fetchStatesByCountry}
-              canDelete={isDeveloper || countryObj?.created_by === userEmail}
+              canModify={isDeveloper || countryObj?.created_by === userEmail}
             />
           ))}
         </ul>
@@ -781,6 +952,7 @@ export default function Countries() {
           <p>No countries found.</p>
         </div>
       )}
+      <ScrollToTop />
     </div>
   );
 }
