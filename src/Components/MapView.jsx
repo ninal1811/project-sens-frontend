@@ -14,6 +14,7 @@ import { useFavorites } from "./useFavorites";
 import './MapView.css';
 import NavBar from './NavBar';
 import { getDietaryIcons } from '../constants/dietaryIcons';
+import DietaryFilterBar from './DietaryFilter';
 import { COUNTRY_IMAGE_URLS, STATE_IMAGE_URLS, CITY_IMAGE_URLS } from '../constants/imgUrls';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
@@ -410,6 +411,35 @@ export default function MapView() {
   const { isFavorited, toggleFavorite } = useFavorites();
   const attachFavButton = useFavoritePopupButton({ isFavorited, toggleFavorite, navigate });
 
+  // Filter by dietary icon
+  const [activeDietaryFilters, setActiveDietaryFilters] = useState(new Set());
+
+  const handleDietaryFilter = useCallback((tag) => {
+    setActiveDietaryFilters(prev => {
+      const next = new Set(prev);
+      next.has(tag) ? next.delete(tag) : next.add(tag);
+      return next;
+    });
+  }, []);
+
+  const backendIds = useMemo(() => {
+    const allIds = new Set(Object.keys(backendCountries));
+    if (activeDietaryFilters.size === 0) return allIds;
+
+    return new Set(
+      Object.entries(backendCountries)
+        .filter(([, country]) => {
+          const allDietary = [
+            ...(country.nat_dish_dietary || []),
+            ...(country.pop_dish_1_dietary || []),
+            ...(country.pop_dish_2_dietary || []),
+          ];
+          return [...activeDietaryFilters].every(tag => allDietary.includes(tag));
+        })
+        .map(([id]) => id)
+    );
+  }, [backendCountries, activeDietaryFilters]);
+
   useEffect(() => {
     const fetchCountries = () => {
       axios.get(`${BASE_URL}/countries`)
@@ -447,7 +477,7 @@ export default function MapView() {
     return () => clearInterval(interval);
   }, []);
 
-  const backendIds = useMemo(() => new Set(Object.keys(backendCountries)), [backendCountries]);
+  // const backendIds = useMemo(() => new Set(Object.keys(backendCountries)), [backendCountries]);
   const backendStatesIds = useMemo(() => new Set(Object.keys(backendStates)), [backendStates]);
 
   // code to fetch endpoints and data and stores the results
@@ -664,9 +694,10 @@ export default function MapView() {
       }}
       />
       <Legend showStates={showStates} />
+      <DietaryFilterBar active={activeDietaryFilters} onToggle={handleDietaryFilter} />
       <div className="map-wrapper">
         <MapContainer
-          rref={mapRef}
+          ref={mapRef}
           center={[25, 15]}  // Slightly adjusted center
           zoom={2.5}         // Less zoomed in = see more
           minZoom={2}
