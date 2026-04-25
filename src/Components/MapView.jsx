@@ -242,10 +242,26 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
   }, [backendIds, getIso3]);
 
   const onEachFeature = useCallback((feature, layer) => {
+    // HOVER TOOLTIP
+    const iso3 = getIso3(feature);
+    const backendMatch = backendCountriesRef.current[iso3];
+    if (backendMatch) {
+      const cityCount = Object.values(allCitiesRef.current).filter(
+        c => c.country_code === iso3
+      ).length;
+  
+      const tooltipText = cityCount > 0
+        ? `${backendMatch.name} 🏙️ ${cityCount} ${cityCount === 1 ? 'city' : 'cities'}`
+        : backendMatch.name;
+  
+      layer.bindTooltip(tooltipText, { permanent: false, direction: "center" });
+    }
+  
+    // CLICK POPUP
     layer.on("click", () => {
       const iso3 = getIso3(feature);
       if (!iso3) return;
-
+  
       const backendMatch = backendCountriesRef.current[iso3];
       if (backendMatch) {
         onCountryClick(backendMatch, iso3);
@@ -256,14 +272,14 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
         const pop1Img = typeof imgs === 'object' ? imgs.pop_dish_1 : '';
         const pop2Img = typeof imgs === 'object' ? imgs.pop_dish_2 : '';
         const cityCount = Object.values(allCitiesRef.current).filter(c => c.country_code === iso3).length;
-
+  
         const favItem = JSON.stringify({
           id: backendMatch._id, type: "country",
           name: backendMatch.name,
           subtitle: `Capital: ${backendMatch.capital}`,
           image: natImg
         });
-
+  
         const html = `
           <div class="popup-container">
             ${natImg ? `
