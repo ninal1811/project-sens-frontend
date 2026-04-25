@@ -108,11 +108,11 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
     const isInBackend = stateCode && backendStatesIds.has(stateCode);
   
     return {
-      weight: 1.2,
-      color: "#14532d",              // Dark forest green borders
-      opacity: 0.9,
-      fillOpacity: 0.8,
-      fillColor: isInBackend ? "#15803d" : "#bbf7d0", // Dark vs light green
+      weight: isInBackend ? 2 : 0.5,
+      color: isInBackend ? "#ffffff" : "#14532d",
+      opacity: isInBackend ? 1 : 0.5,
+      fillOpacity: isInBackend ? 0.9 : 0.4,  // non-DB states more transparent
+      fillColor: isInBackend ? "#15803d" : "#bbf7d0",
     };
   }, [backendStatesIds, getStateCode]);
   
