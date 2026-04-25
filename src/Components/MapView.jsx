@@ -123,7 +123,7 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
     console.log("state feature:", feature?.properties);
     const stateName = feature?.properties?.name;
     if (stateName) {
-      layer.bindTooltip(stateName, { permanet: false, direction: "center" });
+      layer.bindTooltip(capitalizeName(stateName), { permanent: false, direction: "center" });
     }
 
     layer.on("click", () => {
@@ -155,7 +155,7 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
               <div class="popup-dish-label">
                 <strong>Popular Food:</strong> ${backendMatch.food_name} ${getDietaryIcons(backendMatch.food_dietary || [])}
               </div>` : ''}
-            <div class="popup-state-name">${backendMatch.name}</div>
+            <div class="popup-state-name">${capitalizeName(backendMatch.name)}</div>
             <div><strong>State Code:</strong> ${backendMatch.state_code}</div>
             <div data-fav='${favItem}'></div>
           </div>
