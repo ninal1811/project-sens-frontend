@@ -166,7 +166,7 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities, countries = []
                     onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#3d3d3d"}
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#2d2d2d"}
                 >
-                    <span className='state-info'> {name ?? "Unnamed state"} {state_code ? `(${state_code})` : ""}
+                    <span className='state-info'> {capitalizeName(name) ?? "Unnamed state"} {state_code ? `(${state_code})` : ""}
                         <span className='country-badge'> {country_code} </span>
                     </span>
                     <span className='expand-icon'>{open ? "▾" : "▸"}</span>
