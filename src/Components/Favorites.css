@@ -107,3 +107,127 @@
   color: #777;
   margin-bottom: 0.5rem;
 }
+
+.favorites-actions,
+.favorites-select-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.favorites-count {
+  margin-bottom: 8px;
+}
+
+.favorites-filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.favorites-action-btn {
+  padding: 8px 16px;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.favorites-clear-btn {
+  background-color: #f44336;
+}
+
+.favorites-clear-btn:hover {
+  background-color: #d32f2f;
+}
+
+.favorites-select-btn {
+  background-color: #2d2d2d;
+  border: 1px solid #444;
+}
+
+.favorites-select-btn.active {
+  background-color: #ff9800;
+  border: none;
+}
+
+.favorites-small-btn {
+  padding: 5px 12px;
+  background-color: #2d2d2d;
+  color: #ccc;
+  border: 1px solid #444;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.favorites-remove-selected-btn {
+  padding: 5px 12px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.favorites-selected-count {
+  font-size: 13px;
+  color: #aaa;
+}
+
+.favorites-filter-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #444;
+  background-color: #2d2d2d;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.favorites-filter-btn.active {
+  border: 2px solid #4caf50;
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+}
+
+.favorite-card.select-mode {
+  cursor: pointer;
+}
+
+.favorite-card.selected {
+  outline: 2px solid #4caf50;
+}
+
+.favorite-select-box {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background-color: #2d2d2d;
+  border: 2px solid #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.favorite-select-box.selected {
+  background-color: #4caf50;
+  border: none;
+}
