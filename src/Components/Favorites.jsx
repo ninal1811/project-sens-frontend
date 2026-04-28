@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
 import "./Favorites.css";
+import ScrollToTop from "./ScrollToTop";
 
 const TYPE_LABELS = { country: "🌍 Country", state: "📍 State", city: "🏙️ City" };
 const SORT_OPTIONS = {
@@ -14,6 +15,7 @@ export default function Favorites() {
   const [favorites, setFavorites] = useState([]);
   const [sortBy, setSortBy] = useState("recent");
   const [showSortMenu, setShowSortMenu] = useState(false);
+  const [filterType, setFilterType] = useState("all");
   const navigate = useNavigate();
   const isLoggedIn = sessionStorage.getItem("loggedIn") === "true";
 
@@ -44,16 +46,20 @@ export default function Favorites() {
   }
 
   const getSortedFavorites = () => {
-    const sorted = [...favorites];
+    let filtered = [...favorites];
+    
+    if (filterType !== "all") {
+      filtered = filtered.filter(f => f.type === filterType);
+    }
     
     switch(sortBy) {
       case "name_asc":
-        return sorted.sort((a, b) => a.name.localeCompare(b.name));
+        return filtered.sort((a, b) => a.name.localeCompare(b.name));
       case "name_desc":
-        return sorted.sort((a, b) => b.name.localeCompare(a.name));
+        return filtered.sort((a, b) => b.name.localeCompare(a.name));
       case "recent":
       default:
-        return sorted.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        return filtered.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
     }
   };
 
@@ -122,7 +128,28 @@ export default function Favorites() {
         ) : (
           <>
             <div className="favorites-count">
-              {favorites.length} {favorites.length === 1 ? 'item' : 'items'} saved
+              {sortedFavorites.length} of {favorites.length} {favorites.length === 1 ? 'item' : 'items'} saved
+            </div>
+            <div style={{ display: "flex", gap: "8px", marginBottom: "16px", flexWrap: "wrap" }}>
+              {["all", "country", "state", "city"].map(type => (
+                <button
+                  key={type}
+                  onClick={() => setFilterType(type)}
+                  style={{
+                    padding: "6px 14px",
+                    borderRadius: "20px",
+                    border: filterType === type ? "2px solid #4caf50" : "1px solid #444",
+                    backgroundColor: filterType === type ? "#4caf50" : "#2d2d2d",
+                    color: filterType === type ? "white" : "#ccc",
+                    cursor: "pointer",
+                    fontSize: "13px",
+                    fontWeight: filterType === type ? "bold" : "normal",
+                    transition: "all 0.2s"
+                  }}
+                >
+                  {type === "all" ? "All" : TYPE_LABELS[type]}
+                </button>
+              ))}
             </div>
             <div className="favorites-grid">
               {sortedFavorites.map(fav => (
@@ -148,6 +175,7 @@ export default function Favorites() {
           </>
         )}
       </div>
+      <ScrollToTop />
     </div>
   );
 }
