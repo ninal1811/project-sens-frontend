@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render } from '@testing-library/react'
+import { MemoryRouter } from 'react-router'
 import axios from 'axios'
 import MapView from '../Components/MapView'
 
@@ -50,6 +51,15 @@ vi.mock('../constants/imgUrls', () => ({
 }))
 
 vi.mock('./MapView.css', () => ({}))
+
+function renderMapView() {
+  return render(
+    <MemoryRouter>
+      <MapView />
+    </MemoryRouter>
+  )
+}
+
 // Test suite for MapView snapshot tests
 describe('MapView Snapshots', () => {
   
@@ -57,7 +67,7 @@ describe('MapView Snapshots', () => {
   it('matches snapshot with initial load (no data)', () => {
     axios.get.mockResolvedValue({ data: {} })
     
-    const { container } = render(<MapView />)
+    const { container } = renderMapView()
     
     expect(container).toMatchSnapshot()
   })
@@ -81,7 +91,7 @@ describe('MapView Snapshots', () => {
       return Promise.resolve({ data: {} })
     })
     
-    const { container } = render(<MapView />)
+    const { container } = renderMapView()
     
     expect(container).toMatchSnapshot()
   })
@@ -96,7 +106,7 @@ describe('MapView Snapshots', () => {
       } 
     })
     
-    const { container } = render(<MapView />)
+    const { container } = renderMapView()
     
     expect(container).toMatchSnapshot()
   })
