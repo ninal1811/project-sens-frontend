@@ -207,6 +207,12 @@ function StateCard({ stateData, onDelete, onUpdate, onViewCities, countries = []
                         <p className='detail-text'>
                             <strong className='detail-text'>Country Code:</strong> {country_code}
                         </p>
+                        <p className='detail-text'>
+                            <strong className='detail-text'>Popular Food:</strong> {stateData.food_name}
+                        </p>
+                        <p className='detail-text'>
+                            <strong className='detail-text'>Dietary Option:</strong> {getDietaryIcons(stateData.food_dietary)}
+                        </p>
                     </div>
                     <div className='cities-section'>
                         <div className='cities-header'>
