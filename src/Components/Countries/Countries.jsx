@@ -12,7 +12,7 @@ function capitalizeName(name) {
   return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
 
-function CountryCard({ countryData, onDelete, onUpdate, onViewStates, canDelete, canModify }) {
+function CountryCard({ countryData, onDelete, onUpdate, onViewStates, canModify }) {
   const [open, setOpen] = useState(false);
   const [states, setStates] = useState([]);
   const [isLoadingStates, setIsLoadingStates] = useState(false);
@@ -856,10 +856,6 @@ export default function Countries() {
     setSearchQuery("");
     setSearchResults(null);
   };
-
-  const clearSelectedCountry = () => {
-    setSelectedCountry(null);
-  }
 
   const displayData = searchResults || (results ? sortCountriesAlphabetically(results) : null);
 

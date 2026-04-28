@@ -18,12 +18,6 @@ export default function Navbar({ searchQuery, onSearch, searchResults, showSearc
   const isDeveloper = isLoggedIn && !!DEVELOPER_EMAIL && sessionStorage.getItem('email') === DEVELOPER_EMAIL;
   const navigate = useNavigate();
 
-  // Check login status on mount and when location changes
-  useEffect(() => {
-    console.log('NavBar useEffect triggered, pathname:', location.pathname);
-    checkLoginStatus();
-  }, [location.pathname]);
-
   async function checkLoginStatus() {
     const sessionStoreLoggedIn = sessionStorage.getItem("loggedIn") === "true";
     try {
@@ -39,6 +33,13 @@ export default function Navbar({ searchQuery, onSearch, searchResults, showSearc
       setIsLoggedIn(sessionStoreLoggedIn);
     }
   }
+
+  // Check login status on mount and when location changes
+  useEffect(() => {
+    console.log('NavBar useEffect triggered, pathname:', location.pathname);
+    checkLoginStatus();
+  }, [location.pathname]);
+
 
   async function handleLogout() {
     try {

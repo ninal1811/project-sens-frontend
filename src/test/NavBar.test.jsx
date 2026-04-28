@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
-import { vi } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import Navbar from "../Components/NavBar";
 
 // Helper to render Navbar at a specific route

@@ -29,6 +29,8 @@ export default function Favorites() {
         ...item,
         timestamp: item.timestamp || Date.now()
       }));
+
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFavorites(storedWithTimestamps);
       if (storedWithTimestamps.length !== stored.length) {
         sessionStorage.setItem("favorites", JSON.stringify(storedWithTimestamps));
@@ -81,10 +83,6 @@ export default function Favorites() {
     setSelectedIds(new Set());
   }
 
-  function addTimestampToFavorite(fav) {
-    const updated = { ...fav, timestamp: Date.now() };
-    return updated;
-  }
 
   const getSortedFavorites = () => {
     let filtered = [...favorites];
