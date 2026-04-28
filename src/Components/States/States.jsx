@@ -5,6 +5,7 @@ import '../Common.css';
 import './States.css'
 import { useAuth } from '../../hooks/useAuth';
 import ScrollToTop from '../ScrollToTop';
+import { getDietaryIcons } from '../../constants/dietaryIcons';
 
 function capitalizeName(name) {
     if (!name) return '';
@@ -848,6 +849,14 @@ export default function States() {
                                 </div>
                             </div>
                         )}
+                        <p className='detail-item'>
+                            <strong className='detail-label'>Popular Food:</strong>
+                            {selectedState.food_name}
+                        </p>
+                        <p className='detail-item'>
+                            <strong className='detail-label'>Dietary Option:</strong>
+                            {getDietaryIcons(selectedState.food_dietary)}
+                        </p>
                     </div>
                 </div>
             )}
