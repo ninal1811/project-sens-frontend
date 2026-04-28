@@ -5,6 +5,11 @@ import "./NavBar.css";
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 const DEVELOPER_EMAIL = import.meta.env.VITE_DEVELOPER_EMAIL;
 
+function capitalizeName(name) {
+  if (!name) return '';
+  return name.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+}
+
 export default function Navbar({ searchQuery, onSearch, searchResults, showSearchResults, onSelectResult, onClearSearch }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
@@ -101,7 +106,7 @@ export default function Navbar({ searchQuery, onSearch, searchResults, showSearc
                       className="navbar-search-result"
                       onClick={() => onSelectResult(result)}
                     >
-                      <span className="navbar-search-result-name">{result.name}</span>
+                      <span className="navbar-search-result-name">{capitalizeName(result.name)}</span>
                       <span className="navbar-search-result-type">
                         {result.type === "country" && "Country"}
                         {result.type === "state" && `${result.countryName} · State`}

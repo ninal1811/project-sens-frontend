@@ -201,7 +201,7 @@ function CountryCard({ countryData, onDelete, onUpdate, onViewStates, canDelete,
           className={`country-toggle-btn ${open ? 'open' : ''}`}
         >
           <span className="country-toggle-label">
-            {name ?? "Unnamed country"} {_id ? `(${_id})` : ""}
+            {capitalizeName(name) || "Unnamed country"} {_id ? `(${_id})` : ""}
           </span>
           <span className="country-expand-icon">{open ? '▾' : '▸'} </span>
         </button>
@@ -330,9 +330,9 @@ function AddCountryForm({ onAdd, onCancel }) {
     try {
       await onAdd({
         _id: formData._id.trim().toUpperCase(),
-        name: formData.name.trim(),
-        capital: formData.capital.trim(),
-        nat_dish: formData.nat_dish.trim(),
+        name: capitalizeName(formData.name.trim()),
+        capital: capitalizeName(formData.capital.trim()),
+        nat_dish: capitalizeName(formData.nat_dish.trim()),
         nat_dish_dietary: formData.nat_dish_dietary,
         pop_dish_1: formData.pop_dish_1.trim(),
         pop_dish_1_dietary: formData.pop_dish_1_dietary,

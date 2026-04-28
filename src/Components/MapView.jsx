@@ -108,11 +108,11 @@ function StatesLayer({ visibleCities, onStateClick, backendStatesRef, backendSta
     const isInBackend = stateCode && backendStatesIds.has(stateCode);
   
     return {
-      weight: isInBackend ? 2 : 0.5,
+      weight: isInBackend ? 2 : 0.8,
       color: isInBackend ? "#ffffff" : "#14532d",
-      opacity: isInBackend ? 1 : 0.5,
-      fillOpacity: isInBackend ? 0.9 : 0.4,  // non-DB states more transparent
-      fillColor: isInBackend ? "#15803d" : "#bbf7d0",
+      opacity: isInBackend ? 1 : 0.4,
+      fillOpacity: isInBackend ? 0.9 : 0,
+      fillColor: isInBackend ? "#15803d" : "transparent",
     };
   }, [backendStatesIds, getStateCode]);
   
@@ -251,8 +251,8 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
       ).length;
   
       const tooltipText = cityCount > 0
-        ? `${backendMatch.name} 🏙️ ${cityCount} ${cityCount === 1 ? 'city' : 'cities'}`
-        : backendMatch.name;
+        ? `${capitalizeName(backendMatch.name)} 🏙️ ${cityCount} ${cityCount === 1 ? 'city' : 'cities'}`
+        : capitalizeName(backendMatch.name);
   
       layer.bindTooltip(tooltipText, { permanent: false, direction: "center" });
     }
@@ -307,7 +307,7 @@ function MapController({ visibleCities, onCountryClick, backendCountriesRef, bac
                 ${backendMatch.pop_dish_2 ? `<div><strong>Popular Dish 2:</strong> ${backendMatch.pop_dish_2} ${getDietaryIcons(backendMatch.pop_dish_2_dietary || [])}</div>` : ''}
               </div>` : ''}
             
-            <div class="popup-country-name">${backendMatch.name}</div>
+            <div class="popup-country-name">${capitalizeName(backendMatch.name)}</div>
             <div><b>Capital:</b> ${capitalizeName(backendMatch.capital)}</div>
             ${cityCount > 0 ? `<div class="popup-city-count">🏙️ ${cityCount} ${cityCount === 1 ? 'city' : 'cities'} available</div>` : ''}
             <div data-fav='${favItem}'></div>
