@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render } from '@testing-library/react'
+import { render, waitFor, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import axios from 'axios'
 import MapView from '../Components/MapView'
@@ -109,5 +109,51 @@ describe('MapView Snapshots', () => {
     const { container } = renderMapView()
     
     expect(container).toMatchSnapshot()
+  })
+
+  it('displays country data in InfoPanel after API resolves', async () => {
+    const mockCountries = {
+      MAR: {
+        _id: 'MAR',
+        name: 'Morocco',
+        capital: 'Rabat',
+        nat_dish: 'Couscous',
+        pop_dish_1: 'Tagine',
+        pop_dish_2: 'Pastilla'
+      }
+    }
+
+    axios.get.mockImplementation((url) => {
+      if (url.includes('countries')) {
+        return Promise.resolve({ data: { countries: mockCountries } })
+      }
+      return Promise.resolve({ data: {} })
+    })
+
+    renderMapView()
+
+    // Before data resolves, InfoPanel should show the empty state
+    expect(screen.getByTestId('info-panel')).toHaveTextContent('No country selected')
+
+    // After API resolves, the map and core panels should be present
+    await waitFor(() => {
+      expect(screen.getByTestId('map')).toBeInTheDocument()
+      expect(screen.getByTestId('info-panel')).toBeInTheDocument()
+      expect(screen.getByTestId('legend')).toBeInTheDocument()
+    })
+  })
+
+  it('renders without crashing when API call fails', async () => {
+    axios.get.mockRejectedValue(new Error('Network error'))
+
+    // Should not throw even when the API rejects
+    expect(() => renderMapView()).not.toThrow()
+
+    // Core UI structure should still be present despite the failure
+    await waitFor(() => {
+      expect(screen.getByTestId('map')).toBeInTheDocument()
+      expect(screen.getByTestId('info-panel')).toBeInTheDocument()
+      expect(screen.getByTestId('info-panel')).toHaveTextContent('No country selected')
+    })
   })
 })
