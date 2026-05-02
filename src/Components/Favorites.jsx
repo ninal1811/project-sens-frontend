@@ -18,6 +18,7 @@ export default function Favorites() {
   const [filterType, setFilterType] = useState("all");
   const [selectMode, setSelectMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState(new Set());
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const isLoggedIn = sessionStorage.getItem("loggedIn") === "true";
 
@@ -91,6 +92,14 @@ export default function Favorites() {
       filtered = filtered.filter(f => f.type === filterType);
     }
     
+    if (searchQuery.length >= 2) {
+      const searchLower = searchQuery.toLowerCase();
+      filtered = filtered.filter(f => 
+        f.name?.toLowerCase().includes(searchLower) ||
+        f.subtitle?.toLowerCase().includes(searchLower)
+      );
+    }
+
     switch(sortBy) {
       case "name_asc":
         return filtered.sort((a, b) => a.name.localeCompare(b.name));
@@ -186,6 +195,17 @@ export default function Favorites() {
             <div className="favorites-count">
               {sortedFavorites.length} of {favorites.length} {favorites.length === 1 ? 'item' : 'items'} saved
             </div>
+            <div style={{ marginBottom: "12px" }}>
+              <input
+                type="text"
+                placeholder="Search favorites by name..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+                onFocus={(e) => e.target.style.borderColor = "#4caf50"}
+                onBlur={(e) => e.target.style.borderColor = "#333"}
+              />
+            </div>
             {selectMode && (
               <div className="favorites-select-actions">
                 <span className="favorites-selected-count">{selectedIds.size} selected</span>
@@ -216,6 +236,9 @@ export default function Favorites() {
                 </button>
               ))}
             </div>
+            {searchQuery.length >= 2 && sortedFavorites.length === 0 && (
+              <div className="no-results">No favorites found matching "{searchQuery}"</div>
+            )}
             <div className="favorites-grid">
               {sortedFavorites.map(fav => (
                 <div
