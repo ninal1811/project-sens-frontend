@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import "./Common.css";
 import "./Login.css";
 
@@ -10,7 +10,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const location = useLocation();
 
   const from = location.state?.from || "/";

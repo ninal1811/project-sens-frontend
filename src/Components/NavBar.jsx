@@ -37,7 +37,11 @@ export default function Navbar({ searchQuery, onSearch, searchResults, showSearc
   // Check login status on mount and when location changes
   useEffect(() => {
     console.log('NavBar useEffect triggered, pathname:', location.pathname);
-    checkLoginStatus();
+    const timer = setTimeout(() => {
+      checkLoginStatus();
+    }, 0);
+  
+    return () => clearTimeout(timer);
   }, [location.pathname]);
 
 

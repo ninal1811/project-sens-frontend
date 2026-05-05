@@ -43,7 +43,7 @@ function CityCard({ cityData, onDelete, onUpdate, canModify }) {
   
     setIsUpdating(true);
     try {
-      await onUpdate(countryData, {
+      await onUpdate(cityData, {
         ...editForm,
         city: capitalizeName(editForm.city),
         state_code: editForm.state_code.toUpperCase(),
