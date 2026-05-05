@@ -167,29 +167,29 @@ function CityCard({ cityData, onDelete, onUpdate, canModify }) {
       </div>
 
       {open && (
-       <div className="city-details">
-       <p className="city-detail-text">
-         <strong className="city-detail-label">City:</strong> {city ?? "—"}
-       </p>
-       <p className="city-detail-text">
-         <strong className="city-detail-label">State Code:</strong> {state_code ?? "—"}
-       </p>
-       <p className="city-detail-text">
-         <strong className="city-detail-label">Country Code:</strong> {country_code ?? "—"}
-       </p>
-       <p className="city-detail-text">
-         <strong className="city-detail-label">Restaurant:</strong> {rec_restaurant ?? "—"}
-       </p>
-       {CITY_IMAGE_URLS[city] ? (
-         <div className="city-image-wrapper">
-           <img 
-             src={CITY_IMAGE_URLS[city].image} 
-             alt={CITY_IMAGE_URLS[city].restaurant_name || rec_restaurant}
-           />
-         </div>
-       ) : (
-         <p style={{ fontSize: "13px", color: "#666", fontStyle: "italic", marginTop: "12px" }}>No restaurant photo available</p>
-       )}
+        <div className="city-details">
+          <p className="city-detail-text">
+            <strong className="city-detail-label">City:</strong> {city ?? "—"}
+          </p>
+          <p className="city-detail-text">
+            <strong className="city-detail-label">State Code:</strong> {state_code ?? "—"}
+          </p>
+          <p className="city-detail-text">
+            <strong className="city-detail-label">Country Code:</strong> {country_code ?? "—"}
+          </p>
+          <p className="city-detail-text">
+            <strong className="city-detail-label">Restaurant:</strong> {rec_restaurant ?? "—"}
+          </p>
+          {CITY_IMAGE_URLS[city] ? (
+            <div className="city-image-wrapper">
+              <img 
+                src={CITY_IMAGE_URLS[city].image} 
+                alt={CITY_IMAGE_URLS[city].restaurant_name || rec_restaurant}
+              />
+            </div>
+          ) : (
+            <p style={{ fontSize: "13px", color: "#666", fontStyle: "italic", marginTop: "12px" }}>No restaurant photo available</p>
+          )}
         </div>
       )}
     </li>

@@ -63,67 +63,72 @@ function Register() {
   }
 
   return (
-    <div className="page-container">
-      <h1 className="page-title register-header">Create Your Account</h1>
-      
-      <p className="register-description">
-        Join Project Sens to discover culinary delights worldwide
-      </p>
+    <div className="account-page-wrapper">
+      <div className="account-card">
+        <div className="account-card-header">
+          <div className="account-logo">
+            🌍 Project <span className="account-logo-accent">Sens</span>            
+            <p className="account-tagline">Join Project Sens to discover culinary delights worldwide</p>
+          </div>
+        </div>
+          
+        <div className="account-card-body"> 
+          <h1 className="account-welcome">Create Your Account</h1>
 
-      <div className="register-card"> 
-        <form className="add-form" onSubmit={handleSubmit} noValidate>
-          {error && (
-            <div className="register-error" role="alert">
-              {error}
+          <form className="add-form" onSubmit={handleSubmit} noValidate>
+            {error && (
+              <div className="register-error" role="alert">
+                {error}
+              </div>
+            )}
+
+            <div className="form-group">
+              <input
+                type="email"
+                placeholder="Email"
+                className={`form-input ${error && !email.trim() ? "input-error" : ""}`}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+                disabled={loading}
+              />
             </div>
-          )}
 
-          <div className="form-group">
-            <input
-              type="email"
-              placeholder="Email"
-              className={`form-input ${error && !email.trim() ? "input-error" : ""}`}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete="email"
-              disabled={loading}
-            />
-          </div>
+            <div className="form-group">
+              <input
+                type="password"
+                placeholder="Password (min 6 characters)"
+                className={`form-input ${error && !password ? "input-error" : ""}`}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="new-password"
+                disabled={loading}
+              />
+            </div>
 
-          <div className="form-group">
-            <input
-              type="password"
-              placeholder="Password (min 6 characters)"
-              className={`form-input ${error && !password ? "input-error" : ""}`}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete="new-password"
-              disabled={loading}
-            />
-          </div>
+            <div className="form-group">
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                className={`form-input ${error && password !== confirmPassword ? "input-error" : ""}`}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                autoComplete="new-password"
+                disabled={loading}
+              />
+            </div>
 
-          <div className="form-group">
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              className={`form-input ${error && password !== confirmPassword ? "input-error" : ""}`}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              autoComplete="new-password"
-              disabled={loading}
-            />
-          </div>
+            <div className="form-actions">
+              <button className="btn btn-primary" type="submit" disabled={loading}>
+                {loading ? "Creating Account…" : "Create Account"}
+              </button>
+            </div>
 
-          <div className="form-actions">
-            <button className="btn btn-primary" type="submit" disabled={loading}>
-              {loading ? "Creating Account…" : "Create Account"}
-            </button>
-          </div>
-
-          <p className="register-login-link">
-            Already have an account? <Link to="/login">Sign in</Link>
-          </p>
-        </form>
+            <p className="register-login-link">
+              Already have an account? <Link to="/login">Sign in</Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );
