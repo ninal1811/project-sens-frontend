@@ -1,7 +1,7 @@
 .register-card {
   max-width: 400px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 1.75rem 2rem 2rem;
   border: 1px solid #333;
   border-radius: 8px; 
   background-color: #1a1a1a;
@@ -11,14 +11,16 @@
 .register-header {
   text-align: center;
   margin-bottom: 20px;
-  color: white;
+  color: #ffffff;
+  font-family: 'Syne', sans-serif;
 }
 
 .register-description {
-  text-align: center;
-  margin-bottom: 24px;
-  color: #666;
-  font-size: 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+  letter-spacing: 0.02em;
 }
 
 .register-error {

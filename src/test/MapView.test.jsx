@@ -39,12 +39,9 @@ vi.mock('react-leaflet', () => ({
   
 }))
 
-
 vi.mock('../Components/Legend', () => ({
   default: ({ showStates }) => <div data-testid="legend" data-show-states={showStates}>Legend</div>
 }))
-
-
 
 vi.mock('../data/countries.json', () => ({ default: { type: 'FeatureCollection', features: [] } }))
 vi.mock('../data/states.json', () => ({ default: { type: 'FeatureCollection', features: [] } }))
@@ -66,18 +63,14 @@ function renderMapView() {
   )
 }
 
-// Test suite for MapView snapshot tests
 describe('MapView Snapshots', () => {
   
-  // Test 1: Snapshot of MapView when first loaded (before API data arrives)
   it('matches snapshot with initial load (no data)', () => {
     axios.get.mockResolvedValue({ data: {} })
-    
     const { container } = renderMapView()
-    
     expect(container).toMatchSnapshot()
   })
-    // Test 2: Snapshot after countries are loaded from API
+
   it('matches snapshot with countries loaded', () => {
     const mockCountries = {
       MAR: { 
@@ -89,31 +82,53 @@ describe('MapView Snapshots', () => {
         pop_dish_2: 'Pastilla' 
       }
     }
-    
     axios.get.mockImplementation((url) => {
       if (url.includes('countries')) {
         return Promise.resolve({ data: { countries: mockCountries } })
       }
       return Promise.resolve({ data: {} })
     })
-    
     const { container } = renderMapView()
-    
     expect(container).toMatchSnapshot()
   })
-  // Test 3: Snapshot with all main components rendered
+
   it('matches snapshot with all components rendered', () => {
-    
     axios.get.mockResolvedValue({ 
-      data: { 
-        countries: {},  
-        states: {},    
-        Cities: {}      
-      } 
+      data: { countries: {}, states: {}, Cities: {} } 
     })
-    
     const { container } = renderMapView()
-    
     expect(container).toMatchSnapshot()
+  })
+
+  it('renders map panels after API resolves', async () => {
+    const mockCountries = {
+      MAR: {
+        _id: 'MAR',
+        name: 'Morocco',
+        capital: 'Rabat',
+        nat_dish: 'Couscous',
+        pop_dish_1: 'Tagine',
+        pop_dish_2: 'Pastilla'
+      }
+    }
+    axios.get.mockImplementation((url) => {
+      if (url.includes('countries')) {
+        return Promise.resolve({ data: { countries: mockCountries } })
+      }
+      return Promise.resolve({ data: {} })
+    })
+    renderMapView()
+    await waitFor(() => {
+      expect(screen.getByTestId('map')).toBeInTheDocument()
+      expect(screen.getByTestId('legend')).toBeInTheDocument()
+    })
+  })
+
+  it('renders without crashing when API call fails', async () => {
+    axios.get.mockRejectedValue(new Error('Network error'))
+    expect(() => renderMapView()).not.toThrow()
+    await waitFor(() => {
+      expect(screen.getByTestId('map')).toBeInTheDocument()
+    })
   })
 })

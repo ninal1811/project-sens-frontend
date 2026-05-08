@@ -12,10 +12,51 @@ function capitalizeName(city) {
   return city.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
 
-function CityCard({ cityData, onDelete, canDelete }) {
+function CityCard({ cityData, onDelete, onUpdate, canModify }) {
   const [open, setOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const { city, state_code, country_code, rec_restaurant } = cityData || {};
+  const [editForm, setEditForm] = useState({
+    city: cityData?.city || '',
+    state_code: cityData?.state_code || '',
+    country_code: cityData?.country_code || '',
+    rec_restaurant: cityData?.rec_restaurant || ''
+  });
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditForm({
+      city: cityData?.city || '',
+      state_code: cityData?.state_code || '',
+      country_code: cityData?.country_code || '',
+      rec_restaurant: cityData?.rec_restaurant || ''
+    });
+  };
+
+  const handleSave = async () => {
+    if (!editForm._id || !editForm.name || !editForm.capital) {
+      alert('Please fill in all required fields');
+      return;
+    }
+  
+    setIsUpdating(true);
+    try {
+      await onUpdate(cityData, {
+        ...editForm,
+        city: capitalizeName(editForm.city),
+        state_code: editForm.state_code.toUpperCase(),
+        country_code: editForm.country_code.toUpperCase(),
+        rec_restaurant: capitalizeName(editForm.rec_restaurant)
+      });
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Update failed:", error);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
   const handleDelete = async () => {
     if (window.confirm(`Are you sure you want to delete ${city}?`)) {
@@ -29,6 +70,65 @@ function CityCard({ cityData, onDelete, canDelete }) {
       }
     }
   };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  if (isEditing) {
+    return (
+      <li className="edit-card">
+        <div className="edit-form">
+          <input
+            type="text"
+            placeholder="City *"
+            value={editForm.city}
+            onChange={(e) => setEditForm({ ...editForm, city: e.target.value })}
+            className="edit-input"
+            disabled={isUpdating}
+          />
+
+          <input
+            type="text"
+            placeholder="State Code *"
+            value={editForm.state_code}
+            onChange={(e) => setEditForm({ ...editForm, state_code: e.target.value.toUpperCase() })}
+            className="edit-input"
+            maxLength={3}
+            disabled={isUpdating}
+          />
+
+          <input
+            type="text"
+            placeholder="Country Code *"
+            value={editForm.country_code}
+            onChange={(e) => setEditForm({ ...editForm, country_code: e.target.value.toUpperCase() })}
+            className="edit-input"
+            maxLength={3}
+            disabled={isUpdating}
+          />
+  
+          <input
+            type="text"
+            placeholder="Restaurant"
+            value={capitalizeName(editForm.rec_restaurant)}
+            onChange={(e) => setEditForm({ ...editForm, rec_restaurant: e.target.value })}
+            className="edit-input"
+            disabled={isUpdating}
+          />
+  
+          <div className="form-actions">
+            <button onClick={handleSave} disabled={isUpdating} className="btn btn-primary btn-small">
+              {isUpdating ? "Saving..." : "Save"}
+            </button>
+            <button onClick={handleCancel} disabled={isUpdating} className="btn btn-secondary btn-small">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </li>
+    );
+  }
 
   return (
     <li className="card">
@@ -44,7 +144,17 @@ function CityCard({ cityData, onDelete, canDelete }) {
           </span>
           <span className="city-expand-icon">{open ? "▾" : "▸"}</span>
         </button>
-        {canDelete && (
+        {canModify && (
+          <button
+            onClick={handleEdit}
+            className="btn-edit"
+            title="Edit city"
+          >
+            ✎
+          </button>
+        )}
+
+        {canModify && (
           <button
             onClick={handleDelete}
             disabled={isDeleting}
@@ -57,29 +167,29 @@ function CityCard({ cityData, onDelete, canDelete }) {
       </div>
 
       {open && (
-       <div className="city-details">
-       <p className="city-detail-text">
-         <strong className="city-detail-label">City:</strong> {city ?? "—"}
-       </p>
-       <p className="city-detail-text">
-         <strong className="city-detail-label">State Code:</strong> {state_code ?? "—"}
-       </p>
-       <p className="city-detail-text">
-         <strong className="city-detail-label">Country Code:</strong> {country_code ?? "—"}
-       </p>
-       <p className="city-detail-text">
-         <strong className="city-detail-label">Restaurant:</strong> {rec_restaurant ?? "—"}
-       </p>
-       {CITY_IMAGE_URLS[city] ? (
-         <div className="city-image-wrapper">
-           <img 
-             src={CITY_IMAGE_URLS[city].image} 
-             alt={CITY_IMAGE_URLS[city].restaurant_name || rec_restaurant}
-           />
-         </div>
-       ) : (
-         <p style={{ fontSize: "13px", color: "#666", fontStyle: "italic", marginTop: "12px" }}>No restaurant photo available</p>
-       )}
+        <div className="city-details">
+          <p className="city-detail-text">
+            <strong className="city-detail-label">City:</strong> {city ?? "—"}
+          </p>
+          <p className="city-detail-text">
+            <strong className="city-detail-label">State Code:</strong> {state_code ?? "—"}
+          </p>
+          <p className="city-detail-text">
+            <strong className="city-detail-label">Country Code:</strong> {country_code ?? "—"}
+          </p>
+          <p className="city-detail-text">
+            <strong className="city-detail-label">Restaurant:</strong> {rec_restaurant ?? "—"}
+          </p>
+          {CITY_IMAGE_URLS[city] ? (
+            <div className="city-image-wrapper">
+              <img 
+                src={CITY_IMAGE_URLS[city].image} 
+                alt={CITY_IMAGE_URLS[city].restaurant_name || rec_restaurant}
+              />
+            </div>
+          ) : (
+            <p style={{ fontSize: "13px", color: "#666", fontStyle: "italic", marginTop: "12px" }}>No restaurant photo available</p>
+          )}
         </div>
       )}
     </li>
@@ -593,7 +703,7 @@ export default function Cities() {
                 cityData={cityObj}
                 key={`${cityObj?.city ?? "no-city"}-${idx}`}
                 onDelete={deleteCity}
-                canDelete={isDeveloper || cityObj?.created_by === userEmail}
+                canModify={isDeveloper || cityObj?.created_by === userEmail}
               />
             ))}
           </ul>

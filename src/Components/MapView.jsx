@@ -420,7 +420,7 @@ export default function MapView() {
   const backendStatesRef = useRef({});
   const mapRef = useRef(null);
   const [backendStates, setBackendStates] = useState({});
-  const [selectedState, setSelectedState] = useState(null);
+  const [, setSelectedState] = useState(null);
   const [_visibleStates, _setVisibleStates] = useState([]);
   const [showStates, setShowStates] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -525,26 +525,26 @@ export default function MapView() {
     setSearchQuery("");
     setShowSearchResults(false);
   }, []);
-  const handleBackToCountry = useCallback(() => {
-    setSelectedState(null);
-    if (selectedCountry) {
-      const cities = Object.values(allCitiesRef.current).filter(
-        c => c.country_code === selectedCountry._id
-      );
-      setVisibleCities(cities);
+  // const handleBackToCountry = useCallback(() => {
+  //   setSelectedState(null);
+  //   if (selectedCountry) {
+  //     const cities = Object.values(allCitiesRef.current).filter(
+  //       c => c.country_code === selectedCountry._id
+  //     );
+  //     setVisibleCities(cities);
 
-      const iso3 = selectedCountry._id;
-      const countryFeature = countriesData.features.find(
-        f => f.properties?.["ISO3166-1-Alpha-3"] === iso3
-      );
-      if (countryFeature && mapRef.current) {
-        const layer = L.geoJSON(countryFeature);
-        mapRef.current.fitBounds(layer.getBounds(), { padding: [40, 40] });
-      }
-    }
-    setSearchQuery("");
-    setShowSearchResults(false);
-  }, [selectedCountry]);
+  //     const iso3 = selectedCountry._id;
+  //     const countryFeature = countriesData.features.find(
+  //       f => f.properties?.["ISO3166-1-Alpha-3"] === iso3
+  //     );
+  //     if (countryFeature && mapRef.current) {
+  //       const layer = L.geoJSON(countryFeature);
+  //       mapRef.current.fitBounds(layer.getBounds(), { padding: [40, 40] });
+  //     }
+  //   }
+  //   setSearchQuery("");
+  //   setShowSearchResults(false);
+  // }, [selectedCountry]);
 
   // same idea - when a state is clicked, filters so it looks at cities just belonging to that state
   const handleBackToCountries = useCallback (() => {
@@ -688,11 +688,15 @@ export default function MapView() {
   }, [showStates, handleBackToCountries]);
 
   useEffect(() => {
-    if (showStates) {
-      setShowEscHint(true);
-      const timer = setTimeout(() => setShowEscHint(false), 3000);
-      return () => clearTimeout(timer);
-    }
+    if (!showStates) return;
+
+    const showTimer = setTimeout(() => setShowEscHint(true), 0);
+    const hideTimer = setTimeout(() => setShowEscHint(false), 3000);
+
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+    };
   }, [showStates]);
 
   const WORLD_BOUNDS = [

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import "./Common.css";
 import "./Login.css";
 
@@ -10,7 +10,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const location = useLocation();
 
   const from = location.state?.from || "/";
@@ -63,17 +63,17 @@ function Login() {
   }
 
   return (
-    <div className="login-page-wrapper">
-      <div className="login-card">
-        <div className="login-card-header">
-          <div className="login-logo">
-            🌍 Project <span className="login-logo-accent">Sens</span>
+    <div className="account-page-wrapper">
+      <div className="account-card">
+        <div className="account-card-header">
+          <div className="account-logo">
+            🌍 Project <span className="account-logo-accent">Sens</span>
           </div>
-          <p className="login-tagline">Explore culinary culture around the world</p>
+          <p className="account-tagline">Explore culinary culture around the world</p>
         </div>
 
-        <div className="login-card-body">
-          <h2 className="login-welcome">Welcome back</h2>
+        <div className="account-card-body">
+          <h2 className="account-welcome">Welcome back</h2>
 
           <form className="add-form" onSubmit={handleSubmit} noValidate>
             {error && (
