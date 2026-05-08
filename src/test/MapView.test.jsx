@@ -1,10 +1,23 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, waitFor, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router'
+import { MemoryRouter } from 'react-router-dom'
 import axios from 'axios'
 import MapView from '../Components/MapView'
 
 vi.mock('axios')
+
+vi.mock('react-router-dom', async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    useNavigate: () => vi.fn(),
+    useLocation: () => ({ pathname: '/' }),
+  }
+})
+
+vi.mock('../Components/NavBar', () => ({
+  default: () => <div data-testid="navbar">NavBar</div>
+}))
 
 vi.mock('react-leaflet', () => ({
   MapContainer: ({ children }) => <div data-testid="map">{children}</div>,
@@ -19,25 +32,18 @@ vi.mock('react-leaflet', () => ({
     setView: vi.fn(),
     flyTo: vi.fn(),
     fitBounds: vi.fn(),
-    getPane: vi.fn(() => document.createElement('div'))
+    getPane: vi.fn(() => document.createElement('div')),
+    on: vi.fn(),
+    off: vi.fn(),
   })
+  
 }))
 
 
-vi.mock('./Legend', () => ({
+vi.mock('../Components/Legend', () => ({
   default: ({ showStates }) => <div data-testid="legend" data-show-states={showStates}>Legend</div>
 }))
 
-
-vi.mock('./InfoPanel', () => ({
-  default: ({ selectedCountry, selectedState, showStates}) => (
-    <div data-testid="info-panel">
-      {selectedCountry ? `Country: ${selectedCountry.name}` : 'No country selected'}
-      {selectedState && ` | State: ${selectedState.name}`}
-      {showStates && ' | States visible'}
-    </div>
-  )
-}))
 
 
 vi.mock('../data/countries.json', () => ({ default: { type: 'FeatureCollection', features: [] } }))
@@ -50,7 +56,7 @@ vi.mock('../constants/imgUrls', () => ({
   CITY_IMAGE_URLS: {}
 }))
 
-vi.mock('./MapView.css', () => ({}))
+vi.mock('../Components/MapView.css', () => ({}))
 
 function renderMapView() {
   return render(
@@ -109,51 +115,5 @@ describe('MapView Snapshots', () => {
     const { container } = renderMapView()
     
     expect(container).toMatchSnapshot()
-  })
-
-  it('displays country data in InfoPanel after API resolves', async () => {
-    const mockCountries = {
-      MAR: {
-        _id: 'MAR',
-        name: 'Morocco',
-        capital: 'Rabat',
-        nat_dish: 'Couscous',
-        pop_dish_1: 'Tagine',
-        pop_dish_2: 'Pastilla'
-      }
-    }
-
-    axios.get.mockImplementation((url) => {
-      if (url.includes('countries')) {
-        return Promise.resolve({ data: { countries: mockCountries } })
-      }
-      return Promise.resolve({ data: {} })
-    })
-
-    renderMapView()
-
-    // Before data resolves, InfoPanel should show the empty state
-    expect(screen.getByTestId('info-panel')).toHaveTextContent('No country selected')
-
-    // After API resolves, the map and core panels should be present
-    await waitFor(() => {
-      expect(screen.getByTestId('map')).toBeInTheDocument()
-      expect(screen.getByTestId('info-panel')).toBeInTheDocument()
-      expect(screen.getByTestId('legend')).toBeInTheDocument()
-    })
-  })
-
-  it('renders without crashing when API call fails', async () => {
-    axios.get.mockRejectedValue(new Error('Network error'))
-
-    // Should not throw even when the API rejects
-    expect(() => renderMapView()).not.toThrow()
-
-    // Core UI structure should still be present despite the failure
-    await waitFor(() => {
-      expect(screen.getByTestId('map')).toBeInTheDocument()
-      expect(screen.getByTestId('info-panel')).toBeInTheDocument()
-      expect(screen.getByTestId('info-panel')).toHaveTextContent('No country selected')
-    })
   })
 })

@@ -6,83 +6,63 @@ exports[`MapView Snapshots > matches snapshot with all components rendered 1`] =
     class="mapview-root"
   >
     <div
-      class="search-container"
+      data-testid="navbar"
     >
-      <div
-        class="search-input-wrapper"
-      >
-        <input
-          class="search-input"
-          placeholder="Search countries, states, or cities..."
-          type="text"
-          value=""
-        />
-      </div>
+      NavBar
     </div>
     <div
-      class="info-panel-container"
+      data-show-states="false"
+      data-testid="legend"
     >
-      <div
-        style="color: rgb(102, 102, 102);"
-      >
-        Click a 
-        <span
-          style="color: rgb(30, 144, 255); font-weight: 700;"
-        >
-          blue
-        </span>
-         country to see details.
-      </div>
+      Legend
     </div>
     <div
-      style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; padding: 0.75rem 1rem; margin-bottom: 0.5rem; background: rgba(30, 30, 30, 0.9); border: 1px solid rgb(68, 68, 68); border-radius: 8px; color: rgb(255, 255, 255); font-size: 0.85rem;"
+      class="dietary-filter-bar"
     >
-      <div
-        style="font-weight: 700;"
+      <button
+        class="dietary-filter-btn "
+        title="Vegan"
       >
-        Legend:
-      </div>
-      <div
-        style="display: flex; align-items: center; gap: 0.4rem;"
+        <span>
+          🥬
+        </span>
+        <span>
+          Vegan
+        </span>
+      </button>
+      <button
+        class="dietary-filter-btn "
+        title="Vegetarian"
       >
-        <div
-          style="width: 14px; height: 14px; border-radius: 2px; background: rgb(30, 144, 255); opacity: 0.7;"
-        />
         <span>
-          Country in database
+          🌱
         </span>
-      </div>
-      <div
-        style="display: flex; align-items: center; gap: 0.4rem;"
+        <span>
+          Vegetarian
+        </span>
+      </button>
+      <button
+        class="dietary-filter-btn "
+        title="Meat"
       >
-        <div
-          style="width: 14px; height: 14px; border-radius: 2px; background: rgb(153, 153, 153); opacity: 0.4;"
-        />
         <span>
-          No data
+          🥩
         </span>
-      </div>
-      <div
-        style="border-left: 1px solid rgb(85, 85, 85); padding-left: 1rem; margin-left: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap;"
+        <span>
+          Meat
+        </span>
+      </button>
+      <button
+        class="dietary-filter-btn "
+        title="Seafood"
       >
-        <span
-          style="font-weight: 600;"
-        >
-          Dietary:
+        <span>
+          🐟
         </span>
         <span>
-          🌱 Vegetarian
+          Seafood
         </span>
-        <span>
-          🥩 Meat
-        </span>
-        <span>
-          🐟 Seafood
-        </span>
-        <span>
-          🥬 Vegan
-        </span>
-      </div>
+      </button>
     </div>
     <div
       class="map-wrapper"
@@ -95,6 +75,9 @@ exports[`MapView Snapshots > matches snapshot with all components rendered 1`] =
         />
         <div
           data-testid="geojson-layer"
+        />
+        <div
+          data-testid="tile-layer"
         />
       </div>
     </div>
@@ -108,83 +91,63 @@ exports[`MapView Snapshots > matches snapshot with countries loaded 1`] = `
     class="mapview-root"
   >
     <div
-      class="search-container"
+      data-testid="navbar"
     >
-      <div
-        class="search-input-wrapper"
-      >
-        <input
-          class="search-input"
-          placeholder="Search countries, states, or cities..."
-          type="text"
-          value=""
-        />
-      </div>
+      NavBar
     </div>
     <div
-      class="info-panel-container"
+      data-show-states="false"
+      data-testid="legend"
     >
-      <div
-        style="color: rgb(102, 102, 102);"
-      >
-        Click a 
-        <span
-          style="color: rgb(30, 144, 255); font-weight: 700;"
-        >
-          blue
-        </span>
-         country to see details.
-      </div>
+      Legend
     </div>
     <div
-      style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; padding: 0.75rem 1rem; margin-bottom: 0.5rem; background: rgba(30, 30, 30, 0.9); border: 1px solid rgb(68, 68, 68); border-radius: 8px; color: rgb(255, 255, 255); font-size: 0.85rem;"
+      class="dietary-filter-bar"
     >
-      <div
-        style="font-weight: 700;"
+      <button
+        class="dietary-filter-btn "
+        title="Vegan"
       >
-        Legend:
-      </div>
-      <div
-        style="display: flex; align-items: center; gap: 0.4rem;"
+        <span>
+          🥬
+        </span>
+        <span>
+          Vegan
+        </span>
+      </button>
+      <button
+        class="dietary-filter-btn "
+        title="Vegetarian"
       >
-        <div
-          style="width: 14px; height: 14px; border-radius: 2px; background: rgb(30, 144, 255); opacity: 0.7;"
-        />
         <span>
-          Country in database
+          🌱
         </span>
-      </div>
-      <div
-        style="display: flex; align-items: center; gap: 0.4rem;"
+        <span>
+          Vegetarian
+        </span>
+      </button>
+      <button
+        class="dietary-filter-btn "
+        title="Meat"
       >
-        <div
-          style="width: 14px; height: 14px; border-radius: 2px; background: rgb(153, 153, 153); opacity: 0.4;"
-        />
         <span>
-          No data
+          🥩
         </span>
-      </div>
-      <div
-        style="border-left: 1px solid rgb(85, 85, 85); padding-left: 1rem; margin-left: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap;"
+        <span>
+          Meat
+        </span>
+      </button>
+      <button
+        class="dietary-filter-btn "
+        title="Seafood"
       >
-        <span
-          style="font-weight: 600;"
-        >
-          Dietary:
+        <span>
+          🐟
         </span>
         <span>
-          🌱 Vegetarian
+          Seafood
         </span>
-        <span>
-          🥩 Meat
-        </span>
-        <span>
-          🐟 Seafood
-        </span>
-        <span>
-          🥬 Vegan
-        </span>
-      </div>
+      </button>
     </div>
     <div
       class="map-wrapper"
@@ -197,6 +160,9 @@ exports[`MapView Snapshots > matches snapshot with countries loaded 1`] = `
         />
         <div
           data-testid="geojson-layer"
+        />
+        <div
+          data-testid="tile-layer"
         />
       </div>
     </div>
@@ -210,83 +176,63 @@ exports[`MapView Snapshots > matches snapshot with initial load (no data) 1`] = 
     class="mapview-root"
   >
     <div
-      class="search-container"
+      data-testid="navbar"
     >
-      <div
-        class="search-input-wrapper"
-      >
-        <input
-          class="search-input"
-          placeholder="Search countries, states, or cities..."
-          type="text"
-          value=""
-        />
-      </div>
+      NavBar
     </div>
     <div
-      class="info-panel-container"
+      data-show-states="false"
+      data-testid="legend"
     >
-      <div
-        style="color: rgb(102, 102, 102);"
-      >
-        Click a 
-        <span
-          style="color: rgb(30, 144, 255); font-weight: 700;"
-        >
-          blue
-        </span>
-         country to see details.
-      </div>
+      Legend
     </div>
     <div
-      style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; padding: 0.75rem 1rem; margin-bottom: 0.5rem; background: rgba(30, 30, 30, 0.9); border: 1px solid rgb(68, 68, 68); border-radius: 8px; color: rgb(255, 255, 255); font-size: 0.85rem;"
+      class="dietary-filter-bar"
     >
-      <div
-        style="font-weight: 700;"
+      <button
+        class="dietary-filter-btn "
+        title="Vegan"
       >
-        Legend:
-      </div>
-      <div
-        style="display: flex; align-items: center; gap: 0.4rem;"
+        <span>
+          🥬
+        </span>
+        <span>
+          Vegan
+        </span>
+      </button>
+      <button
+        class="dietary-filter-btn "
+        title="Vegetarian"
       >
-        <div
-          style="width: 14px; height: 14px; border-radius: 2px; background: rgb(30, 144, 255); opacity: 0.7;"
-        />
         <span>
-          Country in database
+          🌱
         </span>
-      </div>
-      <div
-        style="display: flex; align-items: center; gap: 0.4rem;"
+        <span>
+          Vegetarian
+        </span>
+      </button>
+      <button
+        class="dietary-filter-btn "
+        title="Meat"
       >
-        <div
-          style="width: 14px; height: 14px; border-radius: 2px; background: rgb(153, 153, 153); opacity: 0.4;"
-        />
         <span>
-          No data
+          🥩
         </span>
-      </div>
-      <div
-        style="border-left: 1px solid rgb(85, 85, 85); padding-left: 1rem; margin-left: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap;"
+        <span>
+          Meat
+        </span>
+      </button>
+      <button
+        class="dietary-filter-btn "
+        title="Seafood"
       >
-        <span
-          style="font-weight: 600;"
-        >
-          Dietary:
+        <span>
+          🐟
         </span>
         <span>
-          🌱 Vegetarian
+          Seafood
         </span>
-        <span>
-          🥩 Meat
-        </span>
-        <span>
-          🐟 Seafood
-        </span>
-        <span>
-          🥬 Vegan
-        </span>
-      </div>
+      </button>
     </div>
     <div
       class="map-wrapper"
@@ -299,6 +245,9 @@ exports[`MapView Snapshots > matches snapshot with initial load (no data) 1`] = 
         />
         <div
           data-testid="geojson-layer"
+        />
+        <div
+          data-testid="tile-layer"
         />
       </div>
     </div>
