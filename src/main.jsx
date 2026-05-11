@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet.css"
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter basename='/project-sens-frontend'>
+    <BrowserRouter>
       <App/>
     </BrowserRouter>
   </StrictMode>,
